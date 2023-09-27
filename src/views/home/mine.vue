@@ -68,13 +68,13 @@
         <img class="right-arrow" src="@/assets/images/right-arrow.png" />
       </div>
 
-      <div @click="logout">
+      <!-- <div @click="logout">
         <div>
           <img class="icon" src="@/assets/images/log-out.png" />
           Log Out
         </div>
         <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -5,12 +5,23 @@
     </div>
 
     <div class="list-frame" v-for="(item, index) in list" :key="index">
-      <div class="padding-20 row-space-between-center">
+      <div
+        class="padding-20 row-space-between-center"
+        :class="{
+          active: item.actionIndex === actionIndex || computedModuleDone(item)
+        }"
+      >
         <div class="row-direction">
           <div class="title">{{ item.title }}</div>
           <img class="lock-icon" src="@/assets/images/information/lock.png" />
         </div>
         <img
+          class="down-icon"
+          v-if="computedModuleDone(item)"
+          src="@/assets/images/gou.png"
+        />
+        <img
+          v-else
           class="right-icon"
           :class="{ 'right-icon-transform': item.actionIndex === actionIndex }"
           src="@/assets/images/right-arrow.png"
@@ -40,14 +51,10 @@
         @goToAddBankClick="goToAddBankClick"
       />
     </div>
-    <!-- 上传身份证不需要禁用 -->
+    <!-- 都不禁用，点击判断 -->
     <div class="submit">
-      <button
-        class="bottom-submit-btn"
-        :disabled="actionIndex === 2 ? false : !canSubmit"
-        @click="submit"
-      >
-        {{ actionIndex === 2 ? 'Next Step' : 'Submit' }}
+      <button class="bottom-submit-btn" @click="submit">
+        {{ actionIndex === 2 ? "Next Step" : "Submit" }}
       </button>
     </div>
 
@@ -62,13 +69,14 @@
 </template>
 
 <script>
-import selectItem from '@/components/selectItem'
-import completeStep from '@/components/completeStep.vue'
-import information from '@/components/completeInformation/information'
-import contacts from '@/components/completeInformation/contacts'
-import identity from '@/components/completeInformation/identity'
-import completeBank from '@/components/completeInformation/completeBank'
-import * as ALL_ATTRS from '@/utils/constants'
+import selectItem from "@/components/selectItem";
+import completeStep from "@/components/completeStep.vue";
+import information from "@/components/completeInformation/information";
+import contacts from "@/components/completeInformation/contacts";
+import identity from "@/components/completeInformation/identity";
+import completeBank from "@/components/completeInformation/completeBank";
+import * as ALL_ATTRS from "@/utils/constants";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -79,7 +87,6 @@ export default {
     identity,
     completeBank
   },
-
   data() {
     return {
       ALL_ATTRS,
@@ -89,202 +96,218 @@ export default {
       orderId: null,
       actionIndex: 0,
       submitSuccess: false,
-      submitCopywriting: 'personal',
+      submitCopywriting: "personal",
       list: [
         {
-          title: 'Personal Info',
+          title: "Personal Info",
           actionIndex: 0
         },
         {
-          title: 'Contacts Info',
+          title: "Contacts Info",
           actionIndex: 1
         },
         {
-          title: 'Identity Info',
+          title: "Identity Info",
           actionIndex: 2
         },
         {
-          title: 'Payment method',
+          title: "Payment method",
           actionIndex: 3
         }
       ]
-    }
+    };
   },
   created() {
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
-      title: 'Complete information',
+      title: "Complete information",
       backCallback: null
-    })
+    });
   },
-  mounted() {
-    this.orderId = this.$route.query.orderId || null
-    this.actionIndex = +this.$route.query.actionIndex
-    this.eventTracker('basic_access')
-    this.initInfoBackControl()
+  async mounted() {
+    this.orderId = this.$route.query.orderId || null;
+    this.actionIndex = +this.$route.query.actionIndex;
+    this.eventTracker("basic_access");
+    this.initInfoBackControl();
+    await this.getAppMode();
   },
   computed: {
+    ...mapState(["isAppChecked", "appMode"]),
+    // 判断该模块是否已经结束
+    computedModuleDone() {
+      return (item) => {
+        return (
+          (item.actionIndex == 0 && this.appMode.identityAuth == 1) ||
+          (item.actionIndex == 1 && this.appMode.basicInfoAuth == 1) ||
+          (item.actionIndex == 2 && this.appMode.addInfoAuth == 1) ||
+          (item.actionIndex == 3 && this.appMode.remittanceAccountAuth == 1)
+        );
+      };
+    }
+  },
+  methods: {
     canSubmit() {
       switch (this.actionIndex) {
         case 0:
           return (
             Object.values(this.basicInformation).filter((f) => !!f).length == 10
-          )
-
+          );
         case 1:
           return this.contactsInfo.every(
             (e) => e.relation && e.mobile && e.name
-          )
-
+          );
+        case 2:
+          return true;
         case 3:
-          return !!this.chooseBankId
+          return !!this.chooseBankId;
 
         default:
-          return false
+          return false;
       }
-    }
-  },
-  methods: {
+    },
     // 基本信息
     BasicInformationEmit(v) {
-      this.basicInformation = v
+      this.basicInformation = v;
     },
     // 联系人
     contactsInfoEmit(v) {
-      console.log(v, '**** contactsInfoEmit')
-      this.contactsInfo = v
+      console.log(v, "**** contactsInfoEmit");
+      this.contactsInfo = v;
     },
     // 身份证
     identityEmit(orderId) {
-      this.orderId = orderId
-      this.actionIndex = 3
+      this.orderId = orderId;
+      this.actionIndex = 3;
     },
     // 银行卡
     chooseBankIdEmit(bankId) {
-      this.chooseBankId = bankId
+      this.chooseBankId = bankId;
     },
     goToAddBankClick() {
-      this.innerJump('addBank', { orderId: this.orderId }, true)
+      this.innerJump("addBank", { orderId: this.orderId }, true);
     },
     submit() {
+      if (!this.canSubmit()) {
+        this.$toast("Please complete all information first");
+        return;
+      }
       switch (this.actionIndex) {
         case 0: // 基本信息
-          this.postBasicInfoSave()
-          break
+          this.postBasicInfoSave();
+          break;
 
         case 1: // 联系人
-          this.postAddInfoSave()
-          break
-
+          this.postAddInfoSave();
+          break;
         case 2: // 上传身份证
           if (this.$refs.refIdentity.length) {
-            this.$refs.refIdentity[0].submit()
+            this.$refs.refIdentity[0].submit();
           }
-          break
+          break;
 
         case 3:
-          this.postBindRemittanceAccount()
-          break
+          this.postBindRemittanceAccount();
+          break;
 
         default:
-          break
+          break;
       }
     },
     // 基本信息
     async postBasicInfoSave() {
       try {
-        this.showLoading()
-        this.eventTracker('basic_submit')
-        let saveData = { ...this.basicInformation }
+        this.showLoading();
+        this.eventTracker("basic_submit");
+        let saveData = { ...this.basicInformation };
         if (!this.validateEmail(saveData.email)) {
-          this.$toast('Please enter the correct email address.')
-          return
+          this.$toast("Please enter the correct email address.");
+          return;
         }
-        let data = await this.$http.post(`/api/user/basicInfo/save`, saveData)
+        let data = await this.$http.post(`/api/user/basicInfo/save`, saveData);
         if (data.returnCode == 2000) {
-          this.eventTracker('basic_submit_success')
-          this.submitCopywriting = 'personal'
-          this.submitSuccess = true
+          this.eventTracker("basic_submit_success");
+          this.submitCopywriting = "personal";
+          this.submitSuccess = true;
           setTimeout(() => {
-            this.actionIndex = 1
-            this.submitSuccess = false
-          }, 1000)
+            this.actionIndex = 1;
+            this.submitSuccess = false;
+          }, 1000);
         }
       } catch (error) {
-        this.eventTracker('basic_submit_error')
-        this.$toast(error.message)
+        this.eventTracker("basic_submit_error");
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
     // 联系人
     async postAddInfoSave() {
       try {
-        this.showLoading()
-        this.eventTracker('contact_submit')
-        console.log(this.contactsInfo)
+        this.showLoading();
+        this.eventTracker("contact_submit");
+        console.log(this.contactsInfo);
         let data = await this.$http.post(`/api/user/addInfo/save`, {
           contacts: this.contactsInfo
-        })
+        });
         if (data.returnCode === 2000) {
-          this.eventTracker('contact_submit_success')
-          this.submitCopywriting = 'contacts'
-          this.submitSuccess = true
+          this.eventTracker("contact_submit_success");
+          this.submitCopywriting = "contacts";
+          this.submitSuccess = true;
           setTimeout(() => {
-            this.actionIndex = 2
-            this.submitSuccess = false
-          }, 2000)
+            this.actionIndex = 2;
+            this.submitSuccess = false;
+          }, 2000);
         }
       } catch (error) {
-        this.eventTracker('contact_submit_error')
-        this.$toast(error.message)
+        this.eventTracker("contact_submit_error");
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
     // 银行卡
     async postBindRemittanceAccount() {
       try {
-        this.showLoading()
-        this.eventTracker('bank_submit')
+        this.showLoading();
+        this.eventTracker("bank_submit");
         await this.$http.post(`/api/order/bindRemittanceAccount`, {
           orderId: this.orderId,
           remittanceAccountId: this.chooseBankId
-        })
-        this.eventTracker('bank_submit_success')
-        let appMode = await this.getAppMode()
+        });
+        this.eventTracker("bank_submit_success");
+        let appMode = await this.getAppMode();
         if (appMode.confirmType == 1) {
           // 需要进确认申请页
-          this.innerJump('loanConfirm', { orderId: this.orderId }, true)
+          this.innerJump("loanConfirm", { orderId: this.orderId }, true);
         } else {
           // 不需要进确认申请页
           this.innerJump(
-            'loanSuccessMulti',
+            "loanSuccessMulti",
             {
               orderId: this.orderId,
               single: true,
               systemTime: new Date().getTime()
             },
             true
-          )
+          );
         }
       } catch (error) {
-        this.eventTracker('bank_submit_error')
-        this.$toast(error.message)
+        this.eventTracker("bank_submit_error");
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
     validateEmail(email) {
       // 邮箱验证正则
       var reg =
-        /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/
-      return reg.test(email)
+        /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
+      return reg.test(email);
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .information-frame {
@@ -298,6 +321,15 @@ export default {
     background: #ffffff;
     border-radius: 14px;
     margin-top: 20px;
+
+    .active {
+      .title {
+        color: #333333;
+      }
+      .lock-icon {
+        display: none;
+      }
+    }
 
     .title {
       font-size: 18px;
@@ -316,6 +348,11 @@ export default {
     .right-icon {
       width: 14px;
       height: 14px;
+    }
+
+    .done-icon {
+      width: 12px;
+      height: 10px;
     }
 
     .right-icon-transform {

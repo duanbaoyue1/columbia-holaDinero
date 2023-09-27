@@ -218,6 +218,14 @@ const routes = [
         }
       },
       {
+        path: 'testa',
+        name: 'testa',
+        component: () => import('../views/testa.vue'),
+        meta: {
+          title: 'testa'
+        }
+      },
+      {
         path: 'testb',
         name: 'testb',
         component: () => import('../views/testb.vue'),

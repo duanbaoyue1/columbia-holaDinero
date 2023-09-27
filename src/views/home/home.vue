@@ -22,7 +22,7 @@
                 : curAvailableAmount | thousands
             }}
             <img
-              v-if="[80, 90].includes(appMode.orderStatus)"
+              v-if="showLock"
               class="lock-img"
               src="@/assets/images/lock.png"
             />
@@ -57,10 +57,7 @@
             {{ isMultiple ? multipleCredit.button : actionText }}
           </div>
 
-          <div
-            v-if="[80, 90].includes(appMode.orderStatus)"
-            class="repay-amount"
-          >
+          <div v-if="showRepayTips" class="repay-amount">
             Please repay first and unlock a higher loan amount
           </div>
         </div>
@@ -115,9 +112,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import multiRecommend from '@/components/multiRecommend'
-import easyApplication from './components/easyApplication'
+import { mapActions } from "vuex";
+import multiRecommend from "@/components/multiRecommend";
+import easyApplication from "./components/easyApplication";
 
 export default {
   components: {
@@ -126,6 +123,8 @@ export default {
   },
   data() {
     return {
+      showLock: false,
+      showRepayTips: false,
       disabledPullRefresh: false,
       created: false,
       query: this.$route.query,
@@ -133,46 +132,46 @@ export default {
       loading: false,
       selectItems: [], // 多推选中的产品
       multiRecommendList: [], // 多推的产品
-      isMultiple: !!localStorage.getItem('app-is-multi'), // 是否多推首页
+      isMultiple: !!localStorage.getItem("app-is-multi"), // 是否多推首页
       showRecommend: false,
-      actionText: 'Apply',
-      btnTips: 'Apply',
+      actionText: "Apply",
+      btnTips: "Apply",
       actionCallback: null, // 按纽回调
       multipleCredit: {}
-    }
+    };
   },
   computed: {
     curAvailableAmount() {
-      if (typeof this.appMode.availableCredit != 'undefined') {
-        return this.appMode.availableCredit
-      } else if (typeof this.appMode.amount != 'undefined') {
-        return this.appMode.amount
+      if (typeof this.appMode.availableCredit != "undefined") {
+        return this.appMode.availableCredit;
+      } else if (typeof this.appMode.amount != "undefined") {
+        return this.appMode.amount;
       } else {
-        return 10000
+        return 10000;
       }
     }
   },
 
   watch: {
-    'appMode.maskModel': {
+    "appMode.maskModel": {
       async handler(newVal, oldVal) {
         if (
           newVal != oldVal &&
           this.appMode &&
-          typeof this.appMode.maskModel != 'undefined'
+          typeof this.appMode.maskModel != "undefined"
         ) {
           if (this.appMode.maskModel == 1) {
             // 多推
-            localStorage.setItem('app-is-multi', true)
-            this.isMultiple = true
-            await this.getMultiRecommendItems()
+            localStorage.setItem("app-is-multi", true);
+            this.isMultiple = true;
+            await this.getMultiRecommendItems();
           } else {
             // 现金贷
-            this.isMultiple = false
-            localStorage.removeItem('app-is-multi')
+            this.isMultiple = false;
+            localStorage.removeItem("app-is-multi");
           }
-          this.updateTextAndAction()
-          this.startSyncData()
+          this.updateTextAndAction();
+          this.startSyncData();
         }
       },
       deep: true,
@@ -180,7 +179,7 @@ export default {
     },
     showRecommend: {
       async handler(newVal, oldVal) {
-        this.disabledPullRefresh = !!this.showRecommend
+        this.disabledPullRefresh = !!this.showRecommend;
       },
       deep: true,
       immediate: true
@@ -189,104 +188,106 @@ export default {
   async created() {
     this.setTabBar({
       show: false
-    })
-    if (this.from == 'bridge' && !this.query.reload) {
-      location.replace(location.href + '&reload=true')
+    });
+    if (this.from == "bridge" && !this.query.reload) {
+      location.replace(location.href + "&reload=true");
     }
-    this.setGlobalData()
-    this.allDataKey()
+    this.setGlobalData();
+    this.allDataKey();
   },
 
   mounted() {
     if (!this.checkInApp()) {
-      window.allDataCallback()
+      window.allDataCallback();
     }
   },
   activated() {
     if (this.checkInApp() && !this.created) {
-      return
+      return;
     }
-    console.log('home activated and refresh data!')
-    this.updateData()
+    console.log("home activated and refresh data!");
+    this.updateData();
   },
   methods: {
-    ...mapActions(['setAppGlobal', 'setAppChecked', 'updateToken']),
+    ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
 
     // 调用app方法获取所有参数
     allDataKey() {
       window.allDataCallback = async (data) => {
-        console.log('app 回调 allDataKeyCallback', data)
-        if (typeof data == 'string') {
-          data = JSON.parse(data)
+        console.log("app 回调 allDataKeyCallback", data);
+        if (typeof data == "string") {
+          data = JSON.parse(data);
         }
-        data = data || {}
-        delete data.apiHost
+        data = data || {};
+        delete data.apiHost;
         if (data.appVersionCode) {
-          data.appVersion = data.appVersionCode
+          data.appVersion = data.appVersionCode;
         }
         if (data.appVersionName) {
-          data.appVersionV = data.appVersionName
+          data.appVersionV = data.appVersionName;
         }
-        this.setAppGlobal(data)
-        this.updateData()
-        this.created = true
-      }
-      this.toAppMethod('allData', {
-        fuName: 'allDataCallback'
-      })
+        this.setAppGlobal(data);
+        this.updateData();
+        this.created = true;
+      };
+      this.toAppMethod("allData", {
+        fuName: "allDataCallback"
+      });
     },
 
     clickShowRecommend() {
       if (!this.selectItems || this.selectItems.length == 0) {
-        return
+        return;
       }
-      this.showRecommend = true
+      this.showRecommend = true;
     },
 
     async updateData() {
       try {
-        this.showLoading()
-        await this.getUserInfo()
-        await this.getAppMode()
+        this.showLoading();
+        await this.getUserInfo();
+        await this.getAppMode();
         if (this.appMode.maskModel == 1) {
-          await this.getMultiRecommendItems()
+          await this.getMultiRecommendItems();
         }
 
-        this.updateTextAndAction()
+        this.updateTextAndAction();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
 
     updateTextAndAction() {
+      this.showLock = false;
+      this.showRepayTips = false;
       // 清除数据
-      this.btnTips = ''
-      this.actionText = 'Apply'
+      this.btnTips = "";
+      this.actionText = "Apply";
       this.actionCallback = () => {
-        this.$toast('please try later!')
-      }
+        this.$toast("please try later!");
+      };
 
       if (this.appMode.maskModel == 1) {
-        this.actionText = this.multipleCredit.button || 'Apply'
-        if (this.actionText == 'Apply immediately') {
+        this.actionText = this.multipleCredit.button || "Apply";
+        if (this.actionText == "Apply immediately") {
           // 有可借
           this.actionCallback = async () => {
             // 多推
             if (this.selectItems.length > 0) {
-              this.showLoading()
-              let syncRes
+              this.showLoading();
+              let syncRes;
               try {
                 // 1. 先同步数据
                 try {
-                  syncRes = await this.judgeCanApply()
+                  syncRes = await this.judgeCanApply();
                 } catch (error) {
-                  this.hideLoading()
+                  this.hideLoading();
                   this.$toast(
-                    'Your message verification failed, please wait a minute and try again'
-                  )
-                  return
+                    "Your message verification failed, please wait a minute and try again"
+                  );
+                  return;
                 }
                 // 2. 真正提交
                 if (syncRes) {
@@ -295,176 +296,181 @@ export default {
                     {
                       productList: this.selectItems.map((t) => t.id)
                     }
-                  )
+                  );
                   if (res.returnCode == 2000) {
                     await this.$http.post(`/api/order/mergePush/apply`, {
                       orderIdList: res.data.orderIdList
-                    })
-                    this.$toast('Apply successfully')
+                    });
+                    this.$toast("Apply successfully");
                     setTimeout((res) => {
-                      this.innerJump('loanSuccessMulti', {
+                      this.innerJump("loanSuccessMulti", {
                         systemTime: new Date().getTime()
-                      })
-                    }, 1000)
+                      });
+                    }, 1000);
                   }
                 }
               } catch (error) {
-                this.$toast(error.message)
+                this.$toast(error.message);
               } finally {
-                this.hideLoading()
+                this.hideLoading();
               }
             }
-          }
-        } else if (this.actionText == 'Repay') {
-          this.btnTips =
-            'Too many loans now. Please repay<br/> first and unlock a higher loan amount.'
+          };
+        } else if (this.actionText == "Repay") {
+          this.showLock = true;
+          this.showRepayTips = true;
           // 有待还款或逾期，无可借
           this.actionCallback = () => {
-            this.innerJump('repayment')
-          }
+            this.innerJump("repayment");
+          };
         } else if (
-          this.actionText == 'Reviewing' ||
-          this.actionText == 'Disbursing'
+          this.actionText == "Reviewing" ||
+          this.actionText == "Disbursing"
         ) {
+          this.showLock = true;
           // 无可借，订单全部放款中或者审核中
           this.actionCallback = () => {
-            this.innerJump('orderList')
-          }
-        } else if (this.actionText == 'Rejected') {
+            this.innerJump("orderList");
+          };
+        } else if (this.actionText == "Rejected") {
           // 无可借，订单全被拒绝
+          this.showLock = true;
           this.actionCallback = () => {
-            this.$toast('The order was rejected. Please try again after 0:00')
-          }
+            this.$toast("The order was rejected. Please try again after 0:00");
+          };
         }
       } else if (this.appMode.maskModel == 3 || this.appMode.maskModel == 0) {
-        this.actionText = 'Apply'
+        this.actionText = "Apply";
         //未认证跳转
         if (this.appMode.basicInfoAuth == 0) {
-          this.btnTips = 'Almost:95%'
+          this.btnTips = "Almost:95%";
           this.actionCallback = () => {
-            this.innerJump('completeInformation', {
+            this.innerJump("completeInformation", {
               actionIndex: 0
-            })
-          }
+            });
+          };
         } else if (this.appMode.addInfoAuth == 0) {
-          this.btnTips = 'Almost:96%'
+          this.btnTips = "Almost:96%";
           this.actionCallback = () => {
-            this.innerJump('completeInformation', {
+            this.innerJump("completeInformation", {
               actionIndex: 1
-            })
-          }
+            });
+          };
         } else if (this.appMode.identityAuth == 0) {
-          this.btnTips = 'Almost:97%'
+          this.btnTips = "Almost:97%";
           this.actionCallback = () => {
-            this.innerJump('completeInformation', {
+            this.innerJump("completeInformation", {
               actionIndex: 2
-            })
-          }
+            });
+          };
         } else if (this.appMode.remittanceAccountAuth == 0) {
-          this.btnTips = 'Almost:98%'
+          this.btnTips = "Almost:98%";
           this.actionCallback = () => {
-            this.innerJump('completeInformation', {
+            this.innerJump("completeInformation", {
               orderId: this.appMode.orderId,
               actionIndex: 3
-            })
-          }
+            });
+          };
         } else if (
           this.appMode.orderId &&
-          typeof this.appMode.orderStatus != 'undefined'
+          typeof this.appMode.orderStatus != "undefined"
         ) {
           // 默认都跳订单详情页
           this.actionCallback = () => {
-            this.innerJump('orderDetail', { orderId: this.appMode.orderId })
-          }
+            this.innerJump("orderDetail", { orderId: this.appMode.orderId });
+          };
 
           if ([20, 21].includes(this.appMode.orderStatus)) {
             // 订单审核中
-            this.actionText = 'Reviewing'
+            this.actionText = "Reviewing";
+            this.showLock = true;
           } else if ([80, 90].includes(this.appMode.orderStatus)) {
             // 待还款 | 逾期
-            this.actionText = 'Repay'
+            this.actionText = "Repay";
+            this.showLock = true;
+            this.showRepayTips = true;
           } else if (this.appMode.orderStatus == 40) {
             // 拒绝
-            this.actionText = 'Rejected'
+            this.actionText = "Rejected";
             this.actionCallback = () => {
               this.$toast(
-                'The order was rejected. Please try again after 0:00!'
-              )
-            }
+                "The order was rejected. Please try again after 0:00!"
+              );
+            };
           } else if (
             this.appMode.orderStatus == 30 ||
             this.appMode.orderStatus == 70
           ) {
             // 放款中
-            this.actionText = 'Disbursing'
+            this.actionText = "Disbursing";
           } else {
-            this.btnTips = 'Almost:99%'
+            this.btnTips = "Almost:99%";
             this.actionCallback = () => {
-              this.innerJump('loanConfirm', { orderId: this.appMode.orderId })
-            }
+              this.innerJump("loanConfirm", { orderId: this.appMode.orderId });
+            };
           }
         }
       } else if (this.appMode.maskModel == 2) {
-        this.actionText = 'Rejected'
+        this.actionText = "Rejected";
         this.actionCallback = () => {
-          this.$toast('The order was rejected. Please try again after 0:00!')
-        }
+          this.$toast("The order was rejected. Please try again after 0:00!");
+        };
       }
     },
 
     setGlobalData() {
-      if (this.from == 'bridge') {
-        this.setAppGlobal(this.query)
+      if (this.from == "bridge") {
+        this.setAppGlobal(this.query);
       }
-      this.setAppChecked(true)
+      this.setAppChecked(true);
     },
 
     async getMultiRecommendItems() {
       try {
-        let res = await this.$http.post(`/api/product/mergeProduct/list`)
-        this.updateMultiSelect(res.data.mergPushProductList || [])
-        this.multiRecommendList = res.data.mergPushProductList || []
-        this.setRepaymentNum(res.data.repaymentNum)
+        let res = await this.$http.post(`/api/product/mergeProduct/list`);
+        this.updateMultiSelect(res.data.mergPushProductList || []);
+        this.multiRecommendList = res.data.mergPushProductList || [];
+        this.setRepaymentNum(res.data.repaymentNum);
         this.multipleCredit = {
           usedQuota: res.data.usedQuota,
           sumQuota: res.data.sumQuota,
           remaining: res.data.remaining,
           repaymentNum: res.data.repaymentNum,
           button: res.data.button
-        }
+        };
       } catch (error) {}
     },
 
     async onRefresh() {
       try {
-        await this.getAppMode()
-        this.updateTextAndAction()
+        await this.getAppMode();
+        this.updateTextAndAction();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
 
     updateMultiSelect(selectItems) {
-      this.selectItems = selectItems
+      this.selectItems = selectItems;
       let totalValue = selectItems.reduce((prev, cur, index, arr) => {
-        return prev + parseInt(cur.minAmount)
-      }, 0)
-      this.$set(this.multipleCredit, 'remaining', totalValue)
+        return prev + parseInt(cur.minAmount);
+      }, 0);
+      this.$set(this.multipleCredit, "remaining", totalValue);
     },
 
     async clickApply() {
       if (this.actionCallback) {
-        this.actionCallback()
+        this.actionCallback();
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/parameters.scss';
+@import "@/assets/style/parameters.scss";
 
 .home-recommend {
   height: 80%;
@@ -598,7 +604,9 @@ export default {
         background: $themeColor;
         border-radius: 24px;
         font-size: 20px;
-        font-family: PingFangSC-Semibold, PingFang SC;
+        font-family:
+          PingFangSC-Semibold,
+          PingFang SC;
         font-weight: 600;
         color: $themeFontColor;
         line-height: 28px;

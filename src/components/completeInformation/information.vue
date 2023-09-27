@@ -60,6 +60,7 @@
         :items="ALL_ATTRS.LOAN_PURPOSE"
         title="Loan Purpose"
         width="280"
+        columns="1"
         itemAttrs="loanPurpose"
         @choose="chooseEditData"
       />

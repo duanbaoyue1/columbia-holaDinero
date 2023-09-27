@@ -66,7 +66,7 @@
           determine and assess your eligibility for a loan and to recommend a
           more suitable financial lending service to the user. The SMS data will
           be encrypted and uploaded to our server
-          https://vfekmp.online/lmjajmkf/lmrjmsjyehdk via HTTPS protocol. We
+          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via HTTPS protocol. We
           will never share this data with third parties.
         </div>
       </div>
@@ -81,7 +81,7 @@
           for fraud. If our automated detection model detects a risk when
           processing a transaction or approving a loan, the user's transaction
           may be rejected. This data will be encrypted and uploaded to our
-          servers at https://vfekmp.online/lmjajmkf/lmrjmsjyehdk via the HTTPS
+          servers at https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via the HTTPS
           protocol. We will never share this data with third parties.
         </div>
       </div>
@@ -98,7 +98,7 @@
           call verification. This allows us to determine if there is a risk of
           fraud to ensure the security of your account. Call log data will be
           encrypted and uploaded to our servers at
-          https://vfekmp.online/lmjajmkf/lmrjmsjyehdk using the HTTPS protocol.
+          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk using the HTTPS protocol.
           We will never share this data with third parties.
         </div>
       </div>
@@ -127,7 +127,7 @@
           and to collect event information from your calendar to assist in risk
           analysis to expedite and improve the credit approval process. This
           data will be encrypted and uploaded to our servers at
-          https://vfekmp.online/lmjajmkf/lmrjmsjyehdk via the HTTPS protocol. We
+          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via the HTTPS protocol. We
           never share this data with third parties.
         </div>
       </div>

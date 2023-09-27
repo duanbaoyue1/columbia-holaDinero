@@ -33,39 +33,39 @@ export default {
   data() {
     return {
       cards: [],
-      chooseBankId: ''
-    }
+      chooseBankId: ""
+    };
   },
   mounted() {
-    this.getBanks()
-    this.eventTracker('bank_access')
+    this.getBanks();
+    this.eventTracker("bank_access");
   },
   methods: {
     goAddCard() {
-      this.eventTracker('bank_add')
-      this.$emit('goToAddBankClick')
+      this.eventTracker("bank_add");
+      this.$emit("goToAddBankClick");
     },
     async getBanks() {
       try {
         let data = await this.$http.post(
-          '/api/remittance/remittanceAccountList'
-        )
-        this.cards = data.data.list
-        this.chooseBankId = this.cards[0]?.id
-        this.emit()
+          "/api/remittance/remittanceAccountList"
+        );
+        this.cards = data.data.list;
+        this.chooseBankId = this.cards[0]?.id;
+        this.emit();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     chooseBank(bank) {
-      this.chooseBankId = bank.id
-      this.emit()
+      this.chooseBankId = bank.id;
+      this.emit();
     },
     emit() {
-      this.$emit('chooseBankIdEmit', this.chooseBankId)
+      this.$emit("chooseBankIdEmit", this.chooseBankId);
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .complete-bank {
@@ -97,7 +97,7 @@ export default {
     background-size: 30px 30px;
     background-repeat: no-repeat;
     height: 30px;
-    background-image: url('@/assets/images/information/bank.png');
+    background-image: url("@/assets/images/information/bank.png");
 
     .bank {
       margin-right: 10px;

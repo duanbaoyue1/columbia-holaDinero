@@ -28,6 +28,7 @@
         <div class="label">Account Number</div>
         <input
           v-model="editData.accountNumber"
+          type="number"
           placeholder="Please enter your account number"
         />
       </div>
@@ -35,6 +36,7 @@
         <div class="label">Confirm Account Number</div>
         <input
           v-model="editData.accountNumberConfirm"
+          type="number"
           placeholder="Please enter account number again"
         />
       </div>
@@ -57,7 +59,7 @@
 </template>
 
 <script>
-import ifscSelect from '@/components/ifscSelect.vue'
+import ifscSelect from "@/components/ifscSelect.vue";
 export default {
   components: {
     ifscSelect
@@ -68,89 +70,89 @@ export default {
       canSubmit: false, // 是否可以提交
       submitSuccess: false,
       editData: {
-        ifsc: ''
+        ifsc: ""
       },
       saving: false,
-      type: '',
+      type: "",
       orderId: null
-    }
+    };
   },
   created() {
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
-      title: 'Select Bank Account'
-    })
+      title: "Select Bank Account"
+    });
   },
   mounted() {
-    this.type = this.$route.query?.type || ''
-    this.orderId = this.$route.query?.orderId || null
-    this.getUserInfo()
+    this.type = this.$route.query?.type || "";
+    this.orderId = this.$route.query?.orderId || null;
+    this.getUserInfo();
   },
   watch: {
     editData: {
       handler() {
-        this.canSubmit = Object.values(this.editData).length >= 3
+        this.canSubmit = Object.values(this.editData).length >= 3;
       },
       deep: true
     }
   },
   methods: {
     completeIfsc(data) {
-      this.editData.ifsc = data.choosedIfsc
-      this.showIfsc = false
+      this.editData.ifsc = data.choosedIfsc;
+      this.showIfsc = false;
     },
     async submit() {
-      if (this.saving) return
-      this.saving = true
+      if (this.saving) return;
+      this.saving = true;
       try {
-        this.eventTracker('bank_add_submit')
+        this.eventTracker("bank_add_submit");
         if (this.editData.accountNumber != this.editData.accountNumberConfirm) {
-          this.$toast('Account number is not consistent')
-          return
+          this.$toast("Account number is not consistent");
+          return;
         }
-        let saveData = { ...this.editData }
-        saveData.name = this.userInfo.panName
-        delete saveData.accountNumberConfirm
+        let saveData = { ...this.editData };
+        saveData.name = this.userInfo.panName;
+        delete saveData.accountNumberConfirm;
 
         if (saveData.ifsc.length != 11) {
-          this.$toast('Please enter correct IFSC')
-          return
+          this.$toast("Please enter correct IFSC");
+          return;
         }
         if (
           saveData.accountNumber.length < 7 ||
           saveData.accountNumber.length > 22
         ) {
-          this.$toast('Please enter correct account number')
-          return
+          this.$toast("Please enter correct account number");
+          return;
         }
         let data = await this.$http.post(
           `/api/remittance/addRemittanceAccount`,
           saveData
-        )
+        );
         if (data.returnCode == 2000) {
           // 通过个人中心绑定银行卡
-          if (this.type === 'mine') {
-            this.innerJump('receiptAccount', {}, true)
+          if (this.type === "mine") {
+            this.innerJump("receiptAccount", {}, true);
           } else {
             this.innerJump(
-              'completeInformation',
+              "completeInformation",
               { orderId: this.orderId, actionIndex: 3 },
               true
-            )
+            );
           }
         }
-        this.eventTracker('bank_add_submit_success')
+        this.eventTracker("bank_add_submit_success");
       } catch (error) {
-        this.eventTracker('bank_add_submit_error')
-        this.$toast(error.message)
+        this.eventTracker("bank_add_submit_error");
+        this.$toast(error.message);
       } finally {
-        this.saving = false
+        this.saving = false;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

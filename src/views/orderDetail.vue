@@ -6,10 +6,10 @@
           <span>Product</span>
           <span>{{ detail.productName }}</span>
         </div>
-        <div class="row-space-between-center">
+        <!-- <div class="row-space-between-center">
           <span>Lending Company</span>
           <span>{{ detail.companyName }}</span>
-        </div>
+        </div> -->
         <div class="row-space-between-center">
           <span>Application Date</span>
           <span>{{ detail.applyTime }}</span>
@@ -24,7 +24,7 @@
       </div>
       <div class="line" />
       <div class="padding-20">
-        <div class="row-space-between-center">
+        <div class="row-space-between-center bank-row">
           <span>Disbursal Bank</span>
           <span>{{ detail.bankCardName }}</span>
         </div>
@@ -494,7 +494,7 @@ export default {
   margin-top: 80px;
   display: flex;
   flex-direction: column;
-  padding-bottom: 60px;
+  padding-bottom: 120px;
 
   &.order_30,
   &.order_70 {
@@ -517,6 +517,16 @@ export default {
   .actions-bg {
     box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
     background-color: #fff;
+  }
+
+  .bank-row {
+    align-items: flex-start !important;
+    span {
+      &:first-child {
+        flex-shrink: 0;
+        margin-right: 20px;
+      }
+    }
   }
 
   .actions {

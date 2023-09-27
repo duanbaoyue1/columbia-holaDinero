@@ -31,7 +31,7 @@
           placeholder="Please leave your feedback, we will read and feedback carefully!"
         ></textarea>
         <div class="margin-top-26">
-          <div class="pop-ups-submit-btn">
+          <div class="pop-ups-submit-btn" @click="submit">
             {{ curStar > 3 ? 'TO GP post comments' : 'Submit' }}
           </div>
         </div>

@@ -8,11 +8,13 @@
     </div>
 
     <van-action-sheet v-model="openSelect" :title="title" close-on-click-action>
-      <div class="items row-wrap row-space-between">
+      <div
+        class="items row-wrap row-space-between"
+        :class="'column_' + columns"
+      >
         <div
           class="item row-center"
           :class="{ active: item.value == value }"
-          :style="{ width: width + 'px' }"
           v-for="(item, index) in items"
           :key="index"
           @click="chooseValue(item)"
@@ -28,11 +30,11 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: ""
     },
     width: {
       type: String,
-      default: '140'
+      default: "140"
     },
     items: {
       type: Array,
@@ -40,37 +42,40 @@ export default {
     },
     itemAttrs: {
       type: [String, Number],
-      default: ''
+      default: ""
     },
     placeHolder: {
       type: String,
-      default: 'Please select'
+      default: "Please select"
+    },
+    columns: {
+      default: 2
     }
   },
 
   data() {
     return {
       openSelect: false,
-      value: ''
-    }
+      value: ""
+    };
   },
 
   methods: {
     chooseValue(item) {
-      console.log(item)
-      this.value = item.value
-      this.toggleChoose()
-      this.$emit('choose', { attr: this.itemAttrs, value: item.value })
+      console.log(item);
+      this.value = item.value;
+      this.toggleChoose();
+      this.$emit("choose", { attr: this.itemAttrs, value: item.value });
     },
     toggleChoose() {
-      this.openSelect = !this.openSelect
+      this.openSelect = !this.openSelect;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/parameters.scss';
+@import "@/assets/style/parameters.scss";
 
 .select-item {
   border-radius: 14px;
@@ -90,7 +95,7 @@ export default {
       font-family: Roboto-Regular, Roboto;
       font-weight: 400;
       line-height: 20px;
-      margin-bottom: 36px;
+      margin-bottom: 20px;
       border-radius: 20px;
       border: 1px solid #e4e4e4;
 
@@ -98,6 +103,18 @@ export default {
         font-weight: 500;
         color: $themeColor;
         border: 2px solid $themeColor;
+      }
+    }
+
+    &.column_2 {
+      .item {
+        width: 140px;
+      }
+    }
+
+    &.column_1 {
+      .item {
+        width: 280px;
       }
     }
   }

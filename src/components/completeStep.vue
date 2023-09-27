@@ -24,12 +24,13 @@
 </template>
 
 <script>
-import gold1 from '@/assets/images/information/gold1.png'
-import gold2 from '@/assets/images/information/gold2.png'
-import gold3 from '@/assets/images/information/gold3.png'
-import gold4 from '@/assets/images/information/gold4.png'
-import gold5 from '@/assets/images/information/gold5.png'
-import gold6 from '@/assets/images/information/gold6.png'
+import gold1 from "@/assets/images/information/gold1.png";
+import gold2 from "@/assets/images/information/gold2.png";
+import gold3 from "@/assets/images/information/gold3.png";
+import gold4 from "@/assets/images/information/gold4.png";
+import gold5 from "@/assets/images/information/gold5.png";
+import gold6 from "@/assets/images/information/gold6.png";
+import gold7 from "@/assets/images/information/gold7.png";
 
 export default {
   props: {
@@ -42,33 +43,53 @@ export default {
     return {
       steps: [
         {
-          text: '1,000',
+          text: "1,000",
           activeImg: gold1,
           notActiveImg: gold1
         },
         {
-          text: '2,000',
+          text: "2,000",
           activeImg: gold2,
           notActiveImg: gold4
         },
         {
-          text: '4,000',
+          text: "4,000",
           activeImg: gold3,
           notActiveImg: gold5
         },
         {
-          text: '8,000',
+          text: "8,000",
           activeImg: gold6,
           notActiveImg: gold6
         }
       ]
+    };
+  },
+
+  mounted() {
+    this.checkBanks();
+  },
+  methods: {
+    async checkBanks() {
+      try {
+        let data = await this.$http.post(
+          "/api/remittance/remittanceAccountList"
+        );
+        this.cards = data.data.list || [];
+        // 判断存在卡了 最后一步状态就变为激活
+        if (this.cards.length) {
+          this.steps[3].activeImg = gold7;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/parameters.scss';
+@import "@/assets/style/parameters.scss";
 
 .complete-step {
   display: flex;
@@ -93,14 +114,14 @@ export default {
       height: 2px;
       background: #cccccc;
       border-radius: 4px;
-      content: ' ';
+      content: " ";
       top: 4px;
       left: -46px;
     }
 
     &:first-child {
       &::before {
-        content: '';
+        content: "";
         display: none;
       }
     }

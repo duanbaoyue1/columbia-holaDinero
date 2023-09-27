@@ -6,7 +6,7 @@
       </div>
       <div
         v-else
-        class="btn margin-top-30"
+        class="btn"
         @click="innerJump('retrievePassword')"
       >
         Change Login Password
@@ -25,6 +25,10 @@
         />
       </div>
     </div>
+
+    <div class="submit">
+      <button class="submit-btn" @click="logout">Log Out</button>
+    </div>
   </div>
 </template>
 
@@ -34,31 +38,31 @@ export default {
     return {
       hasPassword: 0,
       showLegal: false
-    }
+    };
   },
   created() {
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: false,
-      title: 'Set up'
-    })
+      title: "Set up"
+    });
   },
   async mounted() {
     try {
-      let data = await this.$http.post(`/api/user/mine`)
-      this.hasPassword = data?.data?.hasPassword
+      let data = await this.$http.post(`/api/user/mine`);
+      this.hasPassword = data?.data?.hasPassword;
     } catch (error) {}
   },
   methods: {
     goPrivacy() {
-      this.innerJump('privacy')
+      this.innerJump("privacy");
     },
     goTerms() {
-      this.innerJump('terms')
+      this.innerJump("terms");
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,7 +74,23 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    background: #fff;
+
+    .submit-btn {
+      width: 343px;
+      height: 48px;
+      background: #ff4b3f;
+      border-radius: 24px;
+      margin: 24px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-family: Roboto-Bold, Roboto;
+      font-weight: bold;
+      color: #ffffff;
+      border: none;
+      line-height: 24px;
+    }
   }
 
   .legal-modal {
@@ -131,7 +151,7 @@ export default {
     align-items: center;
     &::after {
       position: absolute;
-      content: ' ';
+      content: " ";
       width: 12px;
       height: 16px;
       top: 50%;
