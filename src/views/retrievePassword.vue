@@ -1,0 +1,215 @@
+<template>
+  <div class="password content-area">
+    <div class="edit-area">
+      <div class="line-item">
+        <div class="label">Phone Number</div>
+        <input v-model="userInfo.mobile" disabled />
+      </div>
+      <div class="line-item">
+        <div class="label">Original Password</div>
+        <input
+          v-model="editData.oldPassword"
+          placeholder="Enter the original password"
+        />
+      </div>
+      <div class="line-item">
+        <div class="label">New Password</div>
+        <input
+          v-model="editData.newPassword"
+          placeholder="Set new password"
+          :type="passwordType"
+        />
+        <img
+          class="eye"
+          :src="
+            passwordType != 'text'
+              ? require('@/assets/images/eye-hide.png')
+              : require('@/assets/images/eye-show.png')
+          "
+          @click="togglePassword('passwordType')"
+        />
+      </div>
+      <div class="line-item">
+        <div class="label">Confirm Password</div>
+        <input
+          v-model="editData.enterPassword"
+          placeholder="Set new password"
+          :type="passwordAgainType"
+        />
+        <img
+          class="eye"
+          :src="
+            passwordAgainType != 'text'
+              ? require('@/assets/images/eye-hide.png')
+              : require('@/assets/images/eye-show.png')
+          "
+          @click="togglePassword('passwordAgainType')"
+        />
+      </div>
+    </div>
+    <div class="submit">
+      <button class="bottom-submit-btn" :disabled="!canSubmit" @click="submit">
+        Submit
+      </button>
+    </div>
+
+    <div class="submit-success" v-show="submitSuccess">
+      <span>
+        Congratulations!
+        <br />
+        Your personal information has been verified
+      </span>
+    </div>
+  </div>
+</template>
+
+<script>
+import md5 from 'js-md5'
+export default {
+  watch: {
+    editData: {
+      handler() {
+        this.canSubmit =
+          Object.values(this.editData).filter((t) => !!t).length === 3 &&
+          this.editData.newPassword.length >= 6
+      },
+      deep: true
+    }
+  },
+  created() {
+    this.setTabBar({
+      show: true,
+      fixed: true,
+      transparent: false,
+      title: 'Retrieve password'
+    })
+  },
+  data() {
+    return {
+      canSubmit: false, // 是否可以提交
+      submitSuccess: false,
+      passwordType: 'text',
+      passwordAgainType: 'text',
+      editData: {
+        phoneNumber: '',
+        oldPassword: '',
+        newPassword: '',
+        enterPassword: ''
+      }
+    }
+  },
+
+  mounted() {
+    setTimeout(() => {
+      this.getUserInfo()
+    }, 200)
+  },
+
+  methods: {
+    togglePassword(field) {
+      this.$set(this, field, this[field] === 'password' ? 'text' : 'password')
+    },
+    async submit() {
+      if (this.editData.newPassword !== this.editData.enterPassword) {
+        this.$toast('The two passwords are inconsistent')
+        return
+      }
+
+      try {
+        let res = await this.$http.post(`/api/user/modifyPassword`, {
+          phoneNumber: this.userInfo.mobile,
+          oldPassword: md5(this.editData.oldPassword),
+          newPassword: md5(this.editData.newPassword),
+          enterPassword: md5(this.editData.enterPassword)
+        })
+        this.updateToken({ token: res.data.token })
+        this.toAppMethod('userInfoPhone', res.data)
+        this.$toast('success')
+        setTimeout(() => {
+          this.goHome()
+        }, 1000)
+      } catch (error) {
+        this.$toast(error.message)
+      }
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.password {
+  padding: 24px;
+  padding-top: 8px;
+  padding-bottom: 110px;
+
+  .submit-success {
+    position: fixed;
+    z-index: 222;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      width: 293px;
+      height: 59px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 21px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  .submit {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .edit-area {
+    .line-item {
+      margin-bottom: 20px;
+      font-size: 14px;
+      position: relative;
+      border-bottom: 2px solid #e9e9e9;
+      .label {
+        font-size: 16px;
+        font-family: Roboto-Medium, Roboto;
+        font-weight: 500;
+        color: #333333;
+        line-height: 20px;
+        margin-top: 23px;
+        margin-bottom: 16px;
+      }
+      input {
+        width: 100%;
+        font-size: 14px;
+        color: #333333;
+        box-sizing: border-box;
+        border: none;
+        margin-bottom: 14px;
+        background: transparent;
+      }
+      .eye {
+        width: 32px;
+        height: 20px;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}
+</style>

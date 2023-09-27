@@ -1,18 +1,20 @@
 <template>
   <div class="loading" v-if="show">
     <div class="loading-center">
-      <img :src="require('@/assets/img/loading.gif')" />
+      <img :src="require('@/assets/images/loading.gif')" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .loading {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+
   &-center {
     position: absolute;
     left: 50%;

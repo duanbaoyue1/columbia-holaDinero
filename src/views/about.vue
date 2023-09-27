@@ -1,10 +1,15 @@
 <template>
   <div class="about content-area">
     <div class="app-info">
-      <img src="../assets/img/handy/logo.png" />
-      <div class="name">{{ appGlobal.appName }}</div>
+      <img src="@/assets/images/logo.png" />
+      <div class="name">{{ appName }}</div>
       <div id="version">Version: {{ appGlobal.appVersionV }}</div>
-      <div class="desc">Hello, we are the {{ appGlobal.appName }} development team and thank you for using our product. HandyCash is an online loan platform in India that provides diverse loan services to Indian mobile internet users. Customers can apply for loans anytime, anywhere through a smart online loan process. The computer review process saves the user from worrying about the loan application.</div>
+      <div class="desc">
+        Hello, we are the CreditPark development team and thank you for using
+        our product. CreditPark provides customers with personal credit
+        solutions. Purely online operation and quick disbursement of funds. If
+        you need money in a hurry, look for CreditPark!
+      </div>
     </div>
   </div>
 </template>
@@ -16,13 +21,10 @@ export default {
       show: true,
       fixed: true,
       transparent: false,
-      title: 'About us',
-    });
-  },
-  mounted() {
-    // this.innerJump('identity', { orderId: this.$route.query.orderId, systemTime: this.$route.query.systemTime, needRecommend: false }, true);
-  },
-};
+      title: 'About us'
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -59,6 +61,7 @@ export default {
     color: #000000;
     line-height: 18px;
     text-align: left;
+    word-break: break-word;
   }
 }
 </style>

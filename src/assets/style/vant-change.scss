@@ -1,0 +1,86 @@
+.van-overlay {
+}
+
+.van-popup--bottom.van-popup--round {
+  border-radius: 0 !important;
+  .van-action-sheet__close {
+    color: #000;
+    padding: 0;
+    height: 22px;
+    line-height: 1;
+    top: 24px;
+    right: 24px;
+  }
+  .van-action-sheet__header {
+    margin-top: 60px;
+    line-height: 1;
+    font-size: 20px;
+    font-family: Roboto-Medium, Roboto;
+    font-weight: 500;
+    color: #000000;
+    line-height: 30px;
+  }
+}
+
+.van-tabbar {
+  height: 80px;
+  .van-tabbar-item__icon {
+    margin-bottom: 8px;
+  }
+  .van-tabbar-item__text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    // margin-top: 8px;
+  }
+
+  .van-tabbar-item--active {
+    .van-tabbar-item__text {
+      color: #333;
+    }
+  }
+}
+
+.van-nav-bar {
+  &.transparent {
+    background-color: transparent;
+  }
+  .van-nav-bar__content {
+    height: 52px;
+  }
+  &.van-hairline--bottom::after {
+    border-bottom-width: 0px;
+  }
+  .van-nav-bar__title {
+    font-size: 18px;
+    color: #333;
+    font-weight: 900;
+  }
+}
+
+.van-overlay {
+  z-index: 22 !important;
+}
+
+.van-nav-bar--fixed {
+  padding-top: 25px;
+  background: transparent;
+}
+
+.van-pull-refresh {
+  min-height: 100%;
+}
+
+.van-pull-refresh__head {
+  position: fixed !important;
+  top: 60px;
+}
+
+.van-loading__spinner {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.van-action-sheet__content {
+  overflow-y: initial !important;
+}

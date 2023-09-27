@@ -1,5 +1,5 @@
 <template>
-  <div class="web-layout">
+  <div class="web-layout display-flex-1">
     <keep-alive v-if="$route.meta.keepAlive">
       <!-- 这里是会被缓存的视图组件 -->
       <router-view />

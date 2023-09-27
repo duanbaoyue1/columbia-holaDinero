@@ -4,22 +4,33 @@
       <input ref="photoRef" type="file" accept="image/*" @change="photograph()" capture="camera" />
       <p>{{ fileName }}</p>
     </div> -->
-    <button @click="getCommonParametersKey">获取APP原生公共参数</button>
+    <button @click="allDataKey">获取APP原生公共参数</button>
     <button @click="openNewPage">打开一个新页面</button>
     <button @click="openNewPageFinishOld">开启新页面 销毁上一个</button>
+    <button @click="onApplyClick">是否可以申请</button>
+    <button @click="unfoldCa(3)">上传身份证+活体</button>
+    <button @click="unfoldCa(4)">活体识别</button>
+    <button @click="unfoldCa(5)">上传本地图片</button>
+    <button @click="tracker">埋点</button>
+    <button @click="seizeMessage">开始抓取数据</button>
+    <button @click="onContactsContent">吊起手机通讯录</button>
+    <button @click="onUserInfoPhone">更新用户信息</button>
+    <button @click="onReturn">是否启用页面物理返回键</button>
+    <button @click="onCodeDispose">4005 4006 code 处理</button>
+    <button @click="onShowLoading">Show Loading</button>
+    <button @click="skipLogin">到登陆页(删除账号)</button>
+    <button @click="testWebViewMethod">测试Webview打开页面</button>
+    <button @click="storeOpen">跳转google store</button>
     <button @click="logout">退出</button>
 
-    <button @click="getCapture(3)">上传身份证+活体</button>
-    <button @click="getCapture(4)">活体识别</button>
-    <button @click="getCapture(5)">上传本地图片</button>
-    <button @click="tracker">打点</button>
-    <button @click="crawlData">开始抓取数据</button>
-    <button @click="toLoginPage">到登陆页</button>
-    <button @click="testWebViewMethod">测试Webview打开页面</button>
-    <button @click="goGoogleStore">跳转google store</button>
-
     <button>
-      <input ref="photoRef" type="file" accept="image/*" @change="photograph()" capture="camera" />
+      <input
+        ref="photoRef"
+        type="file"
+        accept="image/*"
+        @change="photograph()"
+        capture="camera"
+      />
     </button>
 
     <p>上传结果图片：</p>
@@ -36,159 +47,221 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'home',
   created() {
     window.btnCallBack = () => {
       this.showMessageBox({
-        content: 'Receive the money immediately after submitting the information. Do you really want to quit?',
+        content:
+          'Receive the money immediately after submitting the information. Do you really want to quit?',
         confirmBtnText: 'No',
         cancelBtnText: 'Leave',
         confirmCallback: () => {
-          this.hideMessageBox();
+          this.hideMessageBox()
         },
         cancelCallback: () => {
-          this.hideMessageBox();
-          this.goAppBack();
+          this.hideMessageBox()
+          this.goAppBack()
         },
-        iconPath: 'handy/确定退出嘛',
-      });
-    };
+        iconPath: 'confirmExit'
+      })
+    }
 
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
       title: 'Test',
-      backCallback: window.btnCallBack,
-    });
+      backCallback: window.btnCallBack
+    })
   },
   data() {
-    window.onPhotoSelectCallback_3 = data => {
-      console.log(data);
+    window.onPhotoSelectCallback_3 = (data) => {
+      console.log(data)
       if (typeof data == 'string') {
-        data = JSON.parse(data);
+        data = JSON.parse(data)
       }
       if (data.success) {
-        this.base64 = data.pic;
-        this.base64ImgData = `data:image/png;base64,${data.base64[0]}`;
-        this.toAppMethod('getCapture', { type: 4, callbackMethodName: `onPhotoSelectCallback_4` });
+        this.base64 = data.pic
+        this.base64ImgData = `data:image/png;base64,${data.base64}`
+        this.toAppMethod('unfoldCa', {
+          type: 4,
+          callbackMethodName: `onPhotoSelectCallback_4`
+        })
       }
-    };
+    }
 
-    window.onPhotoSelectCallback_4 = data => {
-      console.log(data);
+    window.onPhotoSelectCallback_4 = (data) => {
+      console.log(data)
       if (typeof data == 'string') {
-        data = JSON.parse(data);
+        data = JSON.parse(data)
       }
       if (data.success) {
-        this.base64 = data.pic;
-        this.base64ImgData = `data:image/png;base64,${data.base64[0]}`;
+        this.base64 = data.pic
+        this.base64ImgData = `data:image/png;base64,${data.base64}`
       }
-    };
+    }
 
-    window.onPhotoSelectCallback_5 = data => {
-      console.log(data);
+    window.onPhotoSelectCallback_5 = (data) => {
+      console.log(data)
       if (typeof data == 'string') {
-        data = JSON.parse(data);
+        data = JSON.parse(data)
       }
       if (data.success) {
-        this.base64 = data.pic;
-        this.base64ImgData = `data:image/png;base64,${data.base64[0]}`;
+        this.base64 = data.pic
+        this.base64ImgData = `data:image/png;base64,${data.base64}`
       }
-    };
+    }
+
+    window.choosePhoneCallback = (data) => {
+      console.log(data)
+      if (typeof data == 'string') {
+        data = JSON.parse(data)
+        console.log(data)
+      }
+    }
+
     return {
       fileName: '点击Vue拍照',
       base64: '',
-      base64ImgData: null,
-    };
+      base64ImgData: null
+    }
   },
   mounted() {
-    this.toAppMethod('isInterceptionReturn', { isInterception: true, fuName: 'btnCallBack' });
+    this.toAppMethod('holdUp', {
+      isInterception: true,
+      fuName: 'btnCallBack'
+    })
   },
 
   methods: {
     ...mapActions(['setAppGlobal', 'setAppChecked', 'updateToken']),
-    testWebViewMethod() {
-      this.openWebview('https://www.baidu.com');
+    onUserInfoPhone() {
+      this.toAppMethod('userInfoPhone', {
+        token: '1111111',
+        userId: '22222',
+        isFinish: true
+      })
     },
-    toLoginPage() {
-      this.toAppMethod('toLoginPage');
+    onReturn() {
+      this.toAppMethod('holdUp', {
+        isInterception: true,
+        fuName: 'btnCallBack'
+      })
+    },
+    onCodeDispose() {
+      this.toAppMethod('codeDispose', { code: 123, msg: '测试' })
+    },
+    onShowLoading() {
+      this.showLoading()
+
+      setTimeout(() => {
+        this.hideLoading()
+      }, 3000)
+    },
+    onContactsContent() {
+      this.toAppMethod('openMessage', { fuName: 'choosePhoneCallback' })
+    },
+    async onApplyClick() {
+      const v = await this.judgeCanApply()
+      console.log(v, '**** v')
+    },
+    testWebViewMethod() {
+      this.openWk('https://www.baidu.com')
+    },
+    skipLogin() {
+      this.toAppMethod('skipLogin')
     },
     openNewPage() {
-      let routeInfo = this.$router.resolve({ name: 'help-center', query: { type: 3 } });
-      console.log(`${location.origin}${location.pathname}${routeInfo.href}`);
-      this.toAppMethod('openNewPageFinishOld', { isShowLoading: true, pathUrl: `${location.origin}${location.pathname}${routeInfo.href}` });
+      let routeInfo = this.$router.resolve({
+        name: 'helpCenter',
+        query: { type: 3 }
+      })
+      console.log(`${location.origin}${location.pathname}${routeInfo.href}`)
+      this.toAppMethod('openNewPageFinishOld', {
+        isShowLoading: true,
+        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`
+      })
     },
-    async crawlData() {
-      this.showLoading();
+    async seizeMessage() {
+      this.showLoading()
       try {
-        await this.judgeCanApply();
-        this.$toast('sync success');
+        await this.startSyncData()
+        this.$toast('sync success')
       } catch (error) {
-        this.$toast('sync error');
+        this.$toast('sync error')
       } finally {
-        this.hideLoading();
+        this.hideLoading()
       }
     },
-    goGoogleStore() {
-      this.toAppMethod('goGoogleStore');
+    storeOpen() {
+      this.toAppMethod('storeOpen')
     },
     openNewPageFinishOld() {
-      let routeInfo = this.$router.resolve({ name: 'help-center', query: { type: 3 } });
-      this.toAppMethod('openNewPageFinishOld', { isShowLoading: true, pathUrl: `${location.origin}${location.pathname}${routeInfo.href}` });
+      let routeInfo = this.$router.resolve({
+        name: 'helpCenter',
+        query: { type: 3 }
+      })
+      this.toAppMethod('openNewPageFinishOld', {
+        isShowLoading: true,
+        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`
+      })
     },
-    getCommonParametersKey() {
-      window.getCommonParametersKeyCallback = data => {
+    allDataKey() {
+      window.allDataKeyCallback = (data) => {
         if (typeof data == 'string') {
-          data = JSON.parse(data);
+          data = JSON.parse(data)
         }
-        delete api.apiHost;
-        data.appVersion = data.appVersionCode;
-        data.appVersionV = data.appVersionName;
-        this.setAppGlobal(data);
-        alert('更新App信息:');
-        alert(JSON.stringify(this.appGlobal));
-      };
-      this.toAppMethod('getCommonParameters', { fuName: 'getCommonParametersKeyCallback' });
+        delete api.apiHost
+        data.appVersion = data.appVersionCode
+        data.appVersionV = data.appVersionName
+        this.setAppGlobal(data)
+        alert('更新App信息:')
+        alert(JSON.stringify(this.appGlobal))
+      }
+      this.toAppMethod('allData', {
+        fuName: 'allDataKeyCallback'
+      })
     },
 
     tracker() {
-      this.eventTracker('init');
+      this.eventTracker('init')
     },
 
-    getCapture(type) {
-      this.toAppMethod('getCapture', { type: type, callbackMethodName: `onPhotoSelectCallback_${type}` });
+    unfoldCa(type) {
+      this.toAppMethod('unfoldCa', {
+        type: type,
+        callbackMethodName: `onPhotoSelectCallback_${type}`
+      })
     },
     /**
      * 获取用户拍照的图片信息
      */
     async photograph() {
-      console.log('123');
+      console.log('123')
       // 获取用户拍照的图片名字，显示到页面上
-      this.fileName = this.$refs.photoRef.files[0].name;
+      this.fileName = this.$refs.photoRef.files[0].name
       // 获取图片base64 代码，并存放到 base64ImgData 中
-      this.base64ImgData = await this.FileReader(this.$refs.photoRef.files[0]);
-      console.log(this.base64ImgData);
+      this.base64ImgData = await this.FileReader(this.$refs.photoRef.files[0])
+      console.log(this.base64ImgData)
 
-      this.showLoading();
+      this.showLoading()
       try {
-        // const file = this.base64ToFile(this.base64ImgData, new Date().getTime());
-        let formData = new FormData();
-        formData.append('channel', 'AccV2');
-        formData.append('panImg', this.base64ImgData);
-        formData.append('mark', 3);
+        let formData = new FormData()
+        formData.append('channel', 'AccV2')
+        formData.append('panImg', this.base64ImgData)
+        formData.append('mark', 3)
 
         let res = await this.$http.post(`/api/ocr/saveBase64Result`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        console.log(res);
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        console.log(res)
       } catch (error) {
-        this.$toast(error.message);
+        this.$toast(error.message)
       } finally {
-        this.hideLoading();
+        this.hideLoading()
       }
     },
 
@@ -197,16 +270,18 @@ export default {
      */
     FileReader(FileInfo) {
       // FileReader 方法参考地址：https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader
-      let reader = new FileReader();
+      let reader = new FileReader()
       // readAsDataURL 方法参考地址：https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/readAsDataURL
-      reader.readAsDataURL(FileInfo);
+      reader.readAsDataURL(FileInfo)
       // 监听读取操作结束
       /* eslint-disable */
-      return new Promise(resolve => (reader.onloadend = () => resolve(reader.result)));
-    },
+      return new Promise(
+        (resolve) => (reader.onloadend = () => resolve(reader.result))
+      )
+    }
   },
-  components: {},
-};
+  components: {}
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,57 +1,64 @@
 <template>
   <div class="order-list content-area">
-    <div class="has-order" v-if="orders.length">
-      <order-item-repayment class="order-item" v-for="item in orders" :key="item.id" :order="item"></order-item-repayment>
+    <div v-if="orders.length" class="has-order">
+      <order-item
+        class="order-item"
+        v-for="item in orders"
+        :key="item.id"
+        :order="item"
+      ></order-item>
     </div>
-    <div class="no-order" v-else-if="!loading">
-      <m-icon class="icon" type="handy/订单空状态" :width="140" :height="107" />
+    <div v-else-if="!loading" class="no-order">
+      <img class="icon" src="@/assets/images/no-order.png" />
       <button @click="goHome">Apply Now</button>
     </div>
   </div>
 </template>
 
 <script>
-import OrderItemRepayment from '@/components/order-item-repayment.vue';
+import orderItem from '@/components/orderItem'
 
 export default {
   components: {
-    OrderItemRepayment,
+    orderItem
   },
   data() {
     return {
       loading: true,
-      orders: [],
-    };
+      orders: []
+    }
   },
   created() {
     this.setTabBar({
       show: false,
       transparent: false,
       fixed: true,
-      title: '',
-    });
+      title: ''
+    })
   },
   activated() {
-    this.getAllOrders();
+    this.getAllOrders()
   },
   methods: {
     async getAllOrders() {
-      this.showLoading();
+      this.showLoading()
       try {
-        let res = await this.$http.post(`/api/order/unRepaymentOrderList`);
-        this.orders = res.data.list || [];
-        this.setRepaymentNum(this.orders.length);
+        let res = await this.$http.post(`/api/order/unRepaymentOrderList`)
+        this.orders = res.data.list || []
+        this.setRepaymentNum(this.orders.length)
       } catch (error) {
       } finally {
-        this.hideLoading();
-        this.loading = false;
+        this.hideLoading()
+        this.loading = false
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/parameters.scss';
+
 .order-list {
   padding: 0 24px;
   padding-bottom: 100px;
@@ -68,13 +75,15 @@ export default {
 .no-order {
   margin: 0 auto;
   .icon {
-    margin: 80px auto 40px;
+    width: 140px;
+    height: 135px;
+    margin: 100px auto 40px;
   }
+
   button {
     width: 327px;
     height: 50px;
-    background: #6515fe;
-    // box-shadow: 0px 4px 10px 0px #f7b5ae, inset 0px 1px 4px 0px #ffc7c0;
+    background: $themeColor;
     border-radius: 25px;
     margin: 0 auto;
     display: flex;
@@ -83,7 +92,7 @@ export default {
     font-size: 18px;
     font-family: Roboto-Black, Roboto;
     font-weight: 900;
-    color: #ffffff;
+    color: $themeFontColor;
     line-height: 24px;
     border: none;
   }

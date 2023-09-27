@@ -17,16 +17,14 @@
   color: #fff;
   font-size: 14px;
   opacity: 0.9;
-  text-align: justify;
-  word-break: break-all;
-  word-wrap: break-word;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   &-center {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    max-width: 250px;
     border-radius: 3px;
-    max-width: 200px;
     padding: 10px;
     background: #333;
     word-break: break-word;
