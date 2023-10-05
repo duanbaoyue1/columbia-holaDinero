@@ -139,9 +139,9 @@ export default {
     computedModuleDone() {
       return (item) => {
         return (
-          (item.actionIndex == 0 && this.appMode.identityAuth == 1) ||
-          (item.actionIndex == 1 && this.appMode.basicInfoAuth == 1) ||
-          (item.actionIndex == 2 && this.appMode.addInfoAuth == 1) ||
+          (item.actionIndex == 0 && this.appMode.basicInfoAuth == 1) ||
+          (item.actionIndex == 1 && this.appMode.addInfoAuth == 1) ||
+          (item.actionIndex == 2 && this.appMode.identityAuth == 1) ||
           (item.actionIndex == 3 && this.appMode.remittanceAccountAuth == 1)
         );
       };
