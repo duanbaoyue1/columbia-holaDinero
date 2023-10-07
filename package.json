@@ -8,7 +8,7 @@
     "dev": "cross-env MODE=development vite",
     "prod": "cross-env MODE=production vite",
     "test:build": "cross-env MODE=development vite build",
-    "prod:build": "cross-env MODE==production vite build"
+    "prod:build": "cross-env MODE=production vite build"
   },
   "dependencies": {
     "axios": "^0.19.2",
