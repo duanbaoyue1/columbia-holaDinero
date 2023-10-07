@@ -119,7 +119,7 @@ import easyApplication from "./components/easyApplication";
 export default {
   components: {
     multiRecommend,
-    easyApplication
+    easyApplication,
   },
   data() {
     return {
@@ -137,7 +137,7 @@ export default {
       actionText: "Apply",
       btnTips: "Apply",
       actionCallback: null, // 按纽回调
-      multipleCredit: {}
+      multipleCredit: {},
     };
   },
   computed: {
@@ -149,7 +149,7 @@ export default {
       } else {
         return 10000;
       }
-    }
+    },
   },
 
   watch: {
@@ -175,19 +175,19 @@ export default {
         }
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
     showRecommend: {
       async handler(newVal, oldVal) {
         this.disabledPullRefresh = !!this.showRecommend;
       },
       deep: true,
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   async created() {
     this.setTabBar({
-      show: false
+      show: false,
     });
     if (this.from == "bridge" && !this.query.reload) {
       location.replace(location.href + "&reload=true");
@@ -231,7 +231,7 @@ export default {
         this.created = true;
       };
       this.toAppMethod("allData", {
-        fuName: "allDataCallback"
+        fuName: "allDataCallback",
       });
     },
 
@@ -294,17 +294,17 @@ export default {
                   let res = await this.$http.post(
                     `/api/order/mergePush/preApply`,
                     {
-                      productList: this.selectItems.map((t) => t.id)
+                      productList: this.selectItems.map((t) => t.id),
                     }
                   );
                   if (res.returnCode == 2000) {
                     await this.$http.post(`/api/order/mergePush/apply`, {
-                      orderIdList: res.data.orderIdList
+                      orderIdList: res.data.orderIdList,
                     });
                     this.$toast("Apply successfully");
                     setTimeout((res) => {
                       this.innerJump("loanSuccessMulti", {
-                        systemTime: new Date().getTime()
+                        systemTime: new Date().getTime(),
                       });
                     }, 1000);
                   }
@@ -346,21 +346,21 @@ export default {
           this.btnTips = "Almost:95%";
           this.actionCallback = () => {
             this.innerJump("completeInformation", {
-              actionIndex: 0
+              actionIndex: 0,
             });
           };
         } else if (this.appMode.addInfoAuth == 0) {
           this.btnTips = "Almost:96%";
           this.actionCallback = () => {
             this.innerJump("completeInformation", {
-              actionIndex: 1
+              actionIndex: 1,
             });
           };
         } else if (this.appMode.identityAuth == 0) {
           this.btnTips = "Almost:97%";
           this.actionCallback = () => {
             this.innerJump("completeInformation", {
-              actionIndex: 2
+              actionIndex: 2,
             });
           };
         } else if (this.appMode.remittanceAccountAuth == 0) {
@@ -368,7 +368,7 @@ export default {
           this.actionCallback = () => {
             this.innerJump("completeInformation", {
               orderId: this.appMode.orderId,
-              actionIndex: 3
+              actionIndex: 3,
             });
           };
         } else if (
@@ -436,7 +436,7 @@ export default {
           sumQuota: res.data.sumQuota,
           remaining: res.data.remaining,
           repaymentNum: res.data.repaymentNum,
-          button: res.data.button
+          button: res.data.button,
         };
       } catch (error) {}
     },
@@ -464,8 +464,8 @@ export default {
       if (this.actionCallback) {
         this.actionCallback();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -604,9 +604,7 @@ export default {
         background: $themeColor;
         border-radius: 24px;
         font-size: 20px;
-        font-family:
-          PingFangSC-Semibold,
-          PingFang SC;
+        font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
         color: $themeFontColor;
         line-height: 28px;

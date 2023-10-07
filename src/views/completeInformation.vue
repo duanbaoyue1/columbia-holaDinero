@@ -8,7 +8,7 @@
       <div
         class="padding-20 row-space-between-center"
         :class="{
-          active: item.actionIndex === actionIndex || computedModuleDone(item)
+          active: item.actionIndex <= actionIndex,
         }"
       >
         <div class="row-direction">
@@ -17,7 +17,7 @@
         </div>
         <img
           class="down-icon"
-          v-if="computedModuleDone(item)"
+          v-if="item.actionIndex < actionIndex"
           src="@/assets/images/gou.png"
         />
         <img
@@ -85,7 +85,7 @@ export default {
     information,
     contacts,
     identity,
-    completeBank
+    completeBank,
   },
   data() {
     return {
@@ -100,21 +100,21 @@ export default {
       list: [
         {
           title: "Personal Info",
-          actionIndex: 0
+          actionIndex: 0,
         },
         {
           title: "Contacts Info",
-          actionIndex: 1
+          actionIndex: 1,
         },
         {
           title: "Identity Info",
-          actionIndex: 2
+          actionIndex: 2,
         },
         {
           title: "Payment method",
-          actionIndex: 3
-        }
-      ]
+          actionIndex: 3,
+        },
+      ],
     };
   },
   created() {
@@ -123,7 +123,7 @@ export default {
       transparent: false,
       fixed: true,
       title: "Complete information",
-      backCallback: null
+      backCallback: null,
     });
   },
   async mounted() {
@@ -135,17 +135,6 @@ export default {
   },
   computed: {
     ...mapState(["isAppChecked", "appMode"]),
-    // 判断该模块是否已经结束
-    computedModuleDone() {
-      return (item) => {
-        return (
-          (item.actionIndex == 0 && this.appMode.basicInfoAuth == 1) ||
-          (item.actionIndex == 1 && this.appMode.addInfoAuth == 1) ||
-          (item.actionIndex == 2 && this.appMode.identityAuth == 1) ||
-          (item.actionIndex == 3 && this.appMode.remittanceAccountAuth == 1)
-        );
-      };
-    }
   },
   methods: {
     canSubmit() {
@@ -249,7 +238,7 @@ export default {
         this.eventTracker("contact_submit");
         console.log(this.contactsInfo);
         let data = await this.$http.post(`/api/user/addInfo/save`, {
-          contacts: this.contactsInfo
+          contacts: this.contactsInfo,
         });
         if (data.returnCode === 2000) {
           this.eventTracker("contact_submit_success");
@@ -274,7 +263,7 @@ export default {
         this.eventTracker("bank_submit");
         await this.$http.post(`/api/order/bindRemittanceAccount`, {
           orderId: this.orderId,
-          remittanceAccountId: this.chooseBankId
+          remittanceAccountId: this.chooseBankId,
         });
         this.eventTracker("bank_submit_success");
         let appMode = await this.getAppMode();
@@ -288,7 +277,7 @@ export default {
             {
               orderId: this.orderId,
               single: true,
-              systemTime: new Date().getTime()
+              systemTime: new Date().getTime(),
             },
             true
           );
@@ -305,8 +294,8 @@ export default {
       var reg =
         /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
       return reg.test(email);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
