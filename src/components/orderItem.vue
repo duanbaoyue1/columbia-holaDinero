@@ -44,8 +44,8 @@ export default {
   props: {
     order: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   computed: {
     dataValue() {
@@ -53,58 +53,58 @@ export default {
         return {
           dateValue: this.order.repaymentTime,
           amountValue: this.order.repaymentAmount,
-          amountText: 'Repayable Amount',
-          dateText: 'Due Date'
-        }
+          amountText: "Repayable Amount",
+          dateText: "Due Date",
+        };
       } else {
         return {
           dateValue: this.order.applyTime,
           amountValue: this.order.approvalAmount,
-          amountText: 'Loan Amount',
-          dateText: 'Apply Date'
-        }
+          amountText: "Loan Amount",
+          dateText: "Apply Date",
+        };
       }
     },
     statusText() {
       switch (this.order.orderStatus) {
         case 10:
-          return 'Pending to apply'
+          return "Pending to apply";
         case 20:
-          return 'Reviewing'
+          return "Reviewing";
         case 21:
-          return 'Reviewing'
+          return "Reviewing";
         case 30:
-          return 'Disbursing'
+          return "Disbursing";
         case 40:
-          return 'Rejected'
+          return "Rejected";
         case 70:
-          return 'Disbursing'
+          return "Disbursing";
         case 80:
-          return 'Repaying'
+          return "Repaying";
         case 90:
-          return 'Overdue'
+          return "Overdue";
         case 100:
-          return 'Done'
+          return "Done";
         case 101:
-          return 'Done'
+          return "Done";
         default:
-          return 'Reviewing'
+          return "Reviewing";
       }
-    }
+    },
   },
   methods: {
     goFillUtr() {
-      this.innerJump('utr', { orderId: this.order.orderNo, type: 'repay' })
+      this.innerJump("utr", { orderId: this.order.orderNo, type: "repay" });
     },
     goDetail() {
       if ([10, 100, 101, 100].includes(this.order.orderStatus)) {
-        this.goHome()
+        this.goHome();
       } else {
-        this.innerJump('orderDetail', { orderId: this.order.orderNo })
+        this.innerJump("orderDetail", { orderId: this.order.orderNo });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -118,7 +118,7 @@ export default {
   position: relative;
 
   .action-btn {
-    width: 78px;
+    min-width: 78px;
     height: 32px;
     font-size: 12px;
     font-family: Roboto-Medium, Roboto;
@@ -159,7 +159,7 @@ export default {
     font-family: Roboto-Medium, Roboto;
     font-weight: 500;
     color: #fff;
-    background-image: url('@/assets/images/order-reloan.png');
+    background-image: url("@/assets/images/order-reloan.png");
     background-size: 90px 28px;
     background-repeat: no-repeat;
     box-sizing: border-box;
@@ -174,30 +174,30 @@ export default {
     &-10 {
       width: 120px;
       background-size: 120px 28px;
-      background-image: url('@/assets/images/order-pending-to-apply.png');
+      background-image: url("@/assets/images/order-pending-to-apply.png");
     }
     &-20,
     &-21 {
-      background-image: url('@/assets/images/order-reviewing.png');
+      background-image: url("@/assets/images/order-reviewing.png");
     }
     &-30,
     &-70 {
-      background-image: url('@/assets/images/order-disbursing.png');
+      background-image: url("@/assets/images/order-disbursing.png");
     }
     &-40 {
-      background-image: url('@/assets/images/order-rejected.png');
+      background-image: url("@/assets/images/order-rejected.png");
     }
     &-80 {
-      background-image: url('@/assets/images/order-repaying.png');
+      background-image: url("@/assets/images/order-repaying.png");
     }
     &-90 {
-      background-image: url('@/assets/images/order-overdue.png');
+      background-image: url("@/assets/images/order-overdue.png");
     }
     &-100,
     &-101 {
       width: 58px;
       background-size: 58px 28px;
-      background-image: url('@/assets/images/order-done.png');
+      background-image: url("@/assets/images/order-done.png");
     }
   }
 
