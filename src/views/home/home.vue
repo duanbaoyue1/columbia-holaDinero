@@ -58,7 +58,8 @@
           </div>
 
           <div v-if="showRepayTips" class="repay-amount">
-            Please repay first and unlock a higher loan amount
+            {{ isMultiple ? "Too many loans now. " : "" }}Please repay first and
+            unlock a higher loan amount
           </div>
         </div>
 
