@@ -2,10 +2,10 @@
   <div class="complain-home content-area">
     <div class="head">Select a feedback agency</div>
     <div class="select">
-      <button @click="changeType(appName)">{{ appName }}</button>
+      <button @click="changeType('EasyMoney')">EasyMoney</button>
       <button @click="changeType('RBI')">RBI</button>
-      <button @click="changeType('Online complaint platform')">
-        Online complaint platform
+      <button @click="changeType('National Consumer Helpline')">
+        National Consumer Helpline
       </button>
     </div>
     <div class="warm-tips">
@@ -34,54 +34,48 @@
 </template>
 
 <script>
-import complainQuestion from '@/components/complainQuestion'
+import ComplainQuestion from "@/components/complain-question.vue";
 
 export default {
   components: {
-    complainQuestion
+    ComplainQuestion,
   },
   data() {
     return {
       showQuestion: false,
-      type: '',
-      question: '',
-      showRedBot: false
-    }
+      type: "",
+      question: "",
+      showRedBot: false,
+    };
   },
   mounted() {
-    this.setTabBar({
-      show: true,
-      fixed: true,
-      transparent: false,
-      title: 'Complaints'
-    })
-    this.checkRedBot()
+    this.checkRedBot();
   },
   methods: {
     async checkRedBot() {
       try {
-        let res = await this.$http.post(`/api/user/complaintRecordUnread`)
+        let res = await this.$http.post(`/api/user/complaintRecordUnread`);
         if (res.returnCode == 2000) {
-          this.showRedBot = res.data
+          this.showRedBot = res.data;
         }
       } catch (error) {}
     },
     changeType(type) {
-      this.type = type
-      this.showQuestion = true
+      this.type = type;
+      this.showQuestion = true;
     },
     goComplainRecord() {
-      this.innerJump('complainList')
+      this.innerJump("complainList");
     },
     chooseQuestion(question) {
-      this.question = question
-      this.innerJump('complainEdit', {
+      this.question = question;
+      this.innerJump("complainEdit", {
         type: this.type,
-        question: this.question
-      })
-    }
-  }
-}
+        question: this.question,
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -151,18 +145,19 @@ export default {
     height: 60px;
     display: flex;
     justify-content: center;
+    background: #fff;
     align-items: center;
     a {
       font-size: 14px;
       font-weight: 500;
-      color: #06b89b;
+      color: #1143a4;
       line-height: 18px;
       text-decoration: underline;
       position: relative;
       &.show-red {
         &::after {
           position: absolute;
-          content: ' ';
+          content: " ";
           right: -8px;
           top: 4px;
           width: 6px;

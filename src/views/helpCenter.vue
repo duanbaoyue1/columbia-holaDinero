@@ -1,64 +1,21 @@
 <template>
-  <div>
-    <div class="header-frame">
-      <img class="logo" src="@/assets/images/agreement/help-center.png" />
-    </div>
+  <div class="help-center content-area">
+    <div class="header-frame"></div>
     <div class="content-frame">
-      <div class="help-frame">
-        <div class="row-flex">
-          <div class="top-title">Working Hours</div>
-          <div class="top-content">Monday to Friday (9am - 7pm)</div>
-        </div>
-        <div class="row-flex margin-top-24">
-          <div class="top-title">E-mail</div>
-          <div class="top-content">CreditParkcs01@outlook.com</div>
-        </div>
+      <div class="frame row-flex">
+        <div class="title">Lunes – Sábado (9:30-18:30)</div>
       </div>
-      <div class="title-14 margin-top-30">How fast will I get my loan?</div>
-      <div class="title-12 margin-top-10">
-        Your loan is generally transferred instantly as soon as all your
-        documents are verified. In order to process your loan quickly, we advise
-        you to upload the necessary documents in the necessary formats and make
-        sure they are clear and legible.
+      <div class="frame row-flex">
+        <div class="title">{{ feedEmail }}</div>
       </div>
-      <div class="title-14 margin-top-30">
-        Can I cancel my loan application?
-      </div>
-      <div class="title-12 margin-top-10">
-        Once a loan application is submitted, it will be processed automatically
-        and cannot be cancelled. If you have any questions, please contact
-        customer service.
-      </div>
-      <div class="title-14 margin-top-30">Can I repay early?</div>
-      <div class="title-12 margin-top-10">
-        Absolutely, paying in advance will help boost your credit score and
-        unlock a higher limit so you'll be able to borrow more money next time.
-      </div>
-      <div class="title-14 margin-top-30">
-        My loan application was rejected, why?
-      </div>
-      <div class="title-12 margin-top-10">
-        Hello, the approval/rejection of a loan application is entirely at the
-        discretion of the product provider, which means that your credit score
-        is not high enough to meet the review requirements for the time being.
-        If necessary, we recommend that you reapply at an interval of about 7
-        days.
-      </div>
-      <div class="title-14 margin-top-30">
-        What are the consequences of an overdue order?
-      </div>
-      <div class="title-12 margin-top-10">
-        Hello, orders overdue will be charged extra penalty, and will affect
-        your personal credit score, we recommend that you settle the payment as
-        soon as possible so as not to affect your subsequent use, the specific
-        bill and record clear you to APP page display shall prevail.
-      </div>
-    </div>
 
-    <div class="actions">
-      <a class="color-theme" @click="goComplain"
-        >I have a problem to complain</a
-      >
+      <div class="frame" v-for="(item, index) in questions" :key="index">
+        <div class="row-space-between-center" @click="showAnswer(index)">
+          <div class="desc-title">{{ item.desc }}</div>
+        </div>
+
+        <div v-if="item.isChecked" class="content" v-html="item.answer"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -67,117 +24,135 @@
 export default {
   data() {
     return {
-      feedEmail: 'CreditParkcs01@outlook.com'
-    }
+      feedEmail: "rapidocashcs01@outlook.com",
+      questions: [
+        {
+          isChecked: false,
+          desc: "¿Cuánto tardaré en recibir mi préstamo una vez aprobado?",
+          answer:
+            "Por lo general, los fondos tardan de 1 a 2 días hábiles en llegar, pero puede tardar hasta el tercer día hábil debido a la lentitud de procesamiento de los bancos, así que por favor sea paciente. Por favor, espere pacientemente. El tiempo de liberación está sujeto al tiempo real de llegada. <br /><br /> Recomendamos los siguientes cuatro bancos: Nequi, Bancolombia, Daviplata, que admiten préstamos en fin de semana y festivos y tienen un tiempo de llegada rápido.",
+        },
+        {
+          isChecked: false,
+          desc: "He realizado un pago pero mi pedido no se ha actualizado, ¿qué debo hacer?",
+          answer:
+            "Lamentamos que esté experimentando este problema, por favor tenga paciencia ya que los pagos pueden tardar hasta 24 horas en llegar. Si el pedido no se ha actualizado en más de 24 horas, póngase en contacto con nuestro servicio de atención al cliente por correo electrónico.",
+        },
+        {
+          isChecked: false,
+          desc: "¿Por qué ha fallado el pago del pedido?",
+          answer:
+            'La mayoría de las veces se debe a un problema con su cuenta bancaria receptora, así que cambie los datos de su cuenta bancaria receptora. <br /><br /> Puede cambiar su cuenta bancaria en la página "Mi - Cuenta Bancaria" y luego volver a solicitar el préstamo.',
+        },
+        {
+          isChecked: false,
+          desc: "¿Cómo puedo aumentar el importe de mi préstamo?",
+          answer:
+            "Nuestro sistema evaluará el importe de su préstamo en función de su solvencia, por lo que le rogamos que efectúe sus pagos puntualmente y mantenga un buen historial crediticio, ya que ello contribuirá a aumentar el importe de su préstamo.",
+        },
+        {
+          isChecked: false,
+          desc: "¿Por qué ha fallado mi solicitud de préstamo?",
+          answer:
+            "Lamentablemente, puede deberse a varias razones y determinamos la elegibilidad de cada prestatario basándonos en la lógica y los algoritmos que hemos establecido. Si tu préstamo no se aprueba, significa que tu perfil no se ajusta al algoritmo y al modelo de riesgo crediticio que hemos establecido.",
+        },
+      ],
+    };
   },
   mounted() {
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: true,
-      title: ''
-    })
-    setTimeout(async () => {
-      try {
-        let user = await this.getUserInfo()
-        if (parseInt(user.id) % 2 == 1) {
-          this.feedEmail = 'CreditParkcs02@outlook.com'
-        }
-      } catch (error) {}
-    }, 200)
+      title: "",
+    });
   },
-
   methods: {
     showAnswer(index) {
       this.$set(this.questions, index, {
         ...this.questions[index],
-        showAnswer: !this.questions[index].showAnswer
-      })
+        isChecked: !this.questions[index].isChecked,
+      });
     },
     goComplain() {
-      this.innerJump('complainHome')
-    }
-  }
-}
+      this.innerJump("complainHome");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.actions {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  a {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 18px;
-    text-decoration: underline;
-  }
-}
-
-.header-frame {
-  width: 253px;
-  margin: 0 auto;
-}
-.logo {
-  width: 100%;
-  margin-top: 62px;
-}
-.content-frame {
-  word-break: break-word;
-  padding: 0 20px;
-  margin: 20px 0 70px 0;
-}
-.title-12 {
-  font-size: 12px;
-  font-family: Roboto-Bold, Roboto;
-  font-weight: 400;
-  color: #333;
-  line-height: 16px;
-}
-.title-14 {
-  font-size: 14px;
-  font-family: Roboto-Bold, Roboto;
-  font-weight: 900;
-  color: #333;
-  line-height: 18px;
-}
-.margin-top-10 {
-  margin-top: 10px;
-}
-.margin-top-24 {
-  margin-top: 24px;
-}
-.margin-top-30 {
-  margin-top: 30px;
-}
-.top-title {
-  font-size: 12px;
-  font-family: Roboto-Regular, Roboto;
-  font-weight: 400;
-  color: #999999;
-  line-height: 20px;
-}
-.top-content {
-  font-size: 14px;
-  font-family: Roboto-Black, Roboto;
-  font-weight: 900;
-  color: #000000;
-  line-height: 20px;
-}
-.help-frame {
+.help-center {
+  padding-bottom: 24px;
   position: relative;
-  border-radius: 8px;
-  background: #fff;
-  padding: 16px;
-}
-.row-flex {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  top: -80px;
+
+  .header-frame {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo {
+    width: 100%;
+    height: 300px;
+  }
+
+  .frame {
+    width: 335px;
+    background: #ffffff;
+    border-radius: 16px;
+    margin: 20px auto 0;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 99;
+  }
+
+  .content-frame {
+    margin-top: -190px;
+    word-break: break-word;
+  }
+
+  .title {
+    font-size: 16px;
+    font-family: Roboto-Regular, Roboto;
+    font-weight: 400;
+    color: #0d0d0d;
+    line-height: 19px;
+    margin-left: 20px;
+  }
+
+  .desc-title {
+    width: 257px;
+    font-size: 16px;
+    font-family: Roboto-Medium, Roboto;
+    font-weight: 500;
+    color: #333333;
+    line-height: 20px;
+    word-break: break-word;
+  }
+
+  .content {
+    font-size: 13px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #a7a7a7;
+    line-height: 18px;
+    margin-top: 10px;
+  }
+
+  .row-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .row-space-between-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 </style>

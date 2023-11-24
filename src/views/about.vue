@@ -1,14 +1,15 @@
 <template>
   <div class="about content-area">
     <div class="app-info">
-      <img src="@/assets/images/logo.png" />
-      <div class="name">{{ appName }}</div>
+      <img src="../assets/img/creditomax/logo/512_512.png" />
+      <div class="name">CreditoMax</div>
       <div id="version">Version: {{ appGlobal.appVersionV }}</div>
       <div class="desc">
-        Hello, we are the CreditPark development team and thank you for using
-        our product. CreditPark provides customers with personal credit
-        solutions. Purely online operation and quick disbursement of funds. If
-        you need money in a hurry, look for CreditPark!
+        CreditoMax es una plataforma digital de crédito personal segura y
+        conveniente que ofrece préstamos personales a usuarios en Colombia que
+        necesitan fondos con urgencia. Sin necesidad de aval, con aprobación
+        instantánea y un funcionamiento sencillo, ¡todo el proceso es tan fácil
+        como ir de compras!
       </div>
     </div>
   </div>
@@ -21,10 +22,13 @@ export default {
       show: true,
       fixed: true,
       transparent: false,
-      title: 'About us'
-    })
-  }
-}
+      title: "Sobre nosotros",
+    });
+  },
+  mounted() {
+    // this.innerJump('identity', { orderId: this.$route.query.orderId, systemTime: this.$route.query.systemTime, needRecommend: false }, true);
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -61,7 +65,6 @@ export default {
     color: #000000;
     line-height: 18px;
     text-align: left;
-    word-break: break-word;
   }
 }
 </style>

@@ -4,24 +4,19 @@
       <input ref="photoRef" type="file" accept="image/*" @change="photograph()" capture="camera" />
       <p>{{ fileName }}</p>
     </div> -->
-    <button @click="allDataKey">获取APP原生公共参数</button>
+    <button @click="getMapDataListKey">获取APP原生公共参数</button>
     <button @click="openNewPage">打开一个新页面</button>
     <button @click="openNewPageFinishOld">开启新页面 销毁上一个</button>
-    <button @click="onApplyClick">是否可以申请</button>
-    <button @click="unfoldCa(3)">上传身份证+活体</button>
-    <button @click="unfoldCa(4)">活体识别</button>
-    <button @click="unfoldCa(5)">上传本地图片</button>
-    <button @click="tracker">埋点</button>
-    <button @click="seizeMessage">开始抓取数据</button>
-    <button @click="onContactsContent">吊起手机通讯录</button>
-    <button @click="onUserInfoPhone">更新用户信息</button>
-    <button @click="onReturn">是否启用页面物理返回键</button>
-    <button @click="onCodeDispose">4005 4006 code 处理</button>
-    <button @click="onShowLoading">Show Loading</button>
-    <button @click="skipLogin">到登陆页(删除账号)</button>
-    <button @click="testWebViewMethod">测试Webview打开页面</button>
-    <button @click="storeOpen">跳转google store</button>
     <button @click="logout">退出</button>
+
+    <button @click="toGoCamera(3)">上传身份证+活体</button>
+    <button @click="toGoCamera(4)">活体识别</button>
+    <button @click="toGoCamera(5)">上传本地图片</button>
+    <button @click="tracker">打点</button>
+    <button @click="clutchData">开始抓取数据</button>
+    <button @click="toGoSign">到登陆页</button>
+    <button @click="testWebViewMethod">测试Webview打开页面</button>
+    <button @click="runToStore">跳转google store</button>
 
     <button>
       <input
@@ -47,221 +42,182 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: 'home',
+  name: "home",
   created() {
     window.btnCallBack = () => {
       this.showMessageBox({
         content:
-          'Receive the money immediately after submitting the information. Do you really want to quit?',
-        confirmBtnText: 'No',
-        cancelBtnText: 'Leave',
+          "Receive the money immediately after submitting the information. Do you really want to quit?",
+        confirmBtnText: "No",
+        cancelBtnText: "Leave",
         confirmCallback: () => {
-          this.hideMessageBox()
+          this.hideMessageBox();
         },
         cancelCallback: () => {
-          this.hideMessageBox()
-          this.goAppBack()
+          this.hideMessageBox();
+          this.goAppBack();
         },
-        iconPath: 'confirmExit'
-      })
-    }
+        iconPath: "creditomax/个人中心推出弹窗",
+      });
+    };
 
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
-      title: 'Test',
-      backCallback: window.btnCallBack
-    })
+      title: "Test",
+      backCallback: window.btnCallBack,
+    });
   },
   data() {
     window.onPhotoSelectCallback_3 = (data) => {
-      console.log(data)
-      if (typeof data == 'string') {
-        data = JSON.parse(data)
+      console.log(data);
+      if (typeof data == "string") {
+        data = JSON.parse(data);
       }
       if (data.success) {
-        this.base64 = data.pic
-        this.base64ImgData = `data:image/png;base64,${data.base64}`
-        this.toAppMethod('unfoldCa', {
+        this.base64 = data.pic;
+        this.base64ImgData = `data:image/png;base64,${data.pic}`;
+        this.toAppMethod("toGoCamera", {
           type: 4,
-          callbackMethodName: `onPhotoSelectCallback_4`
-        })
+          callbackMethodName: `onPhotoSelectCallback_4`,
+        });
       }
-    }
+    };
 
     window.onPhotoSelectCallback_4 = (data) => {
-      console.log(data)
-      if (typeof data == 'string') {
-        data = JSON.parse(data)
+      console.log(data);
+      if (typeof data == "string") {
+        data = JSON.parse(data);
       }
       if (data.success) {
-        this.base64 = data.pic
-        this.base64ImgData = `data:image/png;base64,${data.base64}`
+        this.base64 = data.pic;
+        this.base64ImgData = `data:image/png;base64,${data.pic}`;
       }
-    }
+    };
 
     window.onPhotoSelectCallback_5 = (data) => {
-      console.log(data)
-      if (typeof data == 'string') {
-        data = JSON.parse(data)
+      console.log(data);
+      if (typeof data == "string") {
+        data = JSON.parse(data);
       }
       if (data.success) {
-        this.base64 = data.pic
-        this.base64ImgData = `data:image/png;base64,${data.base64}`
+        this.base64 = data.pic;
+        this.base64ImgData = `data:image/png;base64,${data.pic}`;
       }
-    }
-
-    window.choosePhoneCallback = (data) => {
-      console.log(data)
-      if (typeof data == 'string') {
-        data = JSON.parse(data)
-        console.log(data)
-      }
-    }
-
+    };
     return {
-      fileName: '点击Vue拍照',
-      base64: '',
-      base64ImgData: null
-    }
+      fileName: "点击Vue拍照",
+      base64: "",
+      base64ImgData: null,
+    };
   },
   mounted() {
-    this.toAppMethod('holdUp', {
+    this.toAppMethod("backReturn", {
       isInterception: true,
-      fuName: 'btnCallBack'
-    })
+      fuName: "btnCallBack",
+    });
   },
 
   methods: {
-    ...mapActions(['setAppGlobal', 'setAppChecked', 'updateToken']),
-    onUserInfoPhone() {
-      this.toAppMethod('userInfoPhone', {
-        token: '1111111',
-        userId: '22222',
-        isFinish: true
-      })
-    },
-    onReturn() {
-      this.toAppMethod('holdUp', {
-        isInterception: true,
-        fuName: 'btnCallBack'
-      })
-    },
-    onCodeDispose() {
-      this.toAppMethod('codeDispose', { code: 123, msg: '测试' })
-    },
-    onShowLoading() {
-      this.showLoading()
-
-      setTimeout(() => {
-        this.hideLoading()
-      }, 3000)
-    },
-    onContactsContent() {
-      this.toAppMethod('openMessage', { fuName: 'choosePhoneCallback' })
-    },
-    async onApplyClick() {
-      const v = await this.judgeCanApply()
-      console.log(v, '**** v')
-    },
+    ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
     testWebViewMethod() {
-      this.openWk('https://www.baidu.com')
+      this.openWebview("https://www.baidu.com");
     },
-    skipLogin() {
-      this.toAppMethod('skipLogin')
+    toGoSign() {
+      this.toAppMethod("toGoSign");
     },
     openNewPage() {
       let routeInfo = this.$router.resolve({
-        name: 'helpCenter',
-        query: { type: 3 }
-      })
-      console.log(`${location.origin}${location.pathname}${routeInfo.href}`)
-      this.toAppMethod('openNewPageFinishOld', {
+        name: "helpCenter",
+        query: { type: 3 },
+      });
+      console.log(`${location.origin}${location.pathname}${routeInfo.href}`);
+      this.toAppMethod("openNewPageFinishOld", {
         isShowLoading: true,
-        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`
-      })
+        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`,
+      });
     },
-    async seizeMessage() {
-      this.showLoading()
+    async clutchData() {
+      this.showLoading();
       try {
-        await this.startSyncData()
-        this.$toast('sync success')
+        await this.judgeCanApply();
+        this.$toast("sync success");
       } catch (error) {
-        this.$toast('sync error')
+        this.$toast("sync error");
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
-    storeOpen() {
-      this.toAppMethod('storeOpen')
+    runToStore() {
+      this.toAppMethod("runToStore");
     },
     openNewPageFinishOld() {
       let routeInfo = this.$router.resolve({
-        name: 'helpCenter',
-        query: { type: 3 }
-      })
-      this.toAppMethod('openNewPageFinishOld', {
+        name: "helpCenter",
+        query: { type: 3 },
+      });
+      this.toAppMethod("openNewPageFinishOld", {
         isShowLoading: true,
-        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`
-      })
+        pathUrl: `${location.origin}${location.pathname}${routeInfo.href}`,
+      });
     },
-    allDataKey() {
-      window.allDataKeyCallback = (data) => {
-        if (typeof data == 'string') {
-          data = JSON.parse(data)
+    getMapDataListKey() {
+      window.getMapDataListKeyCallback = (data) => {
+        if (typeof data == "string") {
+          data = JSON.parse(data);
         }
-        delete api.apiHost
-        data.appVersion = data.appVersionCode
-        data.appVersionV = data.appVersionName
-        this.setAppGlobal(data)
-        alert('更新App信息:')
-        alert(JSON.stringify(this.appGlobal))
-      }
-      this.toAppMethod('allData', {
-        fuName: 'allDataKeyCallback'
-      })
+        delete api.apiHost;
+        data.appVersion = data.appVersionCode;
+        data.appVersionV = data.appVersionName;
+        this.setAppGlobal(data);
+        alert("更新App信息:");
+        alert(JSON.stringify(this.appGlobal));
+      };
+      this.toAppMethod("getMapDataList", {
+        fuName: "getMapDataListKeyCallback",
+      });
     },
 
     tracker() {
-      this.eventTracker('init')
+      this.eventTracker("init");
     },
 
-    unfoldCa(type) {
-      this.toAppMethod('unfoldCa', {
+    toGoCamera(type) {
+      this.toAppMethod("toGoCamera", {
         type: type,
-        callbackMethodName: `onPhotoSelectCallback_${type}`
-      })
+        callbackMethodName: `onPhotoSelectCallback_${type}`,
+      });
     },
     /**
      * 获取用户拍照的图片信息
      */
     async photograph() {
-      console.log('123')
       // 获取用户拍照的图片名字，显示到页面上
-      this.fileName = this.$refs.photoRef.files[0].name
+      this.fileName = this.$refs.photoRef.files[0].name;
       // 获取图片base64 代码，并存放到 base64ImgData 中
-      this.base64ImgData = await this.FileReader(this.$refs.photoRef.files[0])
-      console.log(this.base64ImgData)
+      this.base64ImgData = await this.FileReader(this.$refs.photoRef.files[0]);
+      console.log(this.base64ImgData);
 
-      this.showLoading()
+      this.showLoading();
       try {
-        let formData = new FormData()
-        formData.append('channel', 'AccV2')
-        formData.append('panImg', this.base64ImgData)
-        formData.append('mark', 3)
+        // const file = this.base64ToFile(this.base64ImgData, new Date().getTime());
+        let formData = new FormData();
+        // formData.append('channel', 'AccV2');
+        formData.append("cardFrontBase64Src", this.base64ImgData);
+        formData.append("mark", 1);
 
-        let res = await this.$http.post(`/api/ocr/saveBase64Result`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        })
-        console.log(res)
+        let res = await this.$http.post(`/api/ocr/saveResult`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        console.log(res);
       } catch (error) {
-        this.$toast(error.message)
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
 
@@ -270,18 +226,18 @@ export default {
      */
     FileReader(FileInfo) {
       // FileReader 方法参考地址：https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader
-      let reader = new FileReader()
+      let reader = new FileReader();
       // readAsDataURL 方法参考地址：https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader/readAsDataURL
-      reader.readAsDataURL(FileInfo)
+      reader.readAsDataURL(FileInfo);
       // 监听读取操作结束
       /* eslint-disable */
       return new Promise(
         (resolve) => (reader.onloadend = () => resolve(reader.result))
-      )
-    }
+      );
+    },
   },
-  components: {}
-}
+  components: {},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -290,7 +246,7 @@ export default {
   margin: 0 auto;
   position: relative;
 }
-.home input[type='file'] {
+.home input[type="file"] {
   position: absolute;
   left: 0;
   top: 0;
@@ -313,8 +269,9 @@ button {
   margin: 10px;
   height: 40px;
   padding: 0 20px;
-  background: linear-gradient(180deg, #fe816f 0%, #fc2214 100%);
-  box-shadow: 0px 4px 10px 0px #f7b5ae, inset 0px 1px 4px 0px #ffc7c0;
+  background: linear-gradient(180deg, #696ffb 0%, #434af9 100%);
+  box-shadow: 0px 4px 10px 0px rgba(67, 74, 249, 0.4),
+    inset 0px 1px 4px 0px #434af9;
   border-radius: 20px;
   font-size: 16px;
   font-family: Roboto-Bold, Roboto;

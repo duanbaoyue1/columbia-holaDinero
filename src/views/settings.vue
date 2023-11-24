@@ -1,33 +1,51 @@
 <template>
   <div class="settings content-area">
-    <div class="setting-frame">
-      <div v-if="!hasPassword" class="btn" @click="innerJump('createPassword')">
-        Create password
-      </div>
-      <div
-        v-else
-        class="btn"
-        @click="innerJump('retrievePassword')"
-      >
-        Change Login Password
-      </div>
-      <div class="btn margin-top-30" @click="showLegal = true">Legal</div>
+    <div
+      v-if="!hasPassword"
+      class="btn row-space-between"
+      @click="$router.push({ name: 'createPassword' })"
+    >
+      Crear una contraseña
+      <m-icon type="right" :width="8" :height="16" />
+    </div>
+    <div
+      v-else
+      class="btn row-space-between"
+      @click="$router.push({ name: 'retrievePassword' })"
+    >
+      Cambiar contraseña
+      <m-icon type="right" :width="8" :height="16" />
+    </div>
+    <div class="btn row-space-between" @click="showLegal = true">
+      Legal
+      <m-icon type="right" :width="8" :height="16" />
     </div>
 
     <div class="legal-modal" v-if="showLegal">
       <div class="content">
-        <div @click="goTerms">Terms of Use</div>
-        <div @click="goPrivacy">Privacy Policy</div>
-        <img
-          class="close"
-          src="@/assets/images/round-close.png"
-          @click="showLegal = false"
-        />
+        <div class="row-space-between" style="padding: 0 20px">
+          <div></div>
+          <div class="legal">Legal</div>
+          <m-icon
+            class="close"
+            type="close"
+            :width="16"
+            :height="16"
+            @click="showLegal = false"
+          />
+        </div>
+        <div class="title margin-top-30" @click="goTerms">
+          Condiciones del servicio
+        </div>
+        <div class="line"></div>
+        <div class="title margin-top-30" @click="goPrivacy">
+          Política de privacidad
+        </div>
       </div>
     </div>
 
-    <div class="submit">
-      <button class="submit-btn" @click="logout">Log Out</button>
+    <div class="actions">
+      <button class="btn-default" @click="logout">Cerrar sesión</button>
     </div>
   </div>
 </template>
@@ -37,7 +55,7 @@ export default {
   data() {
     return {
       hasPassword: 0,
-      showLegal: false
+      showLegal: false,
     };
   },
   created() {
@@ -45,54 +63,20 @@ export default {
       show: true,
       fixed: true,
       transparent: false,
-      title: "Set up"
+      title: "Configuración",
     });
   },
   async mounted() {
     try {
       let data = await this.$http.post(`/api/user/mine`);
-      this.hasPassword = data?.data?.hasPassword;
+      this.hasPassword = data.data.hasPassword;
     } catch (error) {}
   },
-  methods: {
-    goPrivacy() {
-      this.innerJump("privacy");
-    },
-    goTerms() {
-      this.innerJump("terms");
-    }
-  }
 };
 </script>
 
 <style lang="scss" scoped>
 .settings {
-  flex: 1;
-  background: #f9f9f9;
-  .submit {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    .submit-btn {
-      width: 343px;
-      height: 48px;
-      background: #ff4b3f;
-      border-radius: 24px;
-      margin: 24px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-family: Roboto-Bold, Roboto;
-      font-weight: bold;
-      color: #ffffff;
-      border: none;
-      line-height: 24px;
-    }
-  }
-
   .legal-modal {
     background: rgba(0, 0, 0, 0.7);
     position: fixed;
@@ -100,67 +84,85 @@ export default {
     left: 0;
     bottom: 0;
     right: 0;
-    z-index: 2;
+    z-index: 999;
     .content {
-      width: 335px;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 18px;
-      font-weight: 400;
-      color: #333;
+      padding: 20px 0;
       background: #fff;
-      line-height: 24px;
-      box-sizing: border-box;
-      border-radius: 8px;
-      padding: 20px;
-
-      > div {
-        text-align: center;
-        &:first-child {
-          border-bottom: 1px solid #cccccc;
-          padding-bottom: 20px;
-          margin-bottom: 20px;
-        }
-      }
-
-      .close {
-        width: 26px;
-        height: 26px;
-        position: absolute;
-        top: -54px;
-        right: 0;
-      }
+      width: 295px;
+      border-radius: 16px;
     }
-  }
-  .setting-frame {
-    background: #ffffff;
-    border-radius: 14px;
-    margin: 20px 20px 0;
-    padding: 20px;
+
+    .legal {
+      font-size: 18px;
+      font-family: Roboto-Black, Roboto;
+      font-weight: 900;
+      color: #a05bf8;
+      line-height: 24px;
+    }
+
+    .line {
+      width: 100%;
+      height: 2px;
+      background: #e3eceb;
+      margin-top: 20px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-family: Roboto, Roboto;
+      font-weight: 400;
+      color: #000000;
+      line-height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   .btn {
-    position: relative;
-    box-sizing: border-box;
-    font-size: 14px;
-    font-weight: 400;
-    color: #000;
-    line-height: 18px;
+    height: 80px;
+    margin: 0 20px;
+    font-size: 16px;
+    font-family: Roboto, Roboto;
+    font-weight: 500;
+    color: #333333;
+    line-height: 20px;
     display: flex;
     align-items: center;
-    &::after {
-      position: absolute;
-      content: " ";
-      width: 12px;
-      height: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 0px;
-      background-image: url(../assets/images/right.png);
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
+    border-bottom: 2px solid #e9e9e9;
   }
+}
+
+.actions {
+  position: fixed;
+  padding-bottom: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .btn-default {
+    width: 335px;
+    background: #ff4b3f;
+    border-radius: 24px;
+    height: 48px;
+    border: none;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 20px;
+  }
+}
+
+.row-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.margin-top-30 {
+  margin-top: 30px;
 }
 </style>

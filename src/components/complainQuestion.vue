@@ -1,16 +1,10 @@
 <template>
   <div class="complain-question" @click="clickArea">
     <div class="complain-question-content">
-      <img class="close" src="@/assets/images/close.png" @click="hide" />
+      <m-icon class="close" type="close" :width="15" :height="15" @click="hide" />
       <div class="head">Please select the type of question</div>
       <div class="select">
-        <div
-          v-for="question in questions"
-          :key="question"
-          @click="choose(question)"
-        >
-          {{ question }}
-        </div>
+        <div v-for="question in questions" :key="question" @click="choose(question)">{{ question }}</div>
       </div>
     </div>
   </div>
@@ -20,29 +14,24 @@
 export default {
   data() {
     return {
-      questions: [
-        'Borrowing problems',
-        'Repayment problems',
-        'Reminder of repayment problems',
-        'Other questions'
-      ]
-    }
+      questions: ['Borrowing problems', 'Repayment problems', 'Reminder of repayment problems', 'Other questions'],
+    };
   },
   methods: {
     hide() {
-      this.$emit('update:show', false)
+      this.$emit('update:show', false);
     },
     clickArea(e) {
       if (!e.target.closest('.complain-question-content')) {
-        this.hide()
+        this.hide();
       }
     },
     choose(question) {
-      this.hide()
-      this.$emit('choose', question)
-    }
-  }
-}
+      this.hide();
+      this.$emit('choose', question);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -56,7 +45,7 @@ export default {
   background: rgba(0, 0, 0, 0.7);
 
   &-content {
-    width: 100%;
+    width: 360px;
     height: 336px;
     background: #ffffff;
     border-radius: 30px 30px 0px 0px;
@@ -67,21 +56,17 @@ export default {
     padding: 0 20px;
     box-sizing: border-box;
     .close {
-      width: 15px;
-      height: 15px;
       position: absolute;
       right: 20px;
       top: 20px;
     }
     .head {
-      margin-top: 50px;
+      margin-top: 56px;
       font-size: 19px;
       font-weight: 500;
       color: #000000;
       line-height: 30px;
       margin-bottom: 40px;
-      font-family: Roboto-Medium, Roboto;
-      text-align: center;
     }
     .select {
       div {

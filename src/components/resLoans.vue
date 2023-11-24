@@ -1,40 +1,29 @@
 <template>
-  <div class="margin-top-20" v-if="loans.length">
+  <div class="res-loans-model column-direction">
     <div class="res-total">
-      <div class="title">
-        You have successfully applied for
-        <span class="color-theme text-decoration">{{ loans.length }}</span>
-        products
-        <div class="tips">The audit result is expected within 5 minutes</div>
+      <div class="head">Enhorabuena</div>
+      <div class="head-frame">
+        <div>Ha solicitado {{ loans.length }} productos con éxito.</div>
+        <div class="tips">Revise los resultados en 5 minutos</div>
       </div>
     </div>
 
-    <div class="item-frame column-direction">
-      <div class="loan-item" v-for="(loan, index) in loans" :key="loan.id">
-        <div class="row-space-between-center" style="width: 100%">
-          <div class="row-flex">
-            <img class="icon" :src="loan.productIconImageUrl" />
-            <div>
-              <div class="name">{{ loan.productName }}</div>
-              <div class="value">
-                Loan Amount：
-                <span
-                  ><span class="symbol">₹</span
-                  >{{ loan.approvalAmount | thousands }}</span
-                >
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="action"
-            :class="'order_' + loan.orderStatus"
-            @click="goDetail(loan.orderNo)"
-          >
-            {{ loan.orderStatusStr }}
-          </div>
+    <div v-for="loan in loans" :key="loan.id" class="loan-item">
+      <img class="icon" :src="loan.productIconImageUrl" />
+      <div class="info">
+        <div class="name">{{ loan.productName }}</div>
+        <div class="value">
+          Monto del préstamo($):
+          <span>{{ loan.approvalAmount }}</span>
         </div>
-        <div v-if="loans.length != index + 1" class="line" />
+
+        <div
+          class="action"
+          :class="'order_' + loan.orderStatus"
+          @click="goDetail(loan.orderNo)"
+        >
+          {{ loan.orderStatusStr }}
+        </div>
       </div>
     </div>
   </div>
@@ -42,129 +31,117 @@
 
 <script>
 export default {
-  props: ['systemTime'],
-  data() {
-    return {
-      loans: []
-    }
-  },
-  created() {
-    this.getRes()
-  },
-  computed: {
-    orderStatusText() {
-      return (status) => {
-        switch (status) {
-          case 20:
-            return 'Reviewing'
-          case 21:
-            return 'Reviewing'
-          case 30:
-            return 'Disbursing'
-          case 40:
-            return 'Rejected'
-          case 70:
-            return 'Disbursing'
-          case 80:
-            return 'Pending Repayment'
-          case 90:
-            return 'Overdue'
-          case 100:
-            return 'Repayment Successful'
-          case 101:
-            return 'Repayment Successful'
-          default:
-            return 'Reviewing'
-        }
-      }
-    }
-  },
-  methods: {
-    async getRes() {
-      try {
-        let res = await this.$http.post(`/api/order/applyResultOrderList`, {
-          startApplyTime: this.systemTime
-        })
-        this.loans = res.data.list || []
-      } catch (e) {}
-    },
+  props: ["systemTime", "loans"],
 
+  methods: {
     goDetail(orderNo) {
-      this.innerJump('orderDetail', { orderId: orderNo })
-    }
-  }
-}
+      this.innerJump("orderDetail", { orderId: orderNo });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.res-total {
-  width: 327px;
-  text-align: center;
-  background-image: url('@/assets/images/congratulations.png');
-  background-size: 327px 72px;
-  background-repeat: no-repeat;
-  background-attachment: local;
-  margin: 0 auto;
-  padding: 14px 0;
+.res-loans-model {
+  margin-top: 32px;
+  padding-bottom: 20px;
 
-  .title {
+  .cc {
+    width: 280px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .res-total {
+    width: 335px;
+    border-radius: 8px;
     font-size: 14px;
-    line-height: 24px;
-    font-weight: 900;
+    font-family: Roboto-Bold, Roboto;
+    font-weight: bold;
     color: #333333;
-  }
-  .tips {
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    line-height: 16px;
-    margin-top: 4px;
-  }
-}
+    line-height: 18px;
+    text-align: center;
+    margin: 0 auto 10px;
 
-.line {
-  height: 1px;
-  background: #e9e9e9;
-  margin-top: 20px;
-}
+    .head {
+      font-size: 20px;
+      font-family: Roboto, Roboto;
+      font-weight: 900;
+      color: #a05bf8;
+      line-height: 24px;
+      position: relative;
+      &::before {
+        content: " ";
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        background: #a05bf8;
+        top: 12px;
+        left: 57px;
+      }
+      &::after {
+        content: " ";
+        position: absolute;
+        width: 24px;
+        height: 2px;
+        background: #a05bf8;
+        top: 12px;
+        right: 57px;
+      }
+    }
+    .head-frame {
+      height: 60px;
+      font-size: 16px;
+      color: #333333;
+      font-family: Roboto, Roboto;
+      background: #f6effe;
+      border-radius: 8px;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
 
-.item-frame {
-  width: 327px;
-  background: #ffffff;
-  box-sizing: border-box;
-  padding: 0 20px 20px;
-  margin: 20px auto 0;
+    .tips {
+      font-size: 12px;
+      font-family: Roboto, Roboto;
+      font-weight: 400;
+      line-height: 12px;
+      transform: scale(0.9);
+      margin-top: 8px;
+    }
+  }
 
   .loan-item {
-    margin-top: 20px;
+    width: 335px;
+    background: #ffffff;
+    border-radius: 8px;
+    height: 72px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 10px auto 0;
+    padding: 16px 8px;
 
-    .name {
-      font-size: 14px;
-      font-weight: 900;
-      color: #333333;
-      line-height: 18px;
-    }
-    .value {
-      font-size: 10px;
-      font-weight: 400;
-      color: #999999;
-      line-height: 16px;
-
-      .symbol {
-        font-size: 12px;
-        font-family: Helvetica-Bold, Helvetica;
-        font-weight: bold;
-        color: #333333;
-        line-height: 14px;
-        margin-right: 2px;
-      }
-
-      span {
-        font-size: 16px;
-        font-weight: bold;
-        font-family: DINAlternate-Bold, DINAlternate;
+    .info {
+      .name {
+        font-size: 14px;
+        font-weight: 400;
         color: #333333;
         line-height: 20px;
+        margin-bottom: 8px;
+      }
+      .value {
+        font-size: 10px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 12px;
+        span {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333333;
+          line-height: 20px;
+        }
       }
     }
     .icon {
@@ -175,17 +152,22 @@ export default {
     }
 
     .action {
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 20px;
-      color: #ffffff;
-      font-family: Roboto-Medium, Roboto;
-      background: #f125a8;
-      border-radius: 16px;
+      position: absolute;
+      right: 8px;
+      top: 22px;
+      transform: translateY(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #ffffff;
+      min-width: 80px;
+      box-sizing: border-box;
+      padding: 0 10px;
+      height: 22px;
+      background: #f125a8;
+      border-radius: 14px;
 
       &.order_10 {
         background: #ffbc41;

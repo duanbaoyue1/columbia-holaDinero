@@ -3,120 +3,82 @@
     <div
       class="step"
       v-for="(step, index) in steps"
-      :class="{ active: actionIndex >= index }"
+      :class="{ active: actionIndex >= index, last: index == steps.length - 1 }"
       :key="index"
     >
-      <div class="red-bot">
+      <div class="stat-img-wrapper">
         <img
+          class="stat-img"
           :src="
             actionIndex >= index
-              ? require('@/assets/images/information/circle-activation.png')
-              : require('@/assets/images/information/circle-not-activation.png')
+              ? getAssetsImages(step.activeImg)
+              : getAssetsImages(step.noActiveImg)
           "
         />
       </div>
-      <div class="stat-img column-direction flex-end">
-        <img :src="actionIndex >= index ? step.activeImg : step.notActiveImg" />
-      </div>
-      <div class="text">₹{{ step.text }}</div>
+      <div class="text">{{ step.text }}</div>
+      <div class="red-bot" :class="actionIndex >= index ? 'active' : ''"></div>
     </div>
   </div>
 </template>
 
 <script>
-import gold1 from "@/assets/images/information/gold1.png";
-import gold2 from "@/assets/images/information/gold2.png";
-import gold3 from "@/assets/images/information/gold3.png";
-import gold4 from "@/assets/images/information/gold4.png";
-import gold5 from "@/assets/images/information/gold5.png";
-import gold6 from "@/assets/images/information/gold6.png";
-import gold7 from "@/assets/images/information/gold7.png";
-
 export default {
-  props: {
-    actionIndex: {
-      type: Number,
-      default: 0
-    }
-  },
+  props: ["actionIndex"],
   data() {
     return {
       steps: [
         {
-          text: "1,000",
-          activeImg: gold1,
-          notActiveImg: gold1
+          text: "$500,000",
+          activeImg: "gold1",
+          noActiveImg: "gold1",
         },
         {
-          text: "2,000",
-          activeImg: gold2,
-          notActiveImg: gold4
+          text: "$1,000,000",
+          activeImg: "gold2",
+          noActiveImg: "gold4",
         },
         {
-          text: "4,000",
-          activeImg: gold3,
-          notActiveImg: gold5
+          text: "$1,500,000",
+          activeImg: "gold3",
+          noActiveImg: "gold5",
         },
         {
-          text: "8,000",
-          activeImg: gold6,
-          notActiveImg: gold6
-        }
-      ]
+          text: "$2,000,000",
+          activeImg: "gold4",
+          noActiveImg: "gold6",
+        },
+      ],
     };
   },
-
-  mounted() {
-    this.checkBanks();
-  },
-  methods: {
-    async checkBanks() {
-      try {
-        let data = await this.$http.post(
-          "/api/remittance/remittanceAccountList"
-        );
-        this.cards = data.data.list || [];
-        // 判断存在卡了 最后一步状态就变为激活
-        if (this.cards.length) {
-          this.steps[3].activeImg = gold7;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/style/parameters.scss";
-
 .complete-step {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 
   > div {
-    width: 50px;
+    flex: 1;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     white-space: nowrap;
-    font-size: 10px;
-    font-family: Roboto-Medium, Roboto;
+    font-size: 12px;
     font-weight: 500;
     line-height: 16px;
     position: relative;
-
     &::before {
       position: absolute;
-      width: 52px;
-      height: 2px;
-      background: #cccccc;
-      border-radius: 4px;
+      width: 74px;
+      height: 4px;
+      background: #eae6f6;
       content: " ";
-      top: 4px;
-      left: -46px;
+      top: 59px;
+      left: -36px;
+      z-index: 0;
     }
 
     &:first-child {
@@ -126,38 +88,61 @@ export default {
       }
     }
 
-    .stat-img {
-      width: 26px;
-      height: 34px;
-      margin-bottom: 4px;
-
-      img {
-        width: 26px;
-        display: block;
+    &.active {
+      &::before {
+        background: #a05bf8 !important;
+      }
+      .red-bot {
+        background: #a05bf8;
+        box-shadow: 0 0 0 3px #eae6f6;
       }
     }
-    .red-bot {
-      margin-bottom: 10px;
 
+    &.last {
+      .red-bot {
+        background: #eae6f6 !important;
+        box-shadow: none !important;
+      }
+      .text {
+        color: #999999 !important;
+      }
+    }
+
+    .stat-img-wrapper {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      .stat-img {
+        width: 24px;
+      }
+    }
+
+    .red-bot {
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      background: #eae6f6;
+      margin-top: 8px;
+      z-index: 1;
       img {
         width: 10px;
-        height: 10px;
         display: block;
       }
     }
     .text {
-      font-size: 12px;
-      font-weight: 400;
-      color: #999;
-      line-height: 16px;
+      color: #999999;
+      font-weight: 500;
+      margin-top: 8px;
     }
     &.active {
       .text {
-        color: #333;
-        font-weight: bold;
+        color: #a05bf8;
       }
       &::before {
-        background: $themeColor;
+        background: #a05bf8;
       }
     }
   }

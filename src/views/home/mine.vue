@@ -1,80 +1,76 @@
 <template>
-  <div id="mine" class="content-area">
-    <div class="user">
-      <img :src="require('@/assets/images/avatar.png')" />
-      <span class="name">{{ userInfo.mobile | phoneHideFilter }}</span>
-    </div>
-
-    <div class="menu">
-      <div @click="innerJump('orderList')">
-        <div>
-          <img class="icon" src="@/assets/images/all-orders.png" />
-          All orders
-        </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
+  <div class="mine content-area display-flex-1">
+    <div class="frame">
+      <div class="user">
+        <img :src="require('@/assets/images/head-sculpture.png')" />
+        <span class="name">{{
+          userInfo.mobile || "123123123" | phoneHideFilter
+        }}</span>
       </div>
 
       <div
-        v-if="userInfo.remittanceAccountAuth"
-        @click="innerJump('receiptAccount')"
+        class="menu row-space-between-center"
+        @click="innerJump('orderList')"
       >
-        <div>
-          <img class="icon" src="@/assets/images/receipt-account.png" />
-          Receipt Account
+        <div class="title row-direction">
+          <m-icon class="icon" type="all-order" :width="30" :height="30" />
+          Pedido de préstamo
         </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
+        <m-icon type="right" :width="10" :height="18" />
       </div>
 
-      <div @click="innerJump('about')">
-        <div>
-          <img class="icon" src="@/assets/images/about-us.png" />
-          About Us
+      <div
+        class="menu row-space-between-center"
+        @click="innerJump('helpCenter')"
+      >
+        <div class="title row-direction">
+          <m-icon class="icon" type="help-center" :width="30" :height="30" />
+          Centro de ayuda
         </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
+        <m-icon type="right" :width="10" :height="18" />
       </div>
 
-      <div @click="goHelpCenter">
-        <div>
-          <img class="icon" src="@/assets/images/help-center.png" />
-          Help Center
+      <div
+        class="menu row-space-between-center"
+        v-if="!userInfo.remittanceAccountAuth"
+        @click="innerJump('completeBank', { from: 'mine' })"
+      >
+        <div class="title row-direction">
+          <m-icon class="icon" type="bank-card" :width="30" :height="30" />
+          Tarjeta bancaria
         </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
+        <m-icon type="right" :width="10" :height="18" />
       </div>
 
-      <div @click="goComplain">
-        <div>
-          <div class="complaints">
-            <img class="icon" src="@/assets/images/complaints.png" />
-            <div v-if="showRedBot" class="polka-dot" />
+      <div class="menu row-space-between-center" @click="innerJump('settings')">
+        <div class="title row-direction">
+          <m-icon class="icon" type="set-up" :width="30" :height="30" />
+          Configuración
+        </div>
+        <m-icon type="right" :width="10" :height="18" />
+      </div>
+
+      <div
+        class="menu row-space-between-center"
+        @click="showDeleteConfirm"
+        v-if="!isTestAccount"
+      >
+        <div class="title row-direction">
+          <m-icon class="icon" type="delete" :width="30" :height="30" />
+          Eliminar cuenta
+        </div>
+        <m-icon type="right" :width="10" :height="18" />
+      </div>
+
+      <van-overlay :show="showLogOut" @click="showLogOut = false">
+        <div class="logout" @click.stop>
+          <img :src="require('@/assets/img/creditomax/个人中心推出弹窗.png')" />
+          <div class="content">
+            <div>¿Está seguro de cerrar sesión?</div>
+            <button @click="logout">Cancelar</button>
           </div>
-          Complaints
         </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-      </div>
-
-      <div @click="innerJump('settings')">
-        <div>
-          <img class="icon" src="@/assets/images/set-up.png" />
-          Set Up
-        </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-      </div>
-
-      <div @click="showDeleteConfirm" v-if="isTestAccount">
-        <div>
-          <img class="icon" src="@/assets/images/delete-account.png" />
-          Delete Account
-        </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-      </div>
-
-      <!-- <div @click="logout">
-        <div>
-          <img class="icon" src="@/assets/images/log-out.png" />
-          Log Out
-        </div>
-        <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-      </div> -->
+      </van-overlay>
     </div>
   </div>
 </template>
@@ -82,142 +78,118 @@
 export default {
   data() {
     return {
+      showLogOut: false,
       isTestAccount: false, // 是否google测试账号
-      showRedBot: false
-    }
-  },
-  created() {
-    this.setTabBar({
-      show: false
-    })
+    };
   },
   async mounted() {
+    this.setTabBar({
+      show: false,
+    });
     try {
-      let res = await this.$http.post(`/api/user/mine`)
-      this.isTestAccount = res?.data?.isTestAccount
-      this.checkRedBot()
+      let data = await this.$http.post(`/api/user/mine`);
+      this.isTestAccount = data.data.isTestAccount;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
-
   activated() {
-    this.updateData()
-    this.checkRedBot()
+    this.updateData();
   },
   methods: {
-    async checkRedBot() {
-      try {
-        let res = await this.$http.post(`/api/user/complaintRecordUnread`)
-        if (res.returnCode == 2000) {
-          this.showRedBot = res.data
-        }
-      } catch (error) {}
-    },
     showDeleteConfirm() {
       this.showMessageBox({
         content:
-          'After deleting the account, all information of the account will be erased, confirm to delete?',
-        confirmBtnText: 'Let me think again',
-        cancelBtnText: 'Confirm deletion',
+          "Después de eliminar la cuenta, se borrará toda la información de la cuenta, ¿confirmar para eliminar?",
+        confirmBtnText: "Déjame pensar de nuevo",
+        cancelBtnText: "Confirmar eliminación",
         confirmCallback: () => {
-          this.hideMessageBox()
+          this.hideMessageBox();
         },
         cancelCallback: () => {
-          this.toAppMethod('skipLogin')
+          this.toAppMethod("toGoSign");
         },
-        iconPath: 'deleteAccount'
-      })
+        iconPath: "delete-account",
+      });
     },
     async updateData() {
-      this.showLoading()
+      this.showLoading();
       try {
-        await this.getUserInfo()
+        await this.getUserInfo();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
-    goComplain() {
-      this.innerJump('complainHome')
+    goTestb() {
+      this.innerJump("testb");
     },
-    goHelpCenter() {
-      this.innerJump('helpCenter')
-    }
-  }
-}
+    goDetail() {
+      this.innerJump("orderDetail");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-#mine {
-  padding: 74px 24px 0;
-  padding-bottom: 100px;
+.mine {
+  height: 100vh;
+  background: #f6effe;
+}
+.frame {
+  background-image: url(@/assets/images/mine.png);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 375px 230px;
+}
 
-  .menu {
-    width: 327px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 0 20px 30px;
-    box-sizing: border-box;
+.menu {
+  width: 335px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-sizing: border-box;
+  margin: 8px auto 0;
+  padding: 16px 20px;
 
-    > div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 30px;
-
-      > div {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-family: Roboto-Regular, Roboto;
-        font-weight: 400;
-        color: #000000;
-        line-height: 20px;
-
-        .icon {
-          width: 20px;
-          height: 20px;
-          margin-right: 16px;
-        }
-      }
-    }
-
-    .right-arrow {
-      width: 12px;
-      height: 16px;
-    }
+  .title {
+    font-size: 16px;
+    font-family: Roboto, Roboto;
+    font-weight: 500;
+    color: #333333;
+    line-height: 20px;
   }
 
-  .user {
-    display: flex;
-    font-size: 16px;
-    font-family: Roboto-Bold, Roboto;
+  .icon {
+    margin-right: 8px;
+  }
+}
+
+.user {
+  font-size: 16px;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: bold;
+  color: #333333;
+  line-height: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 130px;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .name {
+    font-size: 20px;
+    font-family: Roboto, Roboto;
     font-weight: bold;
     color: #333333;
     line-height: 24px;
-    margin-bottom: 24px;
-    align-items: center;
-    img {
-      width: 60px;
-      height: 60px;
-      margin-right: 20px;
-    }
-  }
-
-  .complaints {
-    position: relative;
-
-    .polka-dot {
-      width: 8px;
-      height: 8px;
-      background: #ff4b3f;
-      border-radius: 50%;
-      position: absolute;
-      top: 0;
-      right: 17px;
-    }
+    margin-top: 10px;
   }
 }
 </style>

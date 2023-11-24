@@ -1,256 +1,340 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import layout from '../views/layout.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import layout from "../views/layout.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: layout,
-    redirect: { path: '/home' },
+    redirect: { path: "/home" },
     meta: {
-      title: '',
-      showTab: true // 显示底部tabbar
+      title: "",
+      showTab: true, // 显示底部tabbar
     },
     children: [
       {
-        path: 'completeInformation',
-        name: 'completeInformation',
-        component: () => import('../views/completeInformation.vue'),
+        path: "permissions",
+        name: "Permissions",
+        component: () =>
+          import(
+            /* webpackChunkName: "permissions" */ "../views/permissions.vue"
+          ),
         meta: {
-          title: 'Complete information',
-          backgroundFFF: true
-        }
+          title: "Permissions",
+        },
       },
       {
-        path: 'addBank',
-        name: 'addBank',
-        component: () => import('../views/addBank.vue'),
+        path: "information",
+        name: "information",
+        component: () =>
+          import(
+            /* webpackChunkName: "information" */ "../views/information.vue"
+          ),
         meta: {
-          title: 'Select Bank Account',
-          backgroundFFF: true
-        }
+          title: "Información básica",
+        },
       },
       {
-        path: 'receiptAccount',
-        name: 'receiptAccount',
-        component: () => import('../views/receiptAccount.vue'),
+        path: "contacts",
+        name: "contacts",
+        component: () =>
+          import(/* webpackChunkName: "contacts" */ "../views/contacts.vue"),
         meta: {
-          title: 'Receipt Account'
-        }
+          title: "Complete information",
+        },
       },
       {
-        path: 'loanSuccessMulti',
-        name: 'loanSuccessMulti',
-        component: () => import('../views/loanSuccessMulti.vue'),
+        path: "completeBank",
+        name: "completeBank",
+        component: () =>
+          import(
+            /* webpackChunkName: "completeBank" */ "../views/completeBank.vue"
+          ),
         meta: {
-          title: 'Loan Application'
-        }
+          title: "Complete information",
+        },
       },
       {
-        path: 'loanFail',
-        name: 'loanFail',
-        component: () => import('../views/loanFail.vue'),
+        path: "addBank",
+        name: "addBank",
+        component: () =>
+          import(/* webpackChunkName: "add-bank" */ "../views/addBank.vue"),
         meta: {
-          title: 'Loan Application'
-        }
+          title: "Select Bank Account",
+        },
       },
       {
-        path: 'loanConfirm',
-        name: 'loanConfirm',
-        component: () => import('../views/loanConfirm.vue'),
+        path: "loanSuccessMulti",
+        name: "loanSuccessMulti",
+        component: () =>
+          import(
+            /* webpackChunkName: "loanSuccessMulti" */ "../views/loanSuccessMulti.vue"
+          ),
         meta: {
-          title: 'Loan Application'
-        }
+          title: "Loan Application",
+        },
       },
       {
-        path: 'about',
-        name: 'about',
-        component: () => import('../views/about.vue'),
+        path: "loanFail",
+        name: "loanFail",
+        component: () =>
+          import(/* webpackChunkName: "loanFail" */ "../views/loanFail.vue"),
         meta: {
-          title: 'About us'
-        }
+          title: "Loan Application",
+        },
       },
       {
-        path: 'helpCenter',
-        name: 'helpCenter',
-        component: () => import('../views/helpCenter.vue'),
+        path: "paymentFail",
+        name: "paymentFail",
+        component: () =>
+          import(
+            /* webpackChunkName: "paymentFail" */ "../views/paymentFail.vue"
+          ),
         meta: {
-          title: 'Help Center'
-        }
+          title: "Solicitud de préstam",
+          backgroundFFF: true, // 页面白色
+        },
       },
       {
-        path: 'orderDetail',
-        name: 'orderDetail',
-        component: () => import('../views/orderDetail.vue'),
+        path: "loanConfirm",
+        name: "loanConfirm",
+        component: () =>
+          import(
+            /* webpackChunkName: "loanConfirm" */ "../views/loanConfirm.vue"
+          ),
         meta: {
-          title: 'Order Detail',
-          backgroundFFF: true
-        }
+          title: "Loan Application",
+          navReturnFFF: true,
+        },
+      },
+
+      {
+        path: "about",
+        name: "about",
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/about.vue"),
+        meta: {
+          title: "About us",
+        },
       },
       {
-        path: 'utr',
-        name: 'utr',
-        component: () => import('../views/utr.vue'),
+        path: "helpCenter",
+        name: "helpCenter",
+        component: () =>
+          import(
+            /* webpackChunkName: "helpCenter" */ "../views/helpCenter.vue"
+          ),
         meta: {
-          title: 'UTR'
-        }
+          title: "Help Center",
+        },
       },
       {
-        path: 'deferHistory',
-        name: 'deferHistory',
-        component: () => import('../views/deferHistory.vue'),
+        path: "orderDetail",
+        name: "orderDetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "orderDetail" */ "../views/orderDetail.vue"
+          ),
         meta: {
-          title: 'Deferment'
-        }
+          title: "Order Detail",
+        },
       },
       {
-        path: 'settings',
-        name: 'settings',
-        component: () => import('../views/settings.vue'),
+        path: "deferDetail",
+        name: "deferDetail",
+        component: () =>
+          import(
+            /* webpackChunkName: "deferDetail" */ "../views/deferDetail.vue"
+          ),
         meta: {
-          title: 'Set up',
-          backgroundFFF: true
-        }
+          title: "Deferment",
+        },
+      },
+
+      {
+        path: "deferHistory",
+        name: "deferHistory",
+        component: () =>
+          import(
+            /* webpackChunkName: "deferHistory" */ "../views/deferHistory.vue"
+          ),
+        meta: {
+          title: "Deferment",
+        },
       },
       {
-        path: 'createPassword',
-        name: 'createPassword',
-        component: () => import('../views/createPassword.vue'),
+        path: "settings",
+        name: "settings",
+        component: () =>
+          import(/* webpackChunkName: "settings" */ "../views/settings.vue"),
         meta: {
-          title: 'Create Password'
-        }
+          title: "Set up",
+        },
       },
       {
-        path: 'retrievePassword',
-        name: 'retrievePassword',
-        component: () => import('../views/retrievePassword.vue'),
+        path: "createPassword",
+        name: "createPassword",
+        component: () =>
+          import(
+            /* webpackChunkName: "createPassword" */ "../views/createPassword.vue"
+          ),
         meta: {
-          title: 'Retrieve Password'
-        }
+          title: "Create Password",
+        },
       },
       {
-        path: 'privacy',
-        name: 'privacy',
-        component: () => import('../views/privacy.vue'),
+        path: "retrieve-password",
+        name: "retrieve-password",
+        component: () =>
+          import(
+            /* webpackChunkName: "retrieve-password" */ "../views/retrievePassword.vue"
+          ),
         meta: {
-          title: 'Privacy Policy'
-        }
+          title: "Retrieve Password",
+        },
       },
       {
-        path: 'terms',
-        name: 'terms',
-        component: () => import('../views/terms.vue'),
+        path: "privacy",
+        name: "privacy",
+        component: () =>
+          import(/* webpackChunkName: "privacy" */ "../views/privacy.vue"),
         meta: {
-          title: 'Terms of Services'
-        }
+          title: "Privacy Policy",
+        },
       },
       {
-        path: 'complainHome',
-        name: 'complainHome',
-        component: () => import('../views/complainHome.vue'),
+        path: "terms",
+        name: "terms",
+        component: () =>
+          import(/* webpackChunkName: "terms" */ "../views/terms.vue"),
         meta: {
-          title: 'Complaints'
-        }
+          title: "Terms of Services",
+        },
       },
       {
-        path: 'complainList',
-        name: 'complainList',
-        component: () => import('../views/complainList.vue'),
+        path: "identity",
+        name: "identity",
+        component: () =>
+          import(/* webpackChunkName: "identity" */ "../views/identity.vue"),
         meta: {
-          title: 'Complaint record'
-        }
+          title: "Complete information",
+        },
       },
       {
-        path: 'complainEdit',
-        name: 'complainEdit',
-        component: () => import('../views/complainEdit.vue'),
+        path: "complainHome",
+        name: "complainHome",
+        component: () =>
+          import(
+            /* webpackChunkName: "complainHome" */ "../views/complainHome.vue"
+          ),
         meta: {
-          title: 'Complaints'
-        }
+          title: "Complaints",
+        },
       },
       {
-        path: '/home',
-        name: 'home',
-        component: () => import('../views/home/home.vue'),
+        path: "complainList",
+        name: "complainList",
+        component: () =>
+          import(
+            /* webpackChunkName: "complainList" */ "../views/complainList.vue"
+          ),
         meta: {
-          title: '',
+          title: "Complaint record",
+        },
+      },
+      {
+        path: "complainEdit",
+        name: "complainEdit",
+        component: () =>
+          import(
+            /* webpackChunkName: "complainEdit" */ "../views/complainEdit.vue"
+          ),
+        meta: {
+          title: "Complaints",
+        },
+      },
+      {
+        path: "home",
+        name: "home",
+        component: () =>
+          import(/* webpackChunkName: "home" */ "../views/home/home.vue"),
+        meta: {
+          title: "",
           keepAlive: true,
-          showTab: true // 显示底部tabbar
-        }
+          showTab: true, // 显示底部tabbar
+        },
       },
       {
-        path: 'repayment',
-        name: 'repayment',
-        component: () => import('../views/home/repayment.vue'),
+        path: "repayment",
+        name: "repayment",
+        component: () =>
+          import(
+            /* webpackChunkName: "repayment" */ "../views/home/repayment.vue"
+          ),
         meta: {
-          title: '',
+          title: "",
           keepAlive: true,
-          showTab: true // 显示底部tabbar
-        }
+          showTab: true, // 显示底部tabbar
+        },
       },
       {
-        path: 'mine',
-        name: 'mine',
-        component: () => import('../views/home/mine.vue'),
+        path: "mine",
+        name: "mine",
+        component: () =>
+          import(/* webpackChunkName: "mine" */ "../views/home/mine.vue"),
         meta: {
-          title: '',
+          title: "",
           keepAlive: true,
-          showTab: true // 显示底部tabbar
-        }
+          showTab: true, // 显示底部tabbar
+        },
       },
       {
-        path: 'orderList',
-        name: 'orderList',
-        component: () => import('../views/orderList.vue'),
+        path: "orderList",
+        name: "orderList",
+        component: () =>
+          import(/* webpackChunkName: "orderList" */ "../views/orderList.vue"),
         meta: {
-          title: 'All orders',
-          backgroundFFF: true
-        }
+          title: "All orders",
+        },
       },
       {
-        path: 'orderDeferment',
-        name: 'orderDeferment',
-        component: () => import('../views/orderDeferment.vue'),
+        path: "testa",
+        name: "testa",
+        component: () =>
+          import(/* webpackChunkName: "testa" */ "../views/testa.vue"),
         meta: {
-          title: 'Deferment'
-        }
+          title: "testa",
+        },
       },
       {
-        path: 'testa',
-        name: 'testa',
-        component: () => import('../views/testa.vue'),
+        path: "testb",
+        name: "testb",
+        component: () =>
+          import(/* webpackChunkName: "testb" */ "../views/testb.vue"),
         meta: {
-          title: 'testa'
-        }
+          title: "testb",
+        },
       },
-      {
-        path: 'testb',
-        name: 'testb',
-        component: () => import('../views/testb.vue'),
-        meta: {
-          title: 'testb'
-        }
-      }
-    ]
+    ],
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/notFound.vue')
+    path: "/404",
+    name: "404",
+    component: () => import("@/views/notFound.vue"),
   },
   {
-    path: '*', // 此处需特别注意至于最底部
-    redirect: '/404'
-  }
-]
+    path: "*", // 此处需特别注意至于最底部
+    redirect: "/404",
+  },
+];
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: "hash",
   base: import.meta.env.BASE_URL, // 这个配置也很重要，否则会出现页面空白情况
   scrollBehavior: () => ({ x: 0, y: 0 }),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

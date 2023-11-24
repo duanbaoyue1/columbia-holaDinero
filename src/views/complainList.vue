@@ -1,7 +1,7 @@
 <template>
   <div class="content-area">
     <div class="no-data" v-if="!loading && !lists.length">
-      <img :src="require('@/assets/images/no-order.png')" />
+      <img :src="require('@/assets/img/complain/No Order@2x.png')" />
       No record
     </div>
     <div class="complains" v-else-if="!loading">
@@ -11,11 +11,11 @@
           <span>{{ item.createTime }}</span>
         </div>
         <div class="content">
-          <div class="row-space-between-center">
+          <div class="flex-between">
             <span>Feedback agency</span>
             <span>{{ item.feedbackMechanism }}</span>
           </div>
-          <div class="row-space-between-center">
+          <div class="flex-between">
             <span>Type of question</span>
             <span>{{ item.problemType }}</span>
           </div>
@@ -24,18 +24,10 @@
             <div class="question">{{ item.problemContent }}</div>
           </div>
           <div class="imgs" v-if="item.imgs">
-            <div
-              class="img"
-              v-for="(img, index) in item.imgs"
-              :key="img"
-              :style="{ backgroundImage: 'url(' + img + ')' }"
-              @click="previewImg(item.imgs, index)"
-            ></div>
+            <div class="img" v-for="(img, index) in item.imgs" :key="img" :style="{ backgroundImage: 'url(' + img + ')' }" @click="previewImg(item.imgs, index)"></div>
           </div>
         </div>
-        <div class="status" :class="{ success: item.submitStatus == 1 }">
-          {{ statusMsg(item) }}
-        </div>
+        <div class="status" :class="{ success: item.submitStatus == 1 }">{{ statusMsg(item) }}</div>
       </div>
     </div>
   </div>
@@ -46,57 +38,49 @@ export default {
   data() {
     return {
       loading: false,
-      lists: []
-    }
+      lists: [],
+    };
   },
-
+  
   computed: {
     statusMsg() {
-      return (item) => {
-        return item.submitStatus == 0
-          ? `Your complaint is being sent to ${item.feedbackMechanism}, please be patient`
-          : `Your complaint has been received and processed by ${item.feedbackMechanism}`
-      }
-    }
+      return item => {
+        return item.submitStatus == 0 ? `Your complaint is being sent to ${item.feedbackMechanism}, please be patient` : `Your complaint has been received and processed by ${item.feedbackMechanism}`;
+      };
+    },
   },
 
   mounted() {
-    this.setTabBar({
-      show: true,
-      fixed: true,
-      transparent: false,
-      title: 'Complaint record'
-    })
-    this.getLists()
+    this.getLists();
   },
 
   methods: {
     async getLists() {
-      this.loading = true
-      this.showLoading()
+      this.loading = true;
+      this.showLoading();
       try {
-        let res = await this.$http.post(`/api/user/complaintRecord`)
-        this.lists = (res.data.list || []).map((t) => {
-          t.imgs = []
+        let res = await this.$http.post(`/api/user/complaintRecord`);
+        this.lists = (res.data.list || []).map(t => {
+          t.imgs = [];
           if (t.firstImageBase64Src) {
-            t.imgs.push(t.firstImageBase64Src)
+            t.imgs.push(t.firstImageBase64Src);
           }
           if (t.secondImageBase64Src) {
-            t.imgs.push(t.secondImageBase64Src)
+            t.imgs.push(t.secondImageBase64Src);
           }
           if (t.thirdImageBase64Src) {
-            t.imgs.push(t.thirdImageBase64Src)
+            t.imgs.push(t.thirdImageBase64Src);
           }
-          return t
-        })
+          return t;
+        });
       } catch (error) {
       } finally {
-        this.hideLoading()
-        this.loading = false
+        this.hideLoading();
+        this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -146,7 +130,7 @@ export default {
       color: #333333;
       line-height: 18px;
 
-      .row-space-between-center {
+      .flex-between {
         align-items: flex-start;
         margin-bottom: 10px;
         span {

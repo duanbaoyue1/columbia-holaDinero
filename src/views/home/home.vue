@@ -2,91 +2,84 @@
   <van-pull-refresh
     class="home"
     :disabled="disabledPullRefresh"
-    loading-text="loading"
-    loosing-text="Release to refresh"
-    pulling-text="Pull down to refresh"
     v-model="loading"
+    success-text=" "
+    loading-text=" "
+    loosing-text=" "
+    pulling-text=" "
     @refresh="onRefresh"
   >
-    <div class="home-bg"></div>
     <div class="home-content">
-      <div class="originate">We can originate loans quickly</div>
-      <div class="loan-wrapper">
-        <div class="amount-frame">
-          <img class="amount-img" src="@/assets/images/home.png" />
-          <div class="available-text">Available Amount (₹)</div>
+      <div class="normal-margin-horizontal">
+        <div class="loan-wrapper column-direction-center">
+          <div class="row-space-between-center" style="width: 100%">
+            &nbsp;
+            <div class="available-text">Préstamo máximo($)</div>
+            <m-icon
+              type="update"
+              :width="16"
+              :height="15"
+              @click="updateData"
+            />
+          </div>
           <div class="available-number row-flex">
             {{
-              isMultiple
-                ? multipleCredit.remaining || 0
-                : curAvailableAmount | thousands
+              (isMultiple ? multipleCredit.remaining : curAvailableAmount)
+                | formatMonet
             }}
-            <img
-              v-if="showLock"
-              class="lock-img"
-              src="@/assets/images/lock.png"
+            <m-icon
+              v-if="multipleCredit.locked || appMode.locked"
+              class="lock-icon"
+              type="lock"
+              :width="17"
+              :height="20"
             />
           </div>
         </div>
-        <div class="total-used-frame column-space-between padding-20">
-          <div class="row-space-between normal-padding-horizontal">
-            <div class="column-direction-center">
-              <div class="total-credit">Total Credit (₹)</div>
-              <div class="total-credit-number margin-top-8">
-                {{
-                  isMultiple
-                    ? multipleCredit.sumQuota || 0
-                    : appMode.totalCredit || 0 | thousands
-                }}
-              </div>
-            </div>
-            <div class="column-direction-center">
-              <div class="total-credit">Used Credit (₹)</div>
-              <div class="total-credit-number margin-top-8">
-                {{
-                  isMultiple
-                    ? multipleCredit.usedQuota || 0
-                    : appMode.usedCredit || 0 | thousands
-                }}
-              </div>
+
+        <div class="row-space-between margin-top-8">
+          <div class="total-used row-space-between-center">
+            <div class="label">Crédito total($)</div>
+            <div class="number">
+              {{
+                (isMultiple ? multipleCredit.sumQuota : appMode.totalCredit)
+                  | formatMonet
+              }}
             </div>
           </div>
-
-          <div class="action-btn margin-top-28" @click="clickApply">
-            <div class="status-tips" v-if="btnTips" v-html="btnTips"></div>
-            {{ isMultiple ? multipleCredit.button : actionText }}
-          </div>
-
-          <div v-if="showRepayTips" class="repay-amount">
-            {{ isMultiple ? "Too many loans now. " : "" }}Please repay first and
-            unlock a higher loan amount
-          </div>
-        </div>
-
-        <div class="margin-top-30">
           <div
-            v-if="isMultiple"
-            class="multi-select"
-            @click="clickShowRecommend"
+            class="total-used row-space-between-center"
+            style="margin-left: 7px"
           >
-            <span>Customized Solutions</span>
-            <img class="right-arrow" src="@/assets/images/right-arrow.png" />
-            <div
-              class="products"
-              :class="{ 'has-num': selectItems.length > 0 }"
-            >
-              {{ selectItems.length }} products
+            <div class="label">Crédito usado ($)</div>
+            <div class="number">
+              {{
+                (isMultiple ? multipleCredit.usedQuota : appMode.usedCredit)
+                  | formatMonet
+              }}
             </div>
-          </div>
-          <div v-else>
-            <img
-              class="cash-loan-banner"
-              src="@/assets/images/cash-loan-banner.png"
-            />
           </div>
         </div>
 
-        <!-- easy application -->
+        <div class="action-btn" @click="clickApply">
+          <div class="status-tips" v-if="btnTips">
+            <div v-html="btnTips"></div>
+          </div>
+          {{ isMultiple ? multipleCredit.button : appMode.button }}
+        </div>
+
+        <div v-if="isMultiple" class="multi-select" @click="clickShowRecommend">
+          <span>Soluciones personalizadas</span>
+          <div>
+            <span :class="{ 'has-num': selectItems.length > 0 }"
+              >{{ selectItems.length }} productos</span
+            >
+            <m-icon type="right" :width="10" :height="16" />
+          </div>
+        </div>
+
+        <img v-else class="money-icon" src="@/assets/images/money.png" />
+
         <easy-application />
       </div>
     </div>
@@ -98,9 +91,11 @@
       class="home-recommend"
     >
       <div class="pop-content">
-        <img
+        <m-icon
           class="close"
-          src="@/assets/images/close.png"
+          type="close"
+          :width="20"
+          :height="20"
           @click="showRecommend = false"
         />
         <multi-recommend
@@ -114,18 +109,16 @@
 
 <script>
 import { mapActions } from "vuex";
-import multiRecommend from "@/components/multiRecommend";
-import easyApplication from "./components/easyApplication";
+import MultiRecommend from "@/components/multiRecommend.vue";
+import easyApplication from "@/components/easyApplication.vue";
 
 export default {
   components: {
-    multiRecommend,
+    MultiRecommend,
     easyApplication,
   },
   data() {
     return {
-      showLock: false,
-      showRepayTips: false,
       disabledPullRefresh: false,
       created: false,
       query: this.$route.query,
@@ -138,7 +131,14 @@ export default {
       actionText: "Apply",
       btnTips: "Apply",
       actionCallback: null, // 按纽回调
-      multipleCredit: {},
+      multipleCredit: {
+        usedQuota: 0,
+        sumQuota: 0,
+        remaining: 0,
+        repaymentNum: 0,
+        button: "",
+        locked: null,
+      },
     };
   },
   computed: {
@@ -148,7 +148,7 @@ export default {
       } else if (typeof this.appMode.amount != "undefined") {
         return this.appMode.amount;
       } else {
-        return 10000;
+        return "";
       }
     },
   },
@@ -193,13 +193,14 @@ export default {
     if (this.from == "bridge" && !this.query.reload) {
       location.replace(location.href + "&reload=true");
     }
-    this.setGlobalData();
-    this.allDataKey();
+    // this.setGlobalData();
+    this.getMapDataListKey();
   },
 
   mounted() {
+    this.eventTracker("home_access");
     if (!this.checkInApp()) {
-      window.allDataCallback();
+      window.getMapDataListCallback();
     }
   },
   activated() {
@@ -207,15 +208,18 @@ export default {
       return;
     }
     console.log("home activated and refresh data!");
+    // 多推
+    this.getMultiRecommendItems();
+
     this.updateData();
   },
   methods: {
     ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
 
     // 调用app方法获取所有参数
-    allDataKey() {
-      window.allDataCallback = async (data) => {
-        console.log("app 回调 allDataKeyCallback", data);
+    getMapDataListKey() {
+      window.getMapDataListCallback = async (data) => {
+        console.log("app 回调 getMapDataListKeyCallback", data);
         if (typeof data == "string") {
           data = JSON.parse(data);
         }
@@ -231,9 +235,7 @@ export default {
         this.updateData();
         this.created = true;
       };
-      this.toAppMethod("allData", {
-        fuName: "allDataCallback",
-      });
+      this.toAppMethod("getMapDataList", { fuName: "getMapDataListCallback" });
     },
 
     clickShowRecommend() {
@@ -246,33 +248,30 @@ export default {
     async updateData() {
       try {
         this.showLoading();
-        await this.getUserInfo();
         await this.getAppMode();
         if (this.appMode.maskModel == 1) {
           await this.getMultiRecommendItems();
         }
-
+        await this.getUserInfo();
         this.updateTextAndAction();
+        this.hideLoading();
       } catch (error) {
         console.log(error);
-      } finally {
         this.hideLoading();
       }
     },
 
     updateTextAndAction() {
-      this.showLock = false;
-      this.showRepayTips = false;
       // 清除数据
       this.btnTips = "";
       this.actionText = "Apply";
       this.actionCallback = () => {
-        this.$toast("please try later!");
+        this.$toast("Por favor, inténtelo de nuevo！");
       };
 
       if (this.appMode.maskModel == 1) {
-        this.actionText = this.multipleCredit.button || "Apply";
-        if (this.actionText == "Apply immediately") {
+        this.actionText = this.multipleCredit.button || "Aplicar ahora";
+        if (this.actionText == "Aplicar ahora") {
           // 有可借
           this.actionCallback = async () => {
             // 多推
@@ -285,13 +284,11 @@ export default {
                   syncRes = await this.judgeCanApply();
                 } catch (error) {
                   this.hideLoading();
-                  this.$toast(
-                    "Your message verification failed, please wait a minute and try again"
-                  );
+                  this.$toast("Carga fallida, inténtelo más tarde");
                   return;
                 }
                 // 2. 真正提交
-                if (syncRes) {
+                if (syncRes.success) {
                   let res = await this.$http.post(
                     `/api/order/mergePush/preApply`,
                     {
@@ -302,10 +299,10 @@ export default {
                     await this.$http.post(`/api/order/mergePush/apply`, {
                       orderIdList: res.data.orderIdList,
                     });
-                    this.$toast("Apply successfully");
+                    this.$toast("Solicitud enviada con éxito");
                     setTimeout((res) => {
                       this.innerJump("loanSuccessMulti", {
-                        systemTime: new Date().getTime(),
+                        systemTime: this.getLocalSystemTimeStamp(),
                       });
                     }, 1000);
                   }
@@ -317,59 +314,51 @@ export default {
               }
             }
           };
-        } else if (this.actionText == "Repay") {
-          this.showLock = true;
-          this.showRepayTips = true;
+        } else if (this.actionText == "Ir a reembolsar") {
+          this.btnTips =
+            "Demasiados préstamos ahora. Por favor, pagar primero y desbloquear una mayor cantidad del préstamo.";
           // 有待还款或逾期，无可借
           this.actionCallback = () => {
             this.innerJump("repayment");
           };
         } else if (
-          this.actionText == "Reviewing" ||
-          this.actionText == "Disbursing"
+          this.actionText == "En revisión" ||
+          this.actionText == "Desembolsando"
         ) {
-          this.showLock = true;
           // 无可借，订单全部放款中或者审核中
           this.actionCallback = () => {
             this.innerJump("orderList");
           };
-        } else if (this.actionText == "Rejected") {
+        } else if (this.actionText == "Rechazo") {
           // 无可借，订单全被拒绝
-          this.showLock = true;
           this.actionCallback = () => {
-            this.$toast("The order was rejected. Please try again after 0:00");
+            this.$toast("Por favor, inténtelo de nuevo después de 0:00");
           };
         }
       } else if (this.appMode.maskModel == 3 || this.appMode.maskModel == 0) {
-        this.actionText = "Apply";
+        this.actionText = "Aplicar ahora";
         //未认证跳转
         if (this.appMode.basicInfoAuth == 0) {
-          this.btnTips = "Almost:95%";
+          this.btnTips = "Casi:95%";
           this.actionCallback = () => {
-            this.innerJump("completeInformation", {
-              actionIndex: 0,
-            });
+            this.innerJump("information", { orderId: this.appMode.orderId });
           };
         } else if (this.appMode.addInfoAuth == 0) {
-          this.btnTips = "Almost:96%";
+          this.btnTips = "Casi:96%";
           this.actionCallback = () => {
-            this.innerJump("completeInformation", {
-              actionIndex: 1,
-            });
+            this.innerJump("contacts", { orderId: this.appMode.orderId });
           };
         } else if (this.appMode.identityAuth == 0) {
-          this.btnTips = "Almost:97%";
+          this.btnTips = "Casi:97%";
           this.actionCallback = () => {
-            this.innerJump("completeInformation", {
-              actionIndex: 2,
-            });
+            this.innerJump("identity", { orderId: this.appMode.orderId });
           };
         } else if (this.appMode.remittanceAccountAuth == 0) {
-          this.btnTips = "Almost:98%";
+          this.btnTips = "Casi:98%";
           this.actionCallback = () => {
-            this.innerJump("completeInformation", {
+            this.innerJump("addBank", {
               orderId: this.appMode.orderId,
-              actionIndex: 3,
+              from: "order",
             });
           };
         } else if (
@@ -381,40 +370,43 @@ export default {
             this.innerJump("orderDetail", { orderId: this.appMode.orderId });
           };
 
-          if ([20, 21].includes(this.appMode.orderStatus)) {
+          if (
+            this.appMode.orderStatus == 20 ||
+            this.appMode.orderStatus == 21
+          ) {
             // 订单审核中
-            this.actionText = "Reviewing";
-            this.showLock = true;
-          } else if ([80, 90].includes(this.appMode.orderStatus)) {
+            this.actionText = "Evaluando";
+          } else if (
+            this.appMode.orderStatus == 80 ||
+            this.appMode.orderStatus == 90
+          ) {
             // 待还款 | 逾期
-            this.actionText = "Repay";
-            this.showLock = true;
-            this.showRepayTips = true;
+            this.actionText = "Ir a reembolsar";
+            this.btnTips =
+              "Devuelve el dinero a tiempo y desbloquea un préstamo de mayor cuantía";
           } else if (this.appMode.orderStatus == 40) {
             // 拒绝
-            this.actionText = "Rejected";
+            this.actionText = "Rechazo";
             this.actionCallback = () => {
-              this.$toast(
-                "The order was rejected. Please try again after 0:00!"
-              );
+              this.$toast("Por favor, inténtelo de nuevo después de 0:00!");
             };
           } else if (
             this.appMode.orderStatus == 30 ||
             this.appMode.orderStatus == 70
           ) {
             // 放款中
-            this.actionText = "Disbursing";
+            this.actionText = "Desembolsando";
           } else {
-            this.btnTips = "Almost:99%";
+            this.btnTips = "Casi:99%";
             this.actionCallback = () => {
               this.innerJump("loanConfirm", { orderId: this.appMode.orderId });
             };
           }
         }
       } else if (this.appMode.maskModel == 2) {
-        this.actionText = "Rejected";
+        this.actionText = "Rechazo";
         this.actionCallback = () => {
-          this.$toast("The order was rejected. Please try again after 0:00!");
+          this.$toast("Por favor, inténtelo de nuevo después de 0:00!");
         };
       }
     },
@@ -428,18 +420,25 @@ export default {
 
     async getMultiRecommendItems() {
       try {
+        this.showLoading();
         let res = await this.$http.post(`/api/product/mergeProduct/list`);
-        this.updateMultiSelect(res.data.mergPushProductList || []);
-        this.multiRecommendList = res.data.mergPushProductList || [];
-        this.setRepaymentNum(res.data.repaymentNum);
         this.multipleCredit = {
           usedQuota: res.data.usedQuota,
           sumQuota: res.data.sumQuota,
           remaining: res.data.remaining,
           repaymentNum: res.data.repaymentNum,
           button: res.data.button,
+          locked: res.data.locked,
         };
-      } catch (error) {}
+        this.updateMultiSelect(res.data.mergPushProductList || []);
+        this.multiRecommendList = res.data.mergPushProductList || [];
+        this.setRepaymentNum(res.data.repaymentNum);
+        return res;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.hideLoading();
+      }
     },
 
     async onRefresh() {
@@ -462,6 +461,12 @@ export default {
     },
 
     async clickApply() {
+      this.eventTracker("home_apply");
+      // this.toAppMethod("h5ToAndroidPage", {
+      //   fromPage: "home",
+      //   toPage: "information",
+      // });
+      return;
       if (this.actionCallback) {
         this.actionCallback();
       }
@@ -471,209 +476,189 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/style/parameters.scss";
-
-.home-recommend {
-  height: 80%;
-
-  .pop-content {
-    background: #f9f9f9;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-
-    .close {
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      top: 16px;
-      right: 24px;
-    }
-  }
-}
-
-.repay-amount {
-  font-size: 12px;
-  font-family: Roboto-Regular, Roboto;
-  font-weight: 400;
-  color: #fe4207;
-  line-height: 16px;
-  margin: 10px 0 0 8px;
-}
-
-.lock-img {
-  width: 17px;
-  height: 20px;
-  margin: 15px 0 0 10px;
-}
-
-.right-arrow {
-  width: 12px;
-  height: 14px;
-}
-
 .home {
   height: 100%;
-  box-sizing: border-box;
-
-  &-bg {
-    height: 300px;
-    background: linear-gradient(270deg, #b2f2e7 0%, #cff5ee 100%);
-  }
 
   &-content {
+    width: 100%;
     height: 100%;
-    position: relative;
-    top: -220px;
     box-sizing: border-box;
     overflow-y: auto;
-    padding-bottom: 24px;
-
-    .originate {
-      font-size: 14px;
-      font-family: Roboto-Black, Roboto;
-      font-weight: 900;
-      color: #000000;
-      line-height: 30px;
-      margin-left: 20px;
-    }
+    padding-top: 60px;
+    background-image: url(@/assets/images/home-banner.png);
+    background-attachment: local;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 100% 180px;
 
     .loan-wrapper {
-      width: 345px;
-      height: 392px;
-      margin: 16px auto 0;
-
-      .amount-frame {
-        width: 345px;
-        height: 104px;
-        background: linear-gradient(270deg, #b3f2e8 0%, #edfffc 100%);
-        border-radius: 14px 0px 0px 0px;
-        position: relative;
-      }
+      width: 335px;
+      margin: 60px auto 0;
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
+      background: #fff;
+      border-radius: 16px;
+      box-sizing: border-box;
+      padding: 24px 20px;
 
       .available-text {
-        font-size: 12px;
-        font-weight: 400;
-        font-family: Roboto-Regular, Roboto;
+        font-size: 18px;
+        font-weight: 900;
         color: #333333;
-        line-height: 18px;
-        padding: 21px 0 0 20px;
+        line-height: 24px;
       }
 
       .available-number {
-        font-size: 36px;
-        font-weight: bold;
-        font-family: DINAlternate-Bold, DINAlternate;
-        color: #333333;
-        line-height: 46px;
-        padding-left: 20px;
-      }
-
-      .amount-img {
-        width: 175px;
-        height: 122px;
-        position: absolute;
-        top: -18px;
-        right: 0;
-      }
-
-      .total-used-frame {
-        background: #ffffff;
-        border-radius: 0px 0px 14px 14px;
-        padding-bottom: 20px;
-      }
-
-      .total-credit {
-        font-size: 12px;
-        font-family: Roboto-Regular, Roboto;
-        font-weight: 400;
-        color: #999999;
-        line-height: 16px;
-      }
-
-      .total-credit-number {
-        font-size: 30px;
-        font-family: DINAlternate-Bold, DINAlternate;
+        font-size: 48px;
+        font-family: DINAlternate, DINAlternate;
         font-weight: bold;
         color: #333333;
-        line-height: 36px;
+        line-height: 54px;
+      }
+      .lock-icon {
+        margin: 23px 0 0 8px;
       }
 
-      .action-btn {
-        width: 100%;
-        height: 48px;
-        background: $themeColor;
-        border-radius: 24px;
-        font-size: 20px;
-        font-family: PingFangSC-Semibold, PingFang SC;
-        font-weight: 600;
-        color: $themeFontColor;
-        line-height: 28px;
+      .number {
+        font-size: 48px;
+        font-weight: bold;
+        color: #333333;
+        text-align: center;
         display: flex;
-        align-items: center;
+        align-items: baseline;
         justify-content: center;
-        position: relative;
-
-        .status-tips {
-          position: absolute;
-          background: #ff4b3f;
-          padding: 8px;
-          border-radius: 10px 10px 10px 0;
-          font-size: 10px;
-          font-family: Roboto-Regular, Roboto;
-          font-weight: 400;
-          color: #fff;
-          line-height: 12px;
-          bottom: 35px;
-          right: -14px;
-          transform: scale(0.9);
-        }
       }
+    }
 
-      .multi-select {
-        height: 48px;
-        background: #fff;
-        border-radius: 14px;
-        margin-top: 30px;
-        padding-left: 24px;
-        padding-right: 24px;
+    .total-used {
+      width: 164px;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+
+      .label {
+        font-size: 14px;
+        font-weight: 400;
+        color: #333333;
+        line-height: 18px;
+      }
+      .number {
+        font-size: 24px;
+        font-family: DINAlternate, DINAlternate;
+        font-weight: bold;
+        color: #333333;
+        line-height: 32px;
+      }
+    }
+
+    .multi-select {
+      height: 64px;
+      background: #fff;
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      margin-top: 24px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-family: Roboto, Roboto;
+      font-weight: 900;
+      color: #000;
+      line-height: 20px;
+      > span {
+        font-weight: bold;
+      }
+      > div {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        font-size: 18px;
-        font-family: Roboto-Regular, Roboto;
-        font-weight: 400;
-        color: #000;
-        line-height: 26px;
-        position: relative;
 
-        .products {
-          background: #e0dddd;
-          font-size: 10px;
-          font-family: Roboto-Regular, Roboto;
-          font-weight: 900;
+        span {
+          height: 20px;
+          background: #e6e6e6;
+          font-size: 12px;
+          font-family: Roboto, Roboto;
+          font-weight: 400;
           color: #999999;
-          border-radius: 10px 10px 10px 0;
           line-height: 12px;
           transform: scale(0.9);
-          padding: 6px 10px;
+          padding: 0 6px;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: absolute;
-          bottom: 37px;
-          right: 0;
-
+          border-radius: 10px;
+          margin-right: 8px;
           &.has-num {
-            background: #ff4b3f;
-            color: #fff;
+            background: #ff4a43;
+            font-size: 12px;
+            font-family: Roboto, Roboto;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 16px;
           }
         }
       }
+    }
+  }
+}
 
-      .cash-loan-banner {
-        width: 345px;
-      }
+.action-btn {
+  width: 335px;
+  height: 48px;
+  background: #a05bf8;
+  border-radius: 28px;
+  font-size: 18px;
+  font-family: Roboto, Roboto;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  position: relative;
+
+  .status-tips {
+    position: absolute;
+    background: #ec594c;
+    padding: 4px 8px;
+    border-radius: 10px 10px 10px 0;
+    font-size: 12px;
+    font-family: Roboto, Roboto;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 16px;
+    right: 0px;
+    bottom: 34px;
+    max-width: 280px;
+    box-sizing: border-box;
+  }
+}
+
+.money-icon {
+  width: 335px;
+  height: 96px;
+  margin-top: 8px;
+}
+
+.row-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-recommend {
+  height: 80%;
+  background: #f6f6f6;
+  .pop-content {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    .close {
+      position: absolute;
+      top: 16px;
+      right: 24px;
     }
   }
 }

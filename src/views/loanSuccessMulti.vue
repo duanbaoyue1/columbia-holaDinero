@@ -1,394 +1,299 @@
 <template>
-  <div class="multi content-area">
+  <div class="loan multi content-area">
     <div class="loan-tips">
-      <img class="success-icon" src="@/assets/images/success.png" />
-      <div class="congratulations-title" v-if="loans.length > 0">
-        Congratulations
+      <m-icon
+        class="icon"
+        type="successfully-applied"
+        :width="100"
+        :height="100"
+      />
+      <div class="title" v-if="loans.length">
+        Enhorabuena
         <br />
-        Your application is successful
+        <span>ha enviado correctamente su solicitud</span>
       </div>
-      <div class="margin-top-30">
-        <div v-if="!loans.length" class="bottom-submit-btn" @click="check">
-          View all orders
+      <template v-if="!loans.length">
+        <div v-if="!resLoans.length" class="title">
+          Solicitud enviada con éxito
         </div>
-        <div v-else class="bottom-submit-btn" @click="applyMulti">
-          Increase ₹{{ totalAmount }} Amount
+        <div class="apply" @click="check">
+          {{
+            resLoans.length ? "Ver todos los pedidos" : "Consultar la solicitud"
+          }}
         </div>
+      </template>
+      <div v-else class="apply" @click="applyMulti">
+        Aumento $ {{ totalAmount }} Importe
       </div>
     </div>
 
-    <div class="other-loans column-direction" v-if="loans.length > 0">
+    <div class="other-loans" v-if="loans.length">
       <div class="tips">
-        You are in our special VIP exclusive channel in view of your good
-        qualification.
+        Usted está en nuestro canal exclusivo VIP en vista de su buena
+        calificación.
       </div>
-      <div class="already-frame">
-        <div class="checked-num color-theme">
-          Already Select {{ checkedNums }} products
+      <div class="checked-num">Ya Seleccionar {{ checkedNums }} productos</div>
+      <div
+        v-for="(loan, index) in loans"
+        :key="loan.id"
+        class="loan-item"
+        :class="{ active: !loan.unChecked }"
+        @click="checkLoan(index)"
+      >
+        <div class="row-flex">
+          <img class="icon" :src="loan.icon" />
+          <div class="name">{{ loan.productName }}</div>
         </div>
-        <div v-for="(loan, index) in loans" :key="loan.id">
-          <div
-            class="loan-item"
-            :class="{ active: !loan.unChecked }"
-            @click="checkLoan(index)"
-          >
-            <img class="icon" :src="loan.icon" />
-            <div>
-              <div class="name">{{ loan.productName }}</div>
-              <div class="value">
-                Loan Amount：<span class="symbol">₹</span>
-                <span class="min-amount">{{ loan.minAmount | thousands }}</span>
-              </div>
-            </div>
-          </div>
-
-          <div v-if="loans.length != index + 1" class="line"></div>
+        <div class="row-space-between" style="margin-top: 20px">
+          <div class="value">Importe de préstamo ($)</div>
+          <div class="min-amount">{{ loan.minAmount }}</div>
         </div>
       </div>
     </div>
 
     <!-- 没有推荐结果时显示 -->
-    <res-loans v-else class="res-loans" :systemTime="systemTime"></res-loans>
-
+    <res-loans
+      v-else-if="resLoans.length"
+      class="res-loans"
+      :loans="resLoans"
+      :systemTime="systemTime"
+    />
     <!-- 谷歌好评 -->
-    <google-feedback
-      v-show="showGoogleFeed"
-      :show.sync="showGoogleFeed"
-    ></google-feedback>
+    <google-feedback v-show="showGoogleFeed" :show.sync="showGoogleFeed" />
 
     <div class="control-back" v-if="showBackControl">
-      <div class="content-frame">
-        <img class="close" src="@/assets/images/close.png" @click="leave" />
+      <div class="content">
+        <m-icon
+          class="close"
+          type="close"
+          :width="16"
+          :height="16"
+          @click="leave"
+        />
         <div class="head">
-          <img src="@/assets/images/bort-after.png" />
+          <img :src="require('@/assets/images/countdown-pop-up.png')" />
         </div>
         <div class="content">
-          You are just one step away from a ₹{{ totalAmount }} credit limit, are
-          you sure you want to give up your eligibility?
-          <div class="count row-direction">
-            Auto Abort after
-            <span>{{ count }}S</span>
+          Estás a un paso de un límite de crédito de $ {{ totalAmount }}, ¿estás
+          seguro de que quieres renunciar a tu derecho?
+          <div class="count">
+            Terminación automática después de
+            <div class="time">{{ count }}S</div>
           </div>
         </div>
-        <button class="btn-default" @click="showBackControl = false">
-          Think again
-        </button>
+        <div class="action">
+          <button class="btn-default" @click="showBackControl = false">
+            Piénsalo otra vez
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import resLoans from '@/components/resLoans'
-import googleFeedback from '@/components/googleFeedback'
+import ResLoans from "@/components/resLoans.vue";
+import GoogleFeedback from "@/components/googleFeedback.vue";
+
 export default {
   components: {
-    resLoans,
-    googleFeedback
+    ResLoans,
+    GoogleFeedback,
   },
-
   data() {
     window.loanBtnCallback = async () => {
-      if (this.loans.length) {
-        this.showBackModal()
+      if (this.loans.length > 0) {
+        this.showBackModal();
       } else if (await this.getNeedGoogle()) {
-        this.nextStep = 'goBack'
-        this.showGoogleFeed = true
+        this.nextStep = "goBack";
+        this.showGoogleFeed = true;
       } else {
-        this.goAppBack()
+        this.goAppBack();
       }
-    }
+    };
     return {
       needRecommend: JSON.parse(this.$route.query.needRecommend || true), // 是否需要推荐 从活动过来的不用推荐
-      systemTime: this.$route.query.systemTime || '', // 上次订单时间
+      systemTime: this.$route.query.systemTime || "", // 上次订单时间
       single: JSON.parse(this.$route.query.single || false), // 是否是单推
       loans: [],
       count: 10,
       totalAmount: 0,
       checkedNums: 0,
-      nextStep: '',
+      nextStep: "",
       showBackControl: false,
       backInterval: null, // 回退倒计时
-      showGoogleFeed: false
-    }
+      showGoogleFeed: false,
+      resLoans: [],
+    };
   },
-  created() {
+  mounted() {
+    document.body.style.backgroundColor = "#f6f6f6";
+
     this.setTabBar({
       show: true,
       fixed: true,
-      transparent: false,
-      title: 'Loan Applications',
-      backCallback: window.loanBtnCallback
-    })
-  },
-  mounted() {
-    this.toAppMethod('holdUp', {
+      transparent: true,
+      title: "Solicitud de préstamo",
+      backCallback: window.loanBtnCallback,
+    });
+    this.toAppMethod("backReturn", {
       isInterception: true,
-      fuName: 'loanBtnCallback'
-    })
-
+      fuName: "loanBtnCallback",
+    });
     if (this.needRecommend) {
-      this.getRecommendLoans()
+      this.getRecommendLoans();
     }
   },
   watch: {
     showGoogleFeed: {
       handler() {
         if (!this.showGoogleFeed && this.nextStep) {
-          if (this.nextStep == 'goBack') {
-            this.goAppBack()
-          } else if (this.nextStep == 'goAllOrders') {
-            this.innerJump('orderList', {}, true)
+          if (this.nextStep == "goBack") {
+            this.goAppBack();
+          } else if (this.nextStep == "goAllOrders") {
+            this.innerJump("orderList", {}, true);
           }
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
+    async getRes() {
+      try {
+        let res = await this.$http.post(`/api/order/applyResultOrderList`, {
+          startApplyTime: this.systemTime,
+        });
+        this.resLoans = res.data.list || [];
+      } catch (e) {}
+    },
     leave() {
-      this.toAppMethod('holdUp', { isInterception: false })
-      this.goHome()
+      this.toAppMethod("backReturn", { isInterception: false });
+      this.goHome();
     },
     showBackModal() {
-      this.count = 10
-      window.clearInterval(this.backInterval)
-      this.backInterval = null
+      this.count = 10;
+      window.clearInterval(this.backInterval);
+      this.backInterval = null;
       this.backInterval = setInterval(() => {
         if (this.count == 0) {
-          window.clearInterval(this.backInterval)
-          this.backInterval = null
+          window.clearInterval(this.backInterval);
+          this.backInterval = null;
         } else {
-          this.count--
+          this.count--;
         }
-      }, 1000)
-      this.showBackControl = true
+      }, 1000);
+      this.showBackControl = true;
     },
 
     async getNeedGoogle() {
       try {
-        let res = await this.$http.post(`/api/product/favourableComment`)
+        let res = await this.$http.post(`/api/product/favourableComment`);
         if (res.returnCode == 2000) {
-          return res.data
+          return res.data;
+        } else {
+          return false;
         }
-      } catch (error) {}
+      } catch (error) {
+        return false;
+      }
     },
 
     async getRecommendLoans() {
       try {
-        this.showLoading()
-        let data
+        this.showLoading();
+        let data;
         if (this.single) {
-          data = await this.$http.post(`/api/product/maskRecommendList`)
-          this.loans = data.data.list || []
+          data = await this.$http.post(`/api/product/maskRecommendList`);
+          this.loans = data.data.list || [];
           this.loans = this.loans.map((t) => {
-            t.maxAmount = t.minAmount
-            return t
-          })
+            t.maxAmount = t.minAmount;
+            return t;
+          });
         } else {
-          data = await this.$http.post(`/api/product/mergeProduct/list`)
-          this.loans = data.data.mergPushProductList || []
+          data = await this.$http.post(`/api/product/mergeProduct/list`);
+          this.loans = data.data.mergPushProductList || [];
         }
-        this.updateCheckedNum()
+        this.updateCheckedNum();
+
+        // 查询申请订单
+        if (!this.loans.length) {
+          this.getRes();
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
     },
     async check() {
       // 没有贷款产品且需要google弹窗
       if (!this.loans.length && (await this.getNeedGoogle())) {
-        this.nextStep = 'goAllOrders'
-        this.showGoogleFeed = true
+        this.nextStep = "goAllOrders";
+        this.showGoogleFeed = true;
       } else {
-        this.innerJump('orderList', {}, true)
+        this.innerJump("orderList", {}, true);
       }
     },
 
     checkLoan(index) {
-      if (this.checkedNums == 1 && !this.loans[index].unChecked) return
+      if (this.checkedNums == 1 && !this.loans[index].unChecked) return;
       this.$set(this.loans, index, {
         ...this.loans[index],
-        unChecked: !this.loans[index].unChecked
-      })
-      this.updateCheckedNum()
+        unChecked: !this.loans[index].unChecked,
+      });
+      this.updateCheckedNum();
     },
 
     updateCheckedNum() {
-      this.checkedNums = this.loans.filter((t) => !t.unChecked).length
+      this.checkedNums = this.loans.filter((t) => !t.unChecked).length;
       this.totalAmount = this.sumArr(
         this.loans.filter((t) => !t.unChecked).map((t) => t.minAmount)
-      )
-    },
-    sumArr(arr) {
-      return arr.reduce(function (prev, cur) {
-        return parseInt(prev) + parseInt(cur)
-      }, 0)
+      );
     },
 
     async applyMulti() {
-      let loanIds = this.loans.filter((t) => !t.unChecked).map((t) => t.id)
-      this.showLoading()
+      let loanIds = this.loans.filter((t) => !t.unChecked).map((t) => t.id);
+      this.showLoading();
 
-      let syncRes
+      let syncRes;
       try {
         // 1. 先同步数据
         try {
-          syncRes = await this.judgeCanApply()
+          syncRes = await this.judgeCanApply();
         } catch (error) {
-          this.hideLoading()
-          this.$toast(
-            'Your message verification failed, please wait a minute and try again'
-          )
-          return
+          this.hideLoading();
+          this.$toast("Carga fallida, inténtelo más tarde");
+          return;
         }
-        if (syncRes) {
+        if (syncRes.success) {
           // 2. 真正提交
           let res = await this.$http.post(`/api/order/mergePush/preApply`, {
             orderNo: this.$route.query.orderId,
-            productList: loanIds
-          })
+            productList: loanIds,
+          });
           if (res.returnCode == 2000) {
             await this.$http.post(`/api/order/mergePush/apply`, {
-              orderIdList: res.data.orderIdList
-            })
-            this.$toast('Apply successfully')
+              orderIdList: res.data.orderIdList,
+            });
+            this.$toast("Solicitud enviada con éxito");
             setTimeout((res) => {
-              this.getRecommendLoans()
-            }, 1000)
+              this.getRecommendLoans();
+            }, 1000);
           }
         }
       } catch (error) {
-        this.$toast(error.message)
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/parameters.scss';
-
-.multi {
-  .loan-tips {
-    padding-top: 40px;
-  }
-  .congratulations-title {
-    margin-top: 40px;
-    font-size: 16px;
-    font-weight: 400;
-    color: #333333;
-    line-height: 20px;
-    text-align: center;
-  }
-
-  .success-icon {
-    width: 140px;
-    height: 135px;
-    margin: 0 auto;
-  }
-
-  .line {
-    height: 1px;
-    width: 100%;
-    margin-top: 20px;
-    background: #e9e9e9;
-  }
-
-  .other-loans {
-    background: #ffffff;
-    margin: 0 20px;
-
-    .tips {
-      font-size: 14px;
-      font-weight: 400;
-      color: #333;
-      line-height: 18px;
-      background-image: url('@/assets/images/vip.png');
-      background-size: 335px 72px;
-      background-repeat: no-repeat;
-      background-attachment: local;
-      padding: 18px;
-      word-break: break-word;
-    }
-
-    .already-frame {
-      padding: 20px;
-
-      .checked-num {
-        font-size: 16px;
-        font-weight: bold;
-        line-height: 24px;
-      }
-
-      .loan-item {
-        background: #ffffff;
-        display: flex;
-        align-items: center;
-        margin-top: 20px;
-        position: relative;
-
-        .icon {
-          width: 40px;
-          height: 40px;
-          margin-right: 10px;
-        }
-
-        .name {
-          font-size: 14px;
-          font-family: Roboto-Black, Roboto;
-          font-weight: 900;
-          color: #333;
-          line-height: 18px;
-        }
-
-        .value {
-          font-size: 10px;
-          font-family: Roboto-Regular, Roboto;
-          font-weight: 400;
-          color: #999999;
-          line-height: 16px;
-
-          .symbol {
-            font-size: 12px;
-            font-family: Helvetica-Bold, Helvetica;
-            font-weight: bold;
-            color: #333333;
-            line-height: 14px;
-          }
-
-          .min-amount {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333333;
-            line-height: 20px;
-          }
-        }
-
-        &::after {
-          position: absolute;
-          content: ' ';
-          top: 0;
-          right: 0;
-          width: 24px;
-          height: 24px;
-          background-image: url(../assets/images/unselected.png);
-          background-repeat: no-repeat;
-          background-size: contain;
-        }
-
-        &.active {
-          &::after {
-            background-image: url(../assets/images/selected.png);
-          }
-        }
-      }
-    }
-  }
-
+.loan {
   .control-back {
     position: fixed;
     top: 0;
@@ -398,13 +303,13 @@ export default {
     background: rgba(0, 0, 0, 0.7);
     z-index: 222;
 
-    .content-frame {
-      width: 335px;
-      padding: 18px;
+    > .content {
+      width: 315px;
+      padding: 24px;
       padding-top: 0;
       box-sizing: border-box;
-      background: #ffffff;
-      border-radius: 8px;
+      background: #fff;
+      border-radius: 16px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -414,72 +319,254 @@ export default {
         position: relative;
         height: 54px;
         img {
-          width: 334px;
+          width: 315px;
           position: absolute;
           top: -27px;
           left: 50%;
           transform: translateX(-50%);
           display: block;
+          margin-bottom: 20px;
         }
       }
 
       .close {
-        width: 20px;
-        height: 20px;
         position: absolute;
-        top: -8px;
+        top: 16px;
         right: 16px;
         z-index: 2;
       }
-
       .content {
-        font-size: 18px;
+        font-size: 12px;
+        font-family: Roboto, Roboto;
         font-weight: 400;
-        color: #333;
-        line-height: 24px;
-        margin-top: 120px;
+        color: #333333;
+        line-height: 18px;
         word-break: break-word;
+        margin-top: 100px;
 
         .count {
-          font-size: 20px;
-          font-family: Roboto-Bold, Roboto;
-          font-weight: 500;
-          color: #000;
-          line-height: 30px;
-          margin-top: 20px;
-
-          span {
-            width: 54px;
-            height: 30px;
-            color: $themeColor;
-            font-size: 20px;
-            font-family: Roboto-Bold, Roboto;
-            font-weight: 500;
-            border: 1px solid $themeColor;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
+          height: 60px;
+          font-size: 14px;
+          font-family: Roboto, Roboto;
+          font-weight: bold;
+          color: #333;
+          line-height: 24px;
+          text-align: center;
+          margin-top: 10px;
+          background-image: url(../assets/images/countdown.png);
+          background-attachment: local;
+          background-position: top;
+          background-repeat: no-repeat;
+          flex-direction: column;
+          background-size: 275px 60px;
+          padding-top: 5px;
+          .time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #a05bf8;
+            line-height: 24px;
           }
         }
       }
 
-      .btn-default {
-        width: 100%;
-        height: 48px;
-        background: $themeColor;
-        border-radius: 24px;
-        border: none;
-        color: #fff;
-        font-size: 18px;
-        font-family: Roboto-Bold, Roboto;
-        font-weight: 900;
-        color: #ffffff;
-        line-height: 24px;
-        margin-top: 30px;
+      .action {
+        .btn-default {
+          width: 270px;
+          height: 36px;
+          background: #a05bf8;
+          border-radius: 18px;
+          border: none;
+          color: #fff;
+          font-size: 16px;
+          font-family: Roboto-Bold, Roboto;
+          font-weight: bold;
+          color: #ffffff;
+          line-height: 20px;
+          margin-top: 25px;
+        }
       }
     }
   }
+
+  .bottom-action {
+    width: 360px;
+    height: 100px;
+    background: #ffffff;
+    box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.12);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px 10px;
+    box-sizing: border-box;
+
+    .btns {
+      display: flex;
+      justify-content: space-between;
+      .btn-line {
+        width: 120px;
+      }
+      .btn-default {
+        width: 190px;
+      }
+    }
+    .tips {
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 16px;
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+  .other-loans {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 16px 0 -20px;
+    padding-bottom: 10px;
+
+    .tips {
+      width: 327px;
+      background: #ff4a43;
+      font-family: Roboto, Roboto;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #fff;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      word-break: break-word;
+      margin: 0 20px;
+    }
+
+    .checked-num {
+      width: 100%;
+      margin: 32px 0 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+      line-height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loan-item {
+      width: 335px;
+      background: #fff;
+      border: 1px solid #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+      margin: 0 auto 16px;
+
+      .name {
+        font-size: 14px;
+        font-family: Roboto-Black, Roboto;
+        font-weight: 900;
+        color: #000000;
+        line-height: 20px;
+      }
+      .value {
+        font-size: 10px;
+        font-family: Roboto-Regular, Roboto;
+        font-weight: 400;
+        color: #999999;
+        line-height: 16px;
+      }
+      .min-amount {
+        font-size: 20px;
+        font-weight: bold;
+        color: #fc0f0f;
+        line-height: 24px;
+      }
+      .icon {
+        width: 24px;
+        height: 24px;
+        display: block;
+        margin-right: 10px;
+      }
+      &::after {
+        position: absolute;
+        content: " ";
+        top: 16px;
+        right: 16px;
+        width: 24px;
+        height: 24px;
+        background-image: url(../assets/images/not-selected.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      &.active {
+        background: #f6effe;
+        border: 1px solid #a05bf8;
+        &::after {
+          background-image: url(../assets/images/selected.png);
+        }
+      }
+    }
+  }
+
+  .loan-tips {
+    padding-top: 100px;
+    .icon {
+      margin: 0 auto;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: 400;
+      color: #333333;
+      line-height: 20px;
+      text-align: center;
+      margin-top: 8px;
+      font-family: Roboto, Roboto;
+
+      span {
+        font-size: 13px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #a7a7a7;
+        line-height: 30px;
+      }
+    }
+    .apply {
+      width: 335px;
+      height: 48px;
+      background: #a05bf8;
+      border-radius: 24px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 24px;
+      margin-top: 30px;
+    }
+  }
+
+  &.multi {
+    .loan-tips {
+      padding-top: 32px;
+    }
+  }
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.row-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

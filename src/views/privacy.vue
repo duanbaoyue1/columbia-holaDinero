@@ -1,286 +1,271 @@
 <template>
-  <div>
+  <div class="h5-content content-area">
     <div class="header-frame">
-      <img class="logo" src="@/assets/images/agreement/privacy.png" />
+      <img class="logo" src="@/assets/img/creditomax/privacy.png" />
     </div>
     <div class="content-frame">
-      <div class="title-12-bold">
-        This privacy policy (hereinafter referred to as "Privacy Policy")
-        applies to data related to registered customers. Please read these terms
-        and conditions carefully. By using the Platform (as defined below), you
-        agree to be bound by all the terms and conditions of this Privacy
-        Policy.
+      <div class="title">
+        Nos comprometemos a proteger la privacidad de nuestros usuarios.
+        Mantener la información segura y evitar el uso indebido de los datos
+        personales de nuestros clientes es nuestra máxima prioridad.
+        Recopilamos, utilizamos y compartimos su información personal de acuerdo
+        con esta Política de Privacidad, que debe leer antes de proporcionar
+        información personal y utilizar Préstamos en Efectivo.
       </div>
-      <div class="title-12-bold margin-top-10">
-        The Platform recognises the importance of maintaining your privacy. By
-        accessing the CreditPark mobile application (hereinafter referred to as
-        "Company" or "we") and using the services we provide (hereinafter
-        referred to as "Services"), you agree to be bound by the terms and
-        conditions of this Privacy Policy and the conditions of this Privacy
-        Policy. This Privacy Policy has been formulated in accordance with the
-        provisions and rules relating to electronic records under the
-        Information Technology Act, 2000 and its amendments. This Privacy Policy
-        and Cookie Policy outlines the information that may be processed by the
-        Company and how visitors to the website and users of the mobile
-        application (hereinafter referred to as "Users", "You" or "Your") may
-        use our website in order to get a better service on the website or our
-        application. If you do not agree with this Policy or any part of it,
-        please do not use or access our Platform or any part of it.
+      <div class="title margin-top-20">
+        Esta Política de Privacidad describe qué información recopilamos de
+        usted, los fines para los que recopilamos y procesamos dicha
+        información, cómo la utilizamos, cuánto tiempo la conservamos y sus
+        derechos en relación con la misma. Debe leer esta Política de Privacidad
+        en su totalidad.
       </div>
-      <div class="title-14 margin-top-20">
-        Collection and use of your personal data
-      </div>
+      <div class="title-14 margin-top-20">1. Recopilación de información</div>
       <div class="title-12 margin-top-10">
-        In order to fulfil the purposes set out in this notice, we will collect
-        the following personal information about you ("data subject" and/or
-        "you") for processing: a) contact information, such as your full name,
-        contact telephone number, email address, postal address and other
-        similar information; b) financial information, such as your full bank
-        account details and/or credit card details; and c) sensitive personal
-        information, such as your date of birth, marital status and/or
-        government-issued identification data (collectively, "Personal
-        Information"). Personally Identifiable Information does not include
-        anonymised information or aggregated information that does not identify
-        a specific individual. We may also, at our discretion, request a photo
-        of your Personal Information during the application process or while the
-        loan is still in effect to verify all information you have provided to
-        us. We do not collect sensitive personal information about borrowers.
+        En virtud de lo anterior, le informamos que al realizar una solicitud y
+        proporcionar sus datos personales a través de nuestro sitio web o
+        aplicación nativa Android ("Aplicación") con el fin de prestar los
+        servicios de crédito ofrecidos por RápidoCash, RápidoCash obtendrá sus
+        datos personales, ya sea directa o indirectamente, vía telefónica, a
+        través de terceros o por cualquier otro medio personal o electrónico.
         <br />
         <br />
-        You may delete your personal information at any time by contacting our
-        Customer Service Centre. Personal information will not be used or
-        processed for purposes other than those stated herein.
+        Almacenamiento de datos, para toda la información recabada, la
+        almacenamos en los servidores de RápidoCash
+        (https://t6v9i.ra-pidocash.com/cewwl/wkywfj), con alta seguridad de
+        protección de la información, y no es compartida con ningún tercero.
       </div>
-      <div class="sms-frame margin-top-10" style="background-color: #fffc54">
+      <div class="title-14 margin-top-20">Permisos que solicitamos.</div>
+      <div class="title-12 margin-top-10">
+        Por favor, lea atentamente lo siguiente para entender nuestros puntos de
+        vista y prácticas con respecto a sus datos personales y cómo los
+        procesaremos.
+      </div>
+      <div class="sms-frame margin-top-33">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/sms.png" />
           <div>SMS</div>
         </div>
         <div class="sms title-12">
-          We need to collect your SMS data, but we filter and delete personal
-          SMS data on our servers, we only collect and monitor financial SMS
-          messages that contain a 6-digit alphanumeric verification code in the
-          inbox, this includes the sender's number and name, as well as the
-          content of the message and its history. This information will be used
-          for credit assessment, risk management and anti-fraud checks, to
-          determine and assess your eligibility for a loan and to recommend a
-          more suitable financial lending service to the user. The SMS data will
-          be encrypted and uploaded to our server
-          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via HTTPS protocol. We
-          will never share this data with third parties.
+          Estamos obligados a recopilar mensajes SMS relacionados con
+          transacciones financieras y no recopilamos ni almacenamos ningún
+          mensaje de texto personal. Estos mensajes se utilizan para construir
+          su perfil social y financiero, para llevar a cabo evaluaciones de
+          crédito y para proporcionarle ofertas de préstamos pre-aprobados. Sólo
+          subiremos estos mensajes a nuestros servidores
+          (https://t6v9i.ra-pidocash.com/cewwl/wkywfj) en un entorno en línea
+          seguro con su consentimiento explícito y nunca compartiremos estos
+          datos con terceros.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-33">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/installed.png" />
-          <div>Installed applications</div>
+          <div>Registros de llamadas</div>
         </div>
         <div class="sms title-12">
-          We will check the list of apps installed on your device to identify
-          and analyse their behaviour and risk across multiple loans and analyse
-          for fraud. If our automated detection model detects a risk when
-          processing a transaction or approving a loan, the user's transaction
-          may be rejected. This data will be encrypted and uploaded to our
-          servers at https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via the HTTPS
-          protocol. We will never share this data with third parties.
+          Una vez que nos haya autorizado a ver el registro de llamadas, le
+          haremos una llamada de voz. El motivo de recopilar los registros de
+          llamadas es poder confirmar que está utilizando su propio teléfono
+          móvil para instalar nuestra aplicación y que está recibiendo de
+          nosotros la verificación dinámica de contraseñas en su dispositivo
+          móvil. En concreto, supervisaremos sus registros de llamadas para
+          comprobar si está recibiendo registros de autenticación de contraseñas
+          dinámicas de nuestra aplicación. Sólo subiremos esta información a
+          nuestros servidores (https://t6v9i.ra-pidocash.com/cewwl/wkywfj) en un
+          entorno en línea seguro con su consentimiento explícito y nunca
+          compartiremos estos datos con terceros.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-20">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/call.png" />
-          <div>Call log information</div>
+          <div>Calendario</div>
         </div>
         <div class="sms title-12">
-          We need to access your call log information, including call number,
-          call status and call duration. As we need to verify the identity of
-          the user, we will verify the device by making a call and checking the
-          call log for the relevant number to determine if you have received
-          call verification. This allows us to determine if there is a risk of
-          fraud to ensure the security of your account. Call log data will be
-          encrypted and uploaded to our servers at
-          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk using the HTTPS protocol.
-          We will never share this data with third parties.
+          Necesitamos su permiso para acceder a la información de su calendario
+          para recordarle las fechas de pago y evitar el impacto de la morosidad
+          en su crédito.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-20">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/device.png" />
-          <div>Device Information</div>
+          <div>Estado del teléfono</div>
         </div>
         <div class="sms title-12">
-          We will collect information about your mobile device, including
-          hardware model, operating system and version, software and file name
-          and version, unique device identifiers (such as IMEI and serial
-          number), advertising identifiers, device motion information and mobile
-          network information. The sole purpose is to identify your device, to
-          ensure that your device is not used without your authorisation and to
-          prevent fraud.
+          Necesitamos recopilar y controlar información específica sobre su
+          dispositivo, incluido su modelo de hardware, RAM, almacenamiento.
+          Identificadores únicos del dispositivo, como IMEI, número de serie,
+          SSAID. Información de la tarjeta SIM, incluido el operador de red, el
+          estado de itinerancia, información WIFI, incluida la dirección MAC e
+          información de la red móvil. Estos datos se cifrarán y se cargarán en
+          nuestra plataforma únicamente con fines antifraude y de evaluación
+          crediticia.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-20">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/calendar.png" />
-          <div>Calendar</div>
+          <div>Contactos de emergencia</div>
         </div>
         <div class="sms title-12">
-          We request access to your calendar for credit due payment reminders
-          and to collect event information from your calendar to assist in risk
-          analysis to expedite and improve the credit approval process. This
-          data will be encrypted and uploaded to our servers at
-          https://shf8226ren.credit-parks.com/lmjajmkf/lmrjmsjyehdk via the HTTPS protocol. We
-          never share this data with third parties.
+          Le pedimos que seleccione manualmente un contacto de emergencia de la
+          lista de contactos, incluido el nombre y el número de teléfono, esta
+          función se utiliza en caso de que no podamos ponernos en contacto con
+          usted. Sólo los contactos seleccionados manualmente por el usuario se
+          transmiten a nuestra aplicación de forma encriptada. Nunca
+          recopilaremos ninguna otra información sobre usted sin su
+          consentimiento.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-20">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/camera.png" />
-          <div>Camera</div>
+          <div>Aplicaciones instaladas</div>
         </div>
         <div class="sms title-12">
-          We require camera access and will use the camera on your mobile device
-          to verify the applicant's identity, take a selfie, scan and capture
-          the required KYC documents so that you can quickly submit your
-          application.
+          Necesitamos recopilar el contenido de las aplicaciones instaladas:
+          incluido el nombre de la aplicación, el nombre del paquete de
+          aplicaciones y la hora en que se instaló la aplicación. El objetivo es
+          utilizarlo para identificar y analizar el comportamiento de los
+          usuarios y el riesgo de que varios usuarios soliciten el mismo
+          préstamo. También nos preocupan los riesgos de blanqueo de dinero. Si
+          nuestro modelo de detección automática detecta un riesgo al procesar
+          una transacción o aprobar un préstamo, la transacción del usuario
+          puede ser rechazada. Sólo subiremos esta información a nuestros
+          servidores (https://t6v9i.ra-pidocash.com/cewwl/wkywfj) en un entorno
+          en línea seguro con su consentimiento explícito y nunca compartiremos
+          estos datos con terceros.
         </div>
       </div>
-      <div class="sms-frame margin-top-10">
+      <div class="sms-frame margin-top-20">
         <div class="display-row icon-title-frame title-14">
-          <img class="icon" src="@/assets/images/agreement/location.png" />
-          <div>Location</div>
+          <div>Cámaras</div>
         </div>
         <div class="sms title-12">
-          We collect and detect crude location information from your device in
-          order to service your loan application, reduce the risk associated
-          with your loan application and provide pre-approved, personalised loan
-          offers. This also helps us verify your address, make better decisions
-          about credit risk, and expedite your loan process.
+          Para asegurarte de que la información de tu préstamo es correcta,
+          debes utilizar una cámara para hacerte una foto de identificación y
+          subirla para reconocimiento facial cuando envíes la información de tu
+          solicitud de préstamo. La foto que suba se utilizará para evaluar su
+          crédito. Obtenga una línea de crédito y disfrute de una experiencia de
+          préstamo sin complicaciones.
         </div>
       </div>
-      <div class="title-14 margin-top-30">Use of your personal data</div>
-      <div class="title-12-bold margin-top-10">
-        The company will use the personal data for the following purposes:
+      <div class="sms-frame margin-top-20">
+        <div class="display-row icon-title-frame title-14">
+          <div>Localización</div>
+        </div>
+        <div class="sms title-12">
+          Recopilamos y detectamos información sobre la ubicación aproximada de
+          su equipo para determinar si se encuentra dentro de nuestra área de
+          servicio y recomendarle en consecuencia mejores productos y servicios
+          de préstamo.
+        </div>
+      </div>
+      <div class="title-14 margin-top-20">
+        2. Fines de la recogida y uso de información personal
       </div>
       <div class="title-12">
         <ul>
           <li>
-            providing support and maintenance for our services, including
-            monitoring them.
+            Para verificar que su envío utiliza su información verdadera y no el
+            uso de su identidad por parte de otra persona.
           </li>
           <li>
-            to manage your account, i.e. to manage your registration as a user
-            of our Services. The personal data you share may give you access to
-            different features of the Service, if you are a registered user.
+            Para determinar su elegibilidad para los préstamos de conformidad
+            con las normas aplicables.
           </li>
           <li>
-            we will contact you by email, telephone, SMS or other equivalent
-            form of electronic communication.
+            Para analizar el fraude y garantizar la seguridad de los fondos
+            durante las transacciones.
           </li>
           <li>
-            provide you with news, special offers and information about other
-            goods, services and events we offer that are similar to those you
-            have purchased or received, unless you have opted out of receiving
-            such information.
+            Mediante el análisis de datos, optimizamos nuestras aplicaciones y
+            servicios para ofrecer un servicio de calidad.
           </li>
-          <li>to respond to and manage your requests.</li>
           <li>
-            for other purposes such as data analysis, identification of usage
-            trends, evaluating the effectiveness of our promotions, and general
-            evaluation and improvement of our services, products, sales
-            strategies and your experience with us.
+            Para celebrar con usted contratos legalmente protegidos que
+            garanticen que ambas partes cumplen sus obligaciones legales.
           </li>
         </ul>
       </div>
-      <div class="title-14 margin-top-30">Public disclosure of data</div>
-      <div class="title-12-bold margin-top-10">
-        We will publicly disclose your personal information only under the
-        following circumstances:
-      </div>
-      <div class="title-12">
-        <ul>
-          <li>Obtaining your explicit authorisation or personal consent;</li>
-          <li>
-            Disclosure based on laws and regulations: We may publicly disclose
-            your personal information when required by laws and regulations,
-            legal proceedings, litigation, or government or regulatory agencies.
-          </li>
-        </ul>
-      </div>
-      <div class="title-14 margin-top-30">Retention of your personal data</div>
+      <div class="title-14 margin-top-20">3. Conservación de datos</div>
       <div class="title-12 margin-top-10">
-        Company will retain your Personal Data only for as long as is necessary
-        for the purposes set out in this Privacy Policy. We will retain and use
-        your personal data to the extent necessary to comply with our legal
-        obligations (for example, if we need to retain your data to comply with
-        applicable law), resolve disputes and enforce our legal agreements and
-        policies.
+        Conservamos su información mientras su cuenta esté activa o según sea
+        necesario para prestar los servicios de la aplicación. Conservaremos y
+        utilizaremos la información que recopilemos según sea necesario para
+        cumplir con nuestras obligaciones legales, resolver litigios o para
+        otros fines comerciales. No estamos obligados a conservar su información
+        si cancela/desactiva/termina su cuenta con nosotros. Sin perjuicio de
+        ello, podemos conservar su información durante un período de doce (12)
+        meses después de que cancele/desactive/anule la suscripción de su cuenta
+        con nosotros para garantizar el cumplimiento de las leyes aplicables.
+      </div>
+      <div class="title-14 margin-top-20">4. Seguridad de la información</div>
+      <div class="title-12 margin-top-10">
+        Aplicamos una serie de medidas de seguridad para mantener la seguridad
+        de su información personal cuando realiza un pedido o introduce, envía o
+        accede a su información personal. Proporcionamos acceso a servidores
+        seguros. Toda la información confidencial/credencial facilitada se
+        transmite a través de la tecnología Secure Socket Layer (SSL) y, a
+        continuación, se cifra en la base de datos de nuestro proveedor de
+        pasarelas de pago, a la que sólo pueden acceder las personas que tienen
+        derechos especiales de acceso a dichos sistemas y están obligadas a
+        mantener la confidencialidad de la información. Al realizar
+        transacciones posteriores, su información privada (tarjetas de crédito,
+        números de la seguridad social, finanzas, etc.) nunca se archiva. Sin
+        embargo, no podemos asegurar ni garantizar la seguridad absoluta de
+        cualquier información que nos transmita, ni podemos garantizar que no
+        podrá acceder, divulgar, alterar o interrumpir los Servicios violando
+        cualquiera de nuestras normas físicas, técnicas o administrativas.
+      </div>
+      <div class="title-14 margin-top-20">5. Cookies</div>
+      <div class="title-12 margin-top-10">
+        Utilizamos cookies para identificarle como usuario y facilitar su
+        experiencia de usuario, para optimizar nuestros servicios, contenidos y
+        anuncios, para ayudar a mantener su cuenta segura, reducir el riesgo y
+        prevenir el fraude, y para promover la confianza y la seguridad.
         <br />
         <br />
-        The Company will also retain Usage Data for internal analysis purposes.
-        Usage data will generally be retained for a shorter period of time,
-        unless the data is used to enhance security or improve the functionality
-        of our services, or we are legally obliged to retain the data for a
-        longer period of time.
-      </div>
-      <div class="title-14 margin-top-30">Security of your personal data</div>
-      <div class="title-12 margin-top-10">
-        The security of your personal data is important to us, but please
-        remember that no method of Internet transmission or method of electronic
-        storage is 100% secure. Whilst we endeavour to use commercially
-        acceptable methods to protect your personal data, we cannot guarantee
-        its absolute security.
-      </div>
-      <div class="title-14 margin-top-30">
-        Deletion of your personal information
-      </div>
-      <div class="title-12-bold margin-top-10">
-        You can ask us to delete your personal information in the following
-        cases:
-      </div>
-      <div class="title-12">
-        <ul>
-          <li>
-            The purpose of information processing has been achieved, cannot be
-            achieved or is no longer necessary to achieve the purpose of
-            processing;
-          </li>
-          <li>
-            If our processing of personal data violates laws and administrative
-            regulations;
-          </li>
-          <li>
-            if we collect or use your personal data without your consent or you
-            withdraw your consent;
-          </li>
-          <li>
-            if our processing of personal data violates our agreement with you;
-          </li>
-          <li>
-            if you no longer use our products (or services) or you withdraw from
-            your account;
-          </li>
-          <li>
-            if we no longer provide products (or services) to you or the
-            warranty period has expired;
-          </li>
-          <li>
-            other circumstances stipulated by laws and administrative
-            regulations.
-          </li>
-        </ul>
-      </div>
-      <div class="title-14 margin-top-30">Changes to Privacy Statement</div>
-      <div class="title-12 margin-top-10">
-        CreditPark may at any time make modifications, changes and/or updates to
-        this Statement as necessary to comply with applicable legal
-        requirements, our privacy practices, or for other reasons, which we will
-        notify you of by posting on our website and on the Application.
-      </div>
-      <div class="title-14 margin-top-30">Contact Us</div>
-      <div class="title-12 margin-top-10">
-        If you have any questions about this privacy policy, you can contact us
+        Las cookies permiten a nuestros servidores recordar direcciones IP,
+        fecha y hora de acceso, controlar el tráfico web y prevenir actividades
+        fraudulentas.
         <br />
         <br />
-        By email: CreditParkcs01@outlook.com
+        Nuestras cookies nunca almacenan información personal o sensible;
+        simplemente hacen una referencia única y aleatoria a usted para que
+        podamos reconocerle y ofrecerle determinados contenidos tras su visita
+        al sitio web.
+        <br />
+        <br />
+        Puede optar por desactivar las cookies en nuestro sitio web si su
+        navegador o complemento de navegador lo permite, pero esto puede afectar
+        a su experiencia de uso de nuestro sitio web.
+      </div>
+      <div class="title-14 margin-top-20">
+        6. Cambios en la Declaración de Privacidad
+      </div>
+      <div class="title-12 margin-top-10">
+        Cualquier actualización, modificación o cambio de esta Declaración de
+        Privacidad que se realice en respuesta a desarrollos legislativos y/o
+        cambios en las políticas internas de RápidoCash se publicará en el sitio
+        web.
+        <br />
+        <br />
+        No obstante, cuando se produzcan cambios sustanciales en el contenido de
+        esta declaración de privacidad. Por ejemplo, si cambian los fines para
+        los que se recogen los datos personales, le informaremos de ello y
+        solicitaremos de nuevo su consentimiento para seguir tratando sus datos
+        personales.
+      </div>
+      <div class="title-14 margin-top-20">
+        7. Póngase en contacto con nosotros
+      </div>
+      <div class="title-12 margin-top-10">
+        Si tiene alguna pregunta sobre nuestra declaración de privacidad, no
+        dude en ponerse en contacto con nuestro servicio de atención al cliente
+        por teléfono, correo electrónico o whatsapp.
+        <br />
+        <br />
+        Correo electrónico: rapidocashcs01@outlook.com (respuesta en 2-3 días
+        laborables)
+        <br />
+        <br />
+        Horario laboral: Lunes a sábado 9:00-18:30
       </div>
     </div>
   </div>
@@ -288,35 +273,53 @@
 
 <script>
 export default {
+  created() {},
   mounted() {
-    this.setTabBar({
-      show: true,
-      fixed: true,
-      transparent: true,
-      title: ''
-    })
+    if (!this.noHeader) {
+      this.setTabBar({
+        show: true,
+        fixed: true,
+        transparent: true,
+        title: "",
+      });
+    } else {
+      this.setTabBar({
+        show: false,
+      });
+    }
   },
   data() {
     return {
-      noHeader: this.$route.query.noHeader || false
-    }
-  }
-}
+      noHeader: this.$route.query.noHeader || false,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+.h5-content {
+  background: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+  line-height: 16px;
+  word-break: break-word;
+  padding-bottom: 70px;
+  position: relative;
+  top: -80px;
+}
+
 .header-frame {
-  width: 253px;
+  width: 100%;
   margin: 0 auto;
 }
 .logo {
   width: 100%;
-  margin-top: 62px;
 }
 .content-frame {
   word-break: break-word;
   padding: 0 20px;
-  margin: 20px 0 70px 0;
+  margin: -190px 0 70px 0;
 }
 .subtitle {
   font-size: 12px;
@@ -342,26 +345,19 @@ li::marker {
   color: #333;
 }
 .sms-frame {
-  background: #ecfaf8;
-  border-radius: 14px;
+  background: #f0faec;
+  border-radius: 16px;
 }
 .sms {
   border-radius: 8px;
-  padding: 20px;
-}
-.title-12-bold {
-  font-size: 12px;
-  font-family: Roboto-Bold, Roboto;
-  font-weight: bold;
-  color: #333;
-  line-height: 16px;
+  padding: 0 20px 20px;
 }
 .title-12 {
   font-size: 12px;
   font-family: Roboto-Bold, Roboto;
   font-weight: 400;
   color: #333;
-  line-height: 16px;
+  line-height: 18px;
 }
 .title-14 {
   font-size: 14px;
@@ -376,22 +372,32 @@ li::marker {
 .margin-top-20 {
   margin-top: 20px;
 }
-.margin-top-30 {
-  margin-top: 30px;
+.margin-top-33 {
+  margin-top: 33px;
 }
 .display-row {
   display: flex;
 }
 .icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  margin: 6px 10px 0;
 }
 .icon-title-frame {
-  background: #fd973f;
-  border-radius: 15px;
+  color: #fff;
+  background: #a05bf8;
+  border-radius: 6px;
   display: inline-flex;
-  padding-right: 16px;
+  padding: 0 10px;
   line-height: 30px;
+  position: relative;
+  top: -13px;
+}
+.title {
+  font-size: 12px;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: bold;
+  color: #000000;
+  line-height: 16px;
 }
 </style>

@@ -1,103 +1,112 @@
 <template>
   <div class="order-item">
-    <div class="status" :class="'status-' + order.orderStatus">
-      {{ statusText }}
+    <div class="head">
+      <img :src="order.productIconImageUrl" />
+      <div>{{ order.productName }}</div>
     </div>
-    <div class="info column-direction">
-      <div class="column-direction-center">
-        <img :src="order.productIconImageUrl" />
-        <div class="product-name">{{ order.productName }}</div>
+    <div class="info">
+      <div>
+        <div>{{ dateValue }}</div>
+        <div>{{ dateText }}</div>
       </div>
-      <span
-        class="repaid"
-        v-if="[80, 90].includes(order.orderStatus)"
-        @click="goFillUtr"
-        >Repaid?</span
-      >
+      <div>
+        <div>
+          <span class="money">$</span>
+          <span>{{ amountValue }}</span>
+        </div>
+        <div>{{ amountText }}</div>
+      </div>
     </div>
-    <div class="row-space-between margin-top-20">
-      <div class="column-direction-center">
-        <span class="title">{{ dataValue.amountText }}</span>
-        <span class="number">
-          <span class="label2">₹</span>{{ dataValue.amountValue }}</span
-        >
-      </div>
-      <div class="column-direction-center">
-        <span class="title">{{ dataValue.dateText }}</span>
-        <span class="number">{{ dataValue.dateValue }}</span>
-      </div>
-      <div class="flex-end column-direction">
-        <button
-          class="action-btn"
-          :class="'action-btn-' + order.orderStatus"
-          @click="goDetail"
-        >
-          {{ order.orderStatusStr }}
-        </button>
-      </div>
+    <div class="action" :class="'action-' + order.orderStatus">
+      <div class="status">{{ statusText }}</div>
+      <button class="action-btn" @click="goDetail">
+        {{ order.orderStatusStr }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    order: {
-      type: Object,
-      default: () => {},
-    },
-  },
+  props: ["order"],
+
   computed: {
-    dataValue() {
-      if ([80, 90].includes(this.order.orderStatus)) {
-        return {
-          dateValue: this.order.repaymentTime,
-          amountValue: this.order.repaymentAmount,
-          amountText: "Repayable Amount",
-          dateText: "Due Date",
-        };
+    dateValue() {
+      if (this.order.orderStatus == 80 || this.order.orderStatus == 90) {
+        return this.order.repaymentTime;
       } else {
-        return {
-          dateValue: this.order.applyTime,
-          amountValue: this.order.approvalAmount,
-          amountText: "Loan Amount",
-          dateText: "Apply Date",
-        };
+        return this.order.applyTime;
+      }
+    },
+    amountValue() {
+      if (this.order.orderStatus == 80 || this.order.orderStatus == 90) {
+        return this.order.repaymentAmount;
+      } else {
+        return this.order.approvalAmount;
+      }
+    },
+
+    amountText() {
+      if (
+        this.order.orderStatus == 80 ||
+        this.order.orderStatus == 90 ||
+        this.order.orderStatus == 100 ||
+        this.order.orderStatus == 101
+      ) {
+        return `Monto de reembolso`;
+      } else {
+        return `Importe de préstamo`;
+      }
+    },
+    dateText() {
+      if (
+        this.order.orderStatus == 80 ||
+        this.order.orderStatus == 90 ||
+        this.order.orderStatus == 100 ||
+        this.order.orderStatus == 101
+      ) {
+        return `Fecha de vencimiento`;
+      } else {
+        return `Fecha de aplicación`;
       }
     },
     statusText() {
       switch (this.order.orderStatus) {
         case 10:
-          return "Pending to apply";
+          return "Pendiente de aplicar";
         case 20:
-          return "Reviewing";
+          return "Evaluando";
         case 21:
-          return "Reviewing";
+          return "Evaluando";
         case 30:
-          return "Disbursing";
+          return "Desembolsando";
         case 40:
-          return "Rejected";
+          return "Incapaz";
         case 70:
-          return "Disbursing";
+          return "Desembolsando";
         case 80:
-          return "Repaying";
+          return "Reembolsando";
         case 90:
-          return "Overdue";
+          return "Atrasado";
         case 100:
-          return "Done";
+          return "Completado";
         case 101:
-          return "Done";
+          return "Completado";
+        case 110:
+          return "Fracaso";
         default:
-          return "Reviewing";
+          return "Evaluando";
       }
     },
   },
+
   methods: {
-    goFillUtr() {
-      this.innerJump("utr", { orderId: this.order.orderNo, type: "repay" });
-    },
     goDetail() {
-      if ([10, 100, 101, 100].includes(this.order.orderStatus)) {
+      if (
+        this.order.orderStatus == 10 ||
+        this.order.orderStatus == 100 ||
+        this.order.orderStatus == 101
+      ) {
         this.goHome();
       } else {
         this.innerJump("orderDetail", { orderId: this.order.orderNo });
@@ -116,143 +125,156 @@ export default {
   padding: 16px 16px 14px;
   box-sizing: border-box;
   position: relative;
+  .head {
+    display: flex;
+    font-size: 14px;
+    font-family: Roboto-Regular, Roboto;
+    font-weight: 400;
+    color: #333333;
+    line-height: 18px;
+    align-items: center;
+    margin-bottom: 26px;
+    img {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+    }
+  }
+  .action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
 
-  .action-btn {
-    min-width: 78px;
-    height: 32px;
-    font-size: 12px;
-    font-family: Roboto-Medium, Roboto;
-    font-weight: 500;
-    color: #ffffff;
-    line-height: 20px;
-    background: #ffbc41;
-    border-radius: 16px;
-    border: none;
+    .status {
+      font-size: 10px;
+      font-weight: 500;
+      color: #ffbc41;
+      line-height: 12px;
+      transform: scale(0.9);
+      padding: 4px 12px;
+      border-radius: 12px;
+      border: 1px solid #ffbc41;
+    }
 
     &-10 {
-      background: #ffbc41;
+      .status {
+        border-color: #ffbc41;
+        color: #ffbc41;
+      }
+      .action-btn {
+        background: #ffbc41;
+      }
     }
     &-20,
-    &-21 {
-      background: #f125a8;
+    &-21,
+    &-30 {
+      .status {
+        border-color: #f125a8;
+        color: #f125a8;
+      }
+      .action-btn {
+        background: #f125a8;
+      }
     }
     &-40 {
-      background: #ff1412;
+      .status {
+        border-color: #ff1412;
+        color: #ff1412;
+      }
+      .action-btn {
+        background: #ff1412;
+      }
     }
-    &-30,
     &-70 {
-      background: #3e56fe;
+      .status {
+        border-color: #3e56fe;
+        color: #3e56fe;
+      }
+      .action-btn {
+        background: #3e56fe;
+      }
     }
     &-80,
     &-90 {
-      background: #f15a25;
+      .status {
+        border-color: #f15a25;
+        color: #f15a25;
+      }
+      .action-btn {
+        background: #f15a25;
+      }
     }
     &-100,
     &-101 {
-      background: #04ca1c;
+      .status {
+        border-color: #04ca1c;
+        color: #04ca1c;
+      }
+      .action-btn {
+        background: #04ca1c;
+      }
     }
-  }
-  .status {
-    width: 90px;
-    height: 28px;
-    font-size: 10px;
-    font-family: Roboto-Medium, Roboto;
-    font-weight: 500;
-    color: #fff;
-    background-image: url("@/assets/images/order-reloan.png");
-    background-size: 90px 28px;
-    background-repeat: no-repeat;
-    box-sizing: border-box;
-    background-attachment: local;
-    position: absolute;
-    top: -6px;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
-    &-10 {
-      width: 120px;
-      background-size: 120px 28px;
-      background-image: url("@/assets/images/order-pending-to-apply.png");
+    .number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333333;
+      line-height: 24px;
     }
-    &-20,
-    &-21 {
-      background-image: url("@/assets/images/order-reviewing.png");
+    .label {
+      font-size: 12px;
+      font-family: Roboto-Regular, Roboto;
+      font-weight: 400;
+      color: #999999;
+      line-height: 14px;
+      margin-right: 8px;
     }
-    &-30,
-    &-70 {
-      background-image: url("@/assets/images/order-disbursing.png");
+    .label2 {
+      font-size: 12px;
+      font-family: Helvetica-Bold, Helvetica;
+      font-weight: bold;
+      color: #333333;
+      line-height: 12px;
     }
-    &-40 {
-      background-image: url("@/assets/images/order-rejected.png");
+    &-btn {
+      font-size: 12px;
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 18px;
+      padding: 4px 8px;
+      background: #ffbc41;
+      border-radius: 16px;
+      border: none;
     }
-    &-80 {
-      background-image: url("@/assets/images/order-repaying.png");
-    }
-    &-90 {
-      background-image: url("@/assets/images/order-overdue.png");
-    }
-    &-100,
-    &-101 {
-      width: 58px;
-      background-size: 58px 28px;
-      background-image: url("@/assets/images/order-done.png");
-    }
-  }
-
-  .title {
-    font-size: 10px;
-    font-family: Roboto-Regular, Roboto;
-    font-weight: 400;
-    color: #999999;
-    line-height: 16px;
-  }
-
-  .number {
-    font-size: 16px;
-    font-family: DINAlternate-Bold, DINAlternate;
-    font-weight: bold;
-    color: #333333;
-    line-height: 18px;
-    margin-top: 8px;
-  }
-
-  .label2 {
-    font-size: 12px;
-    font-family: Helvetica-Bold, Helvetica;
-    font-weight: bold;
-    color: #333333;
-    line-height: 12px;
   }
 
   .info {
     display: flex;
+    align-items: flex-start;
     padding-bottom: 16px;
+    border-bottom: 1px solid #e9e9e9;
+    > div {
+      width: 50%;
 
-    img {
-      width: 50px;
-      height: 50px;
-      display: block;
-    }
-    .product-name {
-      font-size: 14px;
-      font-family: Roboto-Black, Roboto;
-      font-weight: 900;
-      color: #333333;
-      line-height: 18px;
-      margin-top: 2px;
-    }
-
-    .repaid {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      font-size: 10px;
-      font-weight: 500;
-      color: #ff4b3f;
-      line-height: 12px;
-      text-decoration: underline;
+      > div {
+        text-align: center;
+        font-size: 12px;
+        font-family: Roboto-Regular, Roboto;
+        font-weight: 400;
+        color: #999999;
+        transform: scale(0.9);
+        .money {
+          font-size: 12px;
+        }
+        &:first-child {
+          font-size: 18px;
+          font-weight: bold;
+          color: #333333;
+          transform: scale(1);
+          margin-bottom: 4px;
+        }
+      }
     }
   }
 }

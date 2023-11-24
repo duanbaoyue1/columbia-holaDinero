@@ -7,7 +7,7 @@
       :class="{
         'has-tab': $route.meta.showTab,
         'has-nav': tabBar.show,
-        'background-fff': $route.meta.backgroundFFF
+        'background-fff': $route.meta.backgroundFFF,
       }"
     >
       <nav-bar v-show="mounted && tabBar.show" />
@@ -26,85 +26,86 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 
-import navBar from '@/components/navBar'
-import tabBar from '@/components/tabBar'
+import navBar from "@/components/navBar";
+import tabBar from "@/components/tabBar";
 
 export default {
   components: {
     navBar,
-    tabBar
+    tabBar,
   },
   data() {
     return {
-      showRepayment: !!localStorage.getItem('app-is-multi'),
-      mounted: false
-    }
+      showRepayment: !!localStorage.getItem("app-is-multi"),
+      mounted: false,
+    };
   },
   created() {
     this.setTabBar({
-      show: false
-    })
+      show: false,
+    });
   },
   async mounted() {
     document.documentElement.style.fontSize =
-      document.documentElement.clientWidth / 10 + 'px'
+      document.documentElement.clientWidth / 10 + "px";
+
     setTimeout((res) => {
-      this.mounted = true
-    }, 500)
+      this.mounted = true;
+    }, 500);
   },
   computed: {
-    ...mapState(['isAppChecked', 'appMode'])
+    ...mapState(["isAppChecked", "appMode"]),
   },
   watch: {
-    'appMode.maskModel': {
+    "appMode.maskModel": {
       handler(newVal, oldVal) {
-        if (this.appMode && typeof this.appMode.maskModel != 'undefined') {
+        if (this.appMode && typeof this.appMode.maskModel != "undefined") {
           if (this.appMode.maskModel == 1) {
-            this.showRepayment = true
+            this.showRepayment = true;
           } else {
-            this.showRepayment = false
-            localStorage.removeItem('app-is-multi')
+            this.showRepayment = false;
+            localStorage.removeItem("app-is-multi");
           }
         }
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
 
     $route(to, from) {
-      console.log('route change', from, to, this.$route.meta.showTab)
-      document.body.style.overflow = ''
-      document.title = to.meta.title || ''
-      this.toAppMethod('holdUp', { isInterception: false })
+      console.log("route change", from, to, this.$route.meta.showTab);
+      document.body.style.overflow = "";
+      document.title = to.meta.title || "";
+      this.toAppMethod("holdUp", { isInterception: false });
       try {
-        this.hideLoading()
+        this.hideLoading();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      this.checkAndSetAppLocal()
+      this.checkAndSetAppLocal();
       if (to.query.nextUrl && from && from.name) {
-        this.openWk(to.query.nextUrl)
+        this.openWebview(to.query.nextUrl);
       }
       if (to.query.token) {
-        this.updateToken({ token: to.query.token })
+        this.updateToken({ token: to.query.token });
       }
-      if (to.query.appChecked || sessionStorage.getItem('app-checked')) {
-        this.setAppChecked(true)
+      if (to.query.appChecked || sessionStorage.getItem("app-checked")) {
+        this.setAppChecked(true);
       }
-    }
+    },
   },
   methods: {
-    ...mapActions(['setAppGlobal', 'setAppChecked', 'updateToken']),
+    ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
     checkAndSetAppLocal() {
-      let appLocal = localStorage.getItem('app-local')
+      let appLocal = localStorage.getItem("app-local");
       if (appLocal) {
-        this.setAppGlobal(JSON.parse(appLocal))
+        this.setAppGlobal(JSON.parse(appLocal));
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">

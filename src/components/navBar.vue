@@ -1,12 +1,22 @@
 <template>
   <van-nav-bar
-    :class="{ transparent: tabBar.transparent }"
+    :class="{
+      transparent: tabBar.transparent,
+      'title-trans': $route.meta.navReturnFFF,
+    }"
     :fixed="tabBar.fixed"
     :title="tabBar.title"
     @click-left="onBack"
   >
     <template #left>
-      <img class="icon" src="@/assets/images/return.png" />
+      <m-icon
+        v-if="$route.meta.navReturnFFF"
+        class="left"
+        type="return-fff"
+        :width="16"
+        :height="16"
+      />
+      <m-icon v-else class="left" type="return" :width="16" :height="16" />
     </template>
   </van-nav-bar>
 </template>
@@ -16,23 +26,19 @@ export default {
   mounted() {},
   methods: {
     onBack() {
-      console.log('onclick back', this.tabBar)
       if (this.tabBar.backCallback) {
-        console.log('on tabBar.backCallback')
-        this.tabBar.backCallback()
-        return
+        this.tabBar.backCallback();
+        return;
       } else {
-        console.log('on goAppBack')
-        this.goAppBack()
+        this.goAppBack();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.icon {
-  width: 16px;
-  height: 16px;
+.left {
+  margin-left: 5px;
 }
 </style>

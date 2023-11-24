@@ -2,54 +2,91 @@
   <div class="password content-area">
     <div class="edit-area">
       <div class="line-item">
-        <div class="label">Phone Number</div>
+        <div class="label">
+          <m-icon
+            class="icon"
+            type="creditomax/Phone number"
+            :width="18"
+            :height="20"
+          />
+          Número de teléfono
+        </div>
         <input v-model="userInfo.mobile" disabled />
       </div>
       <div class="line-item">
-        <div class="label">Original Password</div>
+        <div class="label">
+          <m-icon
+            class="icon"
+            type="creditomax/密码"
+            :width="18"
+            :height="20"
+          />
+          Contraseña original
+        </div>
         <input
           v-model="editData.oldPassword"
-          placeholder="Enter the original password"
+          :maxlength="16"
+          placeholder="Introduzca la contraseña original"
         />
       </div>
       <div class="line-item">
-        <div class="label">New Password</div>
+        <div class="label">
+          <m-icon
+            class="icon"
+            type="creditomax/密码"
+            :width="18"
+            :height="20"
+          />
+          Nueva contraseña
+        </div>
         <input
           v-model="editData.newPassword"
-          placeholder="Set new password"
+          :maxlength="16"
+          placeholder="Introduzca una nueva contraseña"
           :type="passwordType"
         />
-        <img
+        <m-icon
           class="eye"
-          :src="
-            passwordType != 'text'
-              ? require('@/assets/images/eye-hide.png')
-              : require('@/assets/images/eye-show.png')
+          :type="
+            passwordType != 'text' ? 'password/eye-hide' : 'password/eye-show'
           "
+          :width="32"
+          :height="20"
           @click="togglePassword('passwordType')"
         />
       </div>
       <div class="line-item">
-        <div class="label">Confirm Password</div>
+        <div class="label">
+          <m-icon
+            class="icon"
+            type="creditomax/密码"
+            :width="18"
+            :height="20"
+          />
+          Confirmar contraseña
+        </div>
         <input
           v-model="editData.enterPassword"
-          placeholder="Set new password"
+          :maxlength="16"
+          placeholder="Introduzca de nuevo la contraseña"
           :type="passwordAgainType"
         />
-        <img
+        <m-icon
           class="eye"
-          :src="
+          :type="
             passwordAgainType != 'text'
-              ? require('@/assets/images/eye-hide.png')
-              : require('@/assets/images/eye-show.png')
+              ? 'password/eye-hide'
+              : 'password/eye-show'
           "
+          :width="32"
+          :height="20"
           @click="togglePassword('passwordAgainType')"
         />
       </div>
     </div>
     <div class="submit">
       <button class="bottom-submit-btn" :disabled="!canSubmit" @click="submit">
-        Submit
+        Enviar
       </button>
     </div>
 
@@ -64,55 +101,55 @@
 </template>
 
 <script>
-import md5 from 'js-md5'
+import md5 from "js-md5";
 export default {
   watch: {
     editData: {
       handler() {
         this.canSubmit =
           Object.values(this.editData).filter((t) => !!t).length === 3 &&
-          this.editData.newPassword.length >= 6
+          this.editData.newPassword.length >= 6;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created() {
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: false,
-      title: 'Retrieve password'
-    })
+      title: "Cambiar contraseña",
+    });
   },
   data() {
     return {
       canSubmit: false, // 是否可以提交
       submitSuccess: false,
-      passwordType: 'text',
-      passwordAgainType: 'text',
+      passwordType: "text",
+      passwordAgainType: "text",
       editData: {
-        phoneNumber: '',
-        oldPassword: '',
-        newPassword: '',
-        enterPassword: ''
-      }
-    }
+        phoneNumber: "",
+        oldPassword: "",
+        newPassword: "",
+        enterPassword: "",
+      },
+    };
   },
 
   mounted() {
     setTimeout(() => {
-      this.getUserInfo()
-    }, 200)
+      this.getUserInfo();
+    }, 200);
   },
 
   methods: {
     togglePassword(field) {
-      this.$set(this, field, this[field] === 'password' ? 'text' : 'password')
+      this.$set(this, field, this[field] === "password" ? "text" : "password");
     },
     async submit() {
       if (this.editData.newPassword !== this.editData.enterPassword) {
-        this.$toast('The two passwords are inconsistent')
-        return
+        this.$toast("Las dos contraseñas son incoherentes");
+        return;
       }
 
       try {
@@ -120,20 +157,20 @@ export default {
           phoneNumber: this.userInfo.mobile,
           oldPassword: md5(this.editData.oldPassword),
           newPassword: md5(this.editData.newPassword),
-          enterPassword: md5(this.editData.enterPassword)
-        })
-        this.updateToken({ token: res.data.token })
-        this.toAppMethod('userInfoPhone', res.data)
-        this.$toast('success')
+          enterPassword: md5(this.editData.enterPassword),
+        });
+        this.updateToken({ token: res.data.token });
+        this.toAppMethod("updateRecords", res.data);
+        this.$toast("Éxito");
         setTimeout(() => {
-          this.goHome()
-        }, 1000)
+          this.goHome();
+        }, 1000);
       } catch (error) {
-        this.$toast(error.message)
+        this.$toast(error.message);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .password {
@@ -185,12 +222,16 @@ export default {
       border-bottom: 2px solid #e9e9e9;
       .label {
         font-size: 16px;
-        font-family: Roboto-Medium, Roboto;
         font-weight: 500;
         color: #333333;
         line-height: 20px;
         margin-top: 23px;
         margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+      }
+      .icon {
+        margin-right: 10px;
       }
       input {
         width: 100%;
@@ -202,8 +243,6 @@ export default {
         background: transparent;
       }
       .eye {
-        width: 32px;
-        height: 20px;
         position: absolute;
         right: 20px;
         top: 50%;

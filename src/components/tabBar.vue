@@ -1,7 +1,7 @@
 <template>
-  <van-tabbar route name="fade" v-if="$route.meta.showTab">
+  <van-tabbar route name="fade" v-if="$route.meta.showTab" @change="changeTab">
     <van-tabbar-item replace to="/home">
-      <span>Loans</span>
+      <span>Préstamos</span>
       <template #icon="props">
         <img
           class="tab-ber-img"
@@ -20,7 +20,7 @@
       to="/repayment"
       :badge="repaymentNum > 0 ? repaymentNum : ''"
     >
-      <span>Repayment</span>
+      <span>Reembolsando</span>
       <template #icon="props">
         <img
           class="tab-ber-img"
@@ -34,7 +34,7 @@
     </van-tabbar-item>
 
     <van-tabbar-item replace to="/mine">
-      <span>Me</span>
+      <span>Mi</span>
       <template #icon="props">
         <img
           class="tab-ber-img"
@@ -50,28 +50,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
   props: {
     showRepayment: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
-    return {}
+    return {};
   },
   computed: {
-    ...mapState(['repaymentNum'])
+    ...mapState(["repaymentNum"]),
   },
-  methods: {}
-}
+  methods: {
+    changeTab(i) {
+      console.log(i, "****** i");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .tab-ber-img {
-  width: 22px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
 }
 </style>

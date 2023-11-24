@@ -1,25 +1,28 @@
 <template>
-  <div class="defer-history content-area">
-    <div class="items" v-for="(item, index) in lists" :key="index">
-      <div class="head">Deferment {{ index + 1 }}</div>
-      <div class="row-space-between-center">
-        <span class="title">Deferment term</span>
-        <span class="number">{{ item.extendedTerm }} days</span>
-      </div>
+  <div class="deferHistory content-area">
+    <div v-for="(item, index) in lists" :key="index">
+      <div class="head fs-18">Plazo de aplazamiento</div>
 
-      <div class="row-space-between-center">
-        <span class="title">Application date</span>
-        <span class="number">{{ item.approvalDate }}</span>
-      </div>
+      <div class="items">
+        <div class="flex-between">
+          <span>Fecha de aplicación</span>
+          <span>{{ item.approvalDate }}</span>
+        </div>
 
-      <div class="row-space-between-center">
-        <span class="title">Updated due date</span>
-        <span class="number">{{ item.updatedDueDate }}</span>
-      </div>
+        <div class="flex-between">
+          <span>Importe del reembolso</span>
+          <span style="color: #fc0f0f">${{ item.amount }}</span>
+        </div>
 
-      <div class="row-space-between-center">
-        <span class="title">Repayment amount</span>
-        <span class="number">₹ {{ item.amount }}</span>
+        <div class="flex-between">
+          <span>Plazo de aplazamiento</span>
+          <span>{{ item.extendedTerm }} días</span>
+        </div>
+
+        <div class="flex-between">
+          <span>Fecha de vencimiento actualizada</span>
+          <span>{{ item.updatedDueDate }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -29,68 +32,66 @@
 export default {
   data() {
     return {
-      lists: []
-    }
+      productId: this.$route.query.productId,
+      orderStatus: this.$route.query.orderStatus,
+      lists: [],
+    };
   },
-  created() {
+
+  mounted() {
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: false,
-      title: 'Deferment'
-    })
+      title: "Detalles del pedido",
+      backCallback: () => {
+        this.goAppBack();
+      },
+    });
+
+    this.getDeferHistory();
   },
-  mounted() {
-    this.getDeferHistory()
-  },
+
   methods: {
     async getDeferHistory() {
-      try {
-        let res = await this.$http.post('/api/extension/history', {
-          id: this.$route.query.orderId
-        })
-        this.lists = res.data.list
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-}
+      let res = await this.$http.post("/api/extension/history", {
+        id: this.$route.query.orderId,
+      });
+      this.lists = res.data.list;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.defer-history {
+.deferHistory {
   padding-top: 14px;
-
+  .head {
+    font-size: 16px;
+    font-family: Roboto, Roboto;
+    font-weight: 900;
+    color: #333333;
+    line-height: 24px;
+    margin: 20px 20px 10px;
+  }
   .items {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 18px;
     padding: 20px;
     background: #ffffff;
-    border-radius: 14px;
-    margin: 0 20px 16px;
+    border-radius: 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 16px;
 
-    .title {
-      font-size: 14px;
-      font-weight: 400;
-      color: #999;
-      line-height: 18px;
-    }
-    .number {
-      font-size: 14px;
-      font-family: DINAlternate-Bold, DINAlternate;
-      font-weight: bold;
-      color: #333333;
-      line-height: 18px;
+    &:last-child {
+      border-bottom: none;
     }
 
-    .head {
-      font-size: 18px;
-      font-family: Roboto-Black, Roboto;
-      font-weight: 900;
-      color: #333333;
-      line-height: 24px;
-    }
     > div {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       &:last-child {
         margin-bottom: 0;
       }

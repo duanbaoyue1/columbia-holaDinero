@@ -1,34 +1,36 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import '@/assets/style/index.scss'
-import 'amfe-flexible'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import "@/assets/style/index.scss";
+import "amfe-flexible";
 
 // 注册全局mixins
-import publicMixins from '@/utils/publicMixins'
-Vue.mixin(publicMixins)
+import publicMixins from "@/utils/publicMixins";
+import syncData from "@/utils/syncData";
+Vue.mixin(publicMixins);
+Vue.mixin(syncData);
 
-import request from '@/services'
-Vue.prototype.$http = request
+import request from "@/services";
+Vue.prototype.$http = request;
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-import toast from '@/components/toast'
-Vue.use(toast)
-import loading from '@/components/loading'
-Vue.use(loading)
+import toast from "@/components/toast";
+Vue.use(toast);
+import loading from "@/components/loading";
+Vue.use(loading);
 
-import MessageBox from '@/components/message-box'
-Vue.component('message-box', MessageBox)
+import MessageBox from "@/components/message-box";
+Vue.component("message-box", MessageBox);
 
-import Vconsole from 'vconsole'
-if (process.env.MODE === 'development') {
-  new Vconsole()
+import Vconsole from "vconsole";
+if (process.env.MODE === "development") {
+  new Vconsole();
 }
 
 new Vue({
   router,
   store,
-  render: (h) => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");

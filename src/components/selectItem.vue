@@ -4,22 +4,27 @@
       <span>
         {{ value || placeHolder }}
       </span>
-      <img class="icon" src="@/assets/images/right.png" />
+      <m-icon
+        class="icon"
+        :class="{ open: this.openSelect }"
+        type="right"
+        :width="8"
+        :height="16"
+      />
     </div>
 
     <van-action-sheet v-model="openSelect" :title="title" close-on-click-action>
-      <div
-        class="items row-wrap row-space-between"
-        :class="'column_' + columns"
-      >
-        <div
-          class="item row-center"
-          :class="{ active: item.value == value }"
-          v-for="(item, index) in items"
-          :key="index"
-          @click="chooseValue(item)"
-        >
-          <span>{{ item.label }}</span>
+      <div class="pop-content">
+        <div class="items">
+          <div
+            class="item"
+            v-for="(item, index) in items"
+            :class="{ active: item.value == value }"
+            :key="index"
+            @click="chooseValue(item)"
+          >
+            <span>{{ item.label }}</span>
+          </div>
         </div>
       </div>
     </van-action-sheet>
@@ -30,33 +35,40 @@ export default {
   props: {
     title: {
       type: String,
-      default: ""
-    },
-    width: {
-      type: String,
-      default: "140"
+      default: "",
     },
     items: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     itemAttrs: {
       type: [String, Number],
-      default: ""
+      default: "",
     },
     placeHolder: {
       type: String,
-      default: "Please select"
+      default: "Por favor, elija",
     },
-    columns: {
-      default: 2
-    }
+    defaultOpen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  created() {
+    this.openSelect = this.defaultOpen;
+  },
+
+  watch: {
+    defaultOpen() {
+      this.openSelect = this.defaultOpen;
+    },
   },
 
   data() {
     return {
       openSelect: false,
-      value: ""
+      value: "",
     };
   },
 
@@ -69,14 +81,12 @@ export default {
     },
     toggleChoose() {
       this.openSelect = !this.openSelect;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/style/parameters.scss";
-
 .select-item {
   border-radius: 14px;
   &.has-value {
@@ -85,36 +95,37 @@ export default {
     }
   }
 
-  .items {
-    margin: 40px 40px 0;
-
-    .item {
-      height: 40px;
-      color: #999;
-      font-size: 16px;
-      font-family: Roboto-Regular, Roboto;
-      font-weight: 400;
-      line-height: 20px;
-      margin-bottom: 20px;
-      border-radius: 20px;
-      border: 1px solid #e4e4e4;
-
-      &.active {
-        font-weight: 500;
-        color: $themeColor;
-        border: 2px solid $themeColor;
-      }
-    }
-
-    &.column_2 {
+  .pop-content {
+    .items {
+      margin-top: 42px;
       .item {
-        width: 140px;
-      }
-    }
+        font-size: 16px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 20px;
+        margin-bottom: 36px;
+        text-align: center;
+        position: relative;
+        span {
+          position: relative;
+        }
 
-    &.column_1 {
-      .item {
-        width: 280px;
+        &.active {
+          font-weight: bold;
+          color: #333333;
+          span {
+            &::after {
+              position: absolute;
+              content: " ";
+              width: 100%;
+              height: 4px;
+              background: #a05bf8;
+              border-radius: 20px;
+              bottom: -2px;
+              left: 0;
+            }
+          }
+        }
       }
     }
   }
@@ -128,9 +139,41 @@ export default {
     align-items: center;
     justify-content: space-between;
     .icon {
-      width: 12x;
-      height: 12px;
       margin-left: 8px;
+    }
+  }
+
+  .select-items {
+    display: none;
+    margin-top: 20px;
+    margin-bottom: -20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    &.show {
+      display: flex;
+    }
+    &.col-one {
+      .items {
+        width: 280px;
+      }
+    }
+    .items {
+      border-radius: 20px;
+      border: 1px solid #e4e4e4;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 400;
+      color: #999999;
+      padding: 10px 0px;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 130px;
+
+      &.active {
+        border: 2px solid #1143a4;
+        font-weight: 500;
+        color: #1143a4;
+      }
     }
   }
 }

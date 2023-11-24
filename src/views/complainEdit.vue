@@ -1,39 +1,60 @@
 <template>
   <div class="complain-edit content-area">
     <div class="head">Feedback agency</div>
-    <div class="text-content">
-      {{ type }}
+    <div class="content">
+      <input v-model="type" disabled />
     </div>
-    <div class="line" />
     <div class="head">Type of question</div>
-    <div class="text-content">
-      {{ question }}
+    <div class="content">
+      <input v-model="question" disabled />
     </div>
-    <div class="line" />
-
     <div class="head">
-      <div class="row-flex">
+      <div>
         Question Details
-        <img class="must" src="@/assets/images/must.png" />
+        <span class="must">*</span>
       </div>
       <span class="cur-length">{{ this.content.length }}/100</span>
     </div>
-    <textarea
-      class="textarea"
-      v-model="content"
-      :maxlength="100"
-      @keyup="changeContent"
-      placeholder="Please fill in the content of your complaint, no more than 100 words."
-    ></textarea>
-
+    <div class="content">
+      <div class="content-area">
+        <textarea
+          class="edit"
+          maxlength="100"
+          @keyup="changeContent"
+          v-model="content"
+          placeholder="Please fill in the content of your complaint, no more than 100 words."
+        ></textarea>
+        <div class="imgs">
+          <div
+            class="img"
+            v-for="(img, index) in imgs"
+            :key="img"
+            :style="{ backgroundImage: 'url(' + img + ')' }"
+            @click="previewImg(imgs, index)"
+          >
+            <m-icon
+              class="close"
+              type="close"
+              :width="15"
+              :height="15"
+              @click="removeImg(index)"
+            />
+          </div>
+          <div class="add" v-if="imgs.length < 3" @click="addImg">
+            <m-icon class="add" type="add2" :width="20" :height="20" />
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="head">Contact number</div>
-    <div class="text-content">{{ userInfo.mobile | phoneHideFilter }}</div>
-    <div class="line" />
+    <div class="content">
+      <div class="line-item">
+        {{ userInfo.mobile | phoneHideFilter }}
+      </div>
+    </div>
 
     <div class="submit">
-      <button class="bottom-submit-btn" :disabled="!content" @click="submit">
-        Ok
-      </button>
+      <button :disabled="!content" @click="submit">Ok</button>
     </div>
   </div>
 </template>
@@ -41,85 +62,88 @@
 export default {
   data() {
     window.onPhotoSelectCallback = (data) => {
-      if (typeof data == 'string') {
-        data = JSON.parse(data)
+      if (typeof data == "string") {
+        data = JSON.parse(data);
       }
       data.base64 = data.base64.map((t) => {
-        return `data:image/png;base64,${t}`
-      })
+        return `data:image/png;base64,${t}`;
+      });
       if (data.success) {
-        this.imgs.splice(0, 0, ...data.base64)
+        this.imgs.splice(0, 0, ...data.base64);
       }
-    }
+    };
 
     return {
-      type: this.$route.query.type || '',
-      question: this.$route.query.question || '',
+      type: this.$route.query.type || "",
+      question: this.$route.query.question || "",
       imgs: [],
-      content: ''
-    }
+      content: "",
+    };
   },
   mounted() {
-    this.setTabBar({
-      show: true,
-      fixed: true,
-      transparent: false,
-      title: 'Complaints'
-    })
     setTimeout(() => {
-      this.getUserInfo()
-    }, 200)
+      this.getUserInfo();
+    }, 200);
   },
 
   methods: {
     changeContent() {
-      if (this.content.trim() == '') {
-        this.content = ''
+      if (this.content.trim() == "") {
+        this.content = "";
       }
     },
     removeImg(index) {
-      this.imgs.splice(index, 1)
+      this.imgs.splice(index, 1);
     },
     addImg() {
-      this.toAppMethod('unfoldCa', {
+      this.toAppMethod("toGoCamera", {
         type: 5,
         multiple: 3 - this.imgs.length,
-        callbackMethodName: `onPhotoSelectCallback`
-      })
+        callbackMethodName: `onPhotoSelectCallback`,
+      });
     },
 
     async submit() {
       try {
-        this.showLoading()
+        this.showLoading();
         let saveData = {
           userId: this.userInfo.id,
           feedbackMechanism: this.type,
           problemType: this.question,
-          problemContent: this.content
+          problemContent: this.content,
+        };
+        if (this.imgs[0]) {
+          saveData.firstImageBase64Src = this.imgs[0];
+        }
+        if (this.imgs[1]) {
+          saveData.secondImageBase64Src = this.imgs[1];
+        }
+        if (this.imgs[2]) {
+          saveData.thirdImageBase64Src = this.imgs[2];
         }
 
         let res = await this.$http.post(
           `/api/user/saveComplaintRecord`,
           saveData
-        )
+        );
         if (res.returnCode == 2000) {
           this.$toast(
-            'Submitted successfully, we will handle it as soon as possible'
-          )
+            "Submitted successfully, we will handle it as soon as possible"
+          );
           setTimeout((res) => {
-            this.innerJump('complainList', {}, true)
-          }, 1000)
+            this.innerJump("complainList", {}, true);
+          }, 1000);
         } else {
-          this.$toast(res.message)
+          this.$toast(res.message);
         }
       } catch (error) {
-        this.$toast(error.message)
+        this.$toast(error.message);
       } finally {
-        this.hideLoading()
+        this.hideLoading();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -127,57 +151,46 @@ export default {
   padding: 10px 20px 20px;
   padding-bottom: 110px;
 
-  .text-content {
-    font-size: 14px;
-    font-weight: 400;
-    color: #333333;
-    line-height: 18px;
-  }
-  .line {
-    border: 1px solid #e9e9e9;
-    margin-top: 16px;
-  }
-
-  .textarea {
-    font-size: 12px;
-    width: 300px;
-    height: 116px;
-    line-height: 18px;
-    border-radius: 8px;
-    border: 1px solid #cccccc;
-    background: #f6f6f6;
-    padding: 16px;
-    margin-bottom: -10px;
-    resize: none;
-  }
-
   .submit {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    background: #fff;
+    button {
+      margin: 20px 20px 20px;
+      height: 48px;
+      width: 320px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 900;
+      background: #1143a4;
+      color: #fff;
+      line-height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      box-sizing: border-box;
+      padding: 0;
+      &:disabled {
+        background: #e9e9e9;
+        color: #999999;
+      }
+    }
   }
-
-  .row-flex {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    box-sizing: border-box;
-  }
-
   .must {
-    width: 8px;
-    height: 8px;
-    margin-left: 4px;
+    margin-left: 2px;
+    color: #ff4b3f;
   }
   .head {
     margin-top: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     font-size: 14px;
     font-family: Roboto-Regular, Roboto;
-    font-weight: 500;
-    color: #333;
-    line-height: 20px;
+    font-weight: 400;
+    color: #000000;
+    line-height: 18px;
     display: flex;
     justify-content: space-between;
     .cur-length {
@@ -189,6 +202,7 @@ export default {
     }
   }
   .content {
+    input,
     .line-item {
       width: 320px;
       height: 60px;

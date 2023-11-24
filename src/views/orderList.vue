@@ -1,10 +1,12 @@
 <template>
-  <div class="scroll-area content-area">
+  <div class="scroll-area content-area order-list">
     <van-pull-refresh
+      class=" "
       v-model="loading"
-      loading-text="loading"
-      loosing-text="Release to refresh"
-      pulling-text="Pull down to refresh"
+      success-text=" "
+      loading-text=" "
+      loosing-text=" "
+      pulling-text=" "
       @refresh="getAllOrders"
     >
       <div>
@@ -17,9 +19,9 @@
           ></order-item>
         </div>
         <div class="no-order" v-else-if="!loading">
-          <img class="icon" src="@/assets/images/no-order.png" />
-          <div class="no-order-title">No Order</div>
-          <button @click="goHome">Apply Now</button>
+          <m-icon class="icon" type="no-order" :width="168" :height="97" />
+          <div>Ningún pedido de préstamo</div>
+          <button @click="goHome">Aplicar ahora</button>
         </div>
       </div>
     </van-pull-refresh>
@@ -27,94 +29,89 @@
 </template>
 
 <script>
-import OrderItem from '@/components/orderItem'
+import OrderItem from "@/components/orderItem.vue";
 
 export default {
   components: {
-    OrderItem
+    OrderItem,
   },
   data() {
     return {
       loading: false,
-      orders: []
-    }
+      orders: [],
+    };
   },
   created() {
     this.setTabBar({
       show: true,
-      transparent: true,
+      transparent: false,
       fixed: true,
-      title: 'All orders'
-    })
+      title: "Pedido de préstamo",
+    });
   },
   mounted() {
-    this.getAllOrders()
+    this.getAllOrders();
   },
   methods: {
     async getAllOrders() {
-      this.showLoading()
-      this.loading = true
+      this.showLoading();
+      this.loading = true;
       try {
-        let res = await this.$http.post(`/api/order/listAll`)
-        this.orders = res.data.list || []
+        let res = await this.$http.post(`/api/order/listAll`);
+        this.orders = res.data.list || [];
       } catch (error) {
       } finally {
-        this.hideLoading()
-        this.loading = false
+        this.hideLoading();
+        this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/parameters.scss';
-
 .scroll-area {
-  background: #f9f9f9;
-  height: calc(100vh - 96px);
+  height: calc(100vh - 80px);
   overflow: auto !important;
-  padding: 0 24px;
-  flex: 1;
+  padding: 0 20px;
 }
-.order-item {
-  margin: 24px auto;
+.order-list {
+  .order-item {
+    margin: 16px auto;
+  }
 }
 
 .no-order {
-  margin: 0 auto;
-
+  border-radius: 16px;
+  background: #fff;
+  margin: 40px auto 0;
+  padding: 60px 20px 20px;
   .icon {
-    width: 140px;
-    height: 135px;
-    margin: 100px auto 40px;
-  }
-
-  .no-order-title {
-    font-size: 16px;
-    font-family: Roboto-Regular, Roboto;
-    font-weight: 400;
-    color: #333333;
-    line-height: 20px;
-    text-align: center;
-  }
-
-  button {
-    width: 327px;
-    height: 50px;
-    color: $themeFontColor;
-    background: $themeColor;
-    border-radius: 25px;
     margin: 0 auto;
+  }
+  div {
+    font-size: 12px;
+    font-family: Roboto-Regular, Roboto;
+    text-align: center;
+    font-weight: 400;
+    color: #999999;
+    line-height: 14px;
+  }
+  button {
+    width: 295px;
+    height: 48px;
+    background: #a05bf8;
+    border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
     font-family: Roboto-Black, Roboto;
     font-weight: 900;
+    color: #ffffff;
     line-height: 24px;
     border: none;
-    margin-top: 60px;
+    margin: 40px auto 0;
   }
 }
 </style>
