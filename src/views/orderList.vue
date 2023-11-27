@@ -50,6 +50,7 @@ export default {
     });
   },
   mounted() {
+    this.setEventTrackStartTime();
     this.getAllOrders();
   },
   methods: {

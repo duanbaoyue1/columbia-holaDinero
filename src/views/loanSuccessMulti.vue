@@ -127,6 +127,8 @@ export default {
     };
   },
   mounted() {
+    this.setEventTrackStartTime();
+
     document.body.style.backgroundColor = "#f6f6f6";
 
     this.setTabBar({
@@ -169,6 +171,7 @@ export default {
     },
     leave() {
       this.toAppMethod("backReturn", { isInterception: false });
+      this.sendEventTrackData({});
       this.goHome();
     },
     showBackModal() {
@@ -278,6 +281,7 @@ export default {
             });
             this.$toast("Solicitud enviada con éxito");
             setTimeout((res) => {
+              this.sendEventTrackData({ leaveBy: 1 });
               this.getRecommendLoans();
             }, 1000);
           }

@@ -66,6 +66,7 @@ export default {
     });
   },
   async mounted() {
+    this.setEventTrackStartTime();
     try {
       let data = await this.$http.post(`/api/user/mine`);
       this.hasPassword = data.data.hasPassword;

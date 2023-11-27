@@ -39,12 +39,20 @@ export default {
   },
 
   mounted() {
+    this.setEventTrackStartTime();
+
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: false,
       title: "Detalles del pedido",
       backCallback: () => {
+        this.updateTrackerData({ key: "productId", value: this.productId });
+        this.updateTrackerData({
+          key: "status",
+          value: this.ORDER_STATUS_LIST[this.orderStatus],
+        });
+        this.sendEventTrackData({});
         this.goAppBack();
       },
     });

@@ -127,6 +127,7 @@ export default {
     });
   },
   mounted() {
+    this.setEventTrackStartTime();
     this.getAppContactsNum();
     this.eventTracker("contact_access");
     this.initInfoBackControl();
@@ -193,6 +194,7 @@ export default {
           this.eventTracker("contact_submit_success");
           setTimeout(() => {
             this.submitSuccess = false;
+            this.sendEventTrackData({ leaveBy: 1 });
             this.innerJump(
               "identity",
               { orderId: this.$route.query.orderId, from: "order" },

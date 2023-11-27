@@ -94,6 +94,7 @@ export default {
     }
   },
   activated() {
+    this.setEventTrackStartTime();
     this.updateData();
   },
   methods: {

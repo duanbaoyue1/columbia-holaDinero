@@ -29,6 +29,19 @@ export default {
       if (this.tabBar.backCallback) {
         this.tabBar.backCallback();
       } else {
+        if (
+          [
+            "loanConfirm",
+            "loanSuccessMulti",
+            "orderList",
+            "completeBank",
+          ].includes(this.$route.name)
+        ) {
+          this.sendEventTrackData({});
+        }
+        if (["helpCenter", "settings"].includes(this.$route.name)) {
+          this.sendEventTrackData({ page: "mine" });
+        }
         this.goAppBack();
       }
     },

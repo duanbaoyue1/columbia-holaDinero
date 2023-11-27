@@ -36,6 +36,8 @@ export default new Vuex.Store({
     appMode: {},
     userInfo: {},
     isAppChecked: true, // 是否已经较验在app中
+    eventTrackStartTime: 0,
+    eventTrackerActionCnt: 0,
   },
   mutations: {
     setAppGlobal(state, data) {
@@ -83,6 +85,16 @@ export default new Vuex.Store({
     setAppMode(state, data) {
       state.appMode = data;
     },
+    setEventTrackerActionCnt(state, data) {
+      if (data === 0) {
+        state.eventTrackerActionCnt = 0;
+        return;
+      }
+      state.eventTrackerActionCnt += 1;
+    },
+    setEventTrackStartTime(state) {
+      state.eventTrackStartTime = new Date().getTime();
+    },
     setRepaymentNum(state, data) {
       state.repaymentNum = data;
     },
@@ -121,9 +133,14 @@ export default new Vuex.Store({
     async setAppMode({ commit }, appMode) {
       commit("setAppMode", appMode);
     },
+    async setEventTrackerActionCnt({ commit }, data) {
+      commit("setEventTrackerActionCnt", data);
+    },
+    async setEventTrackStartTime({ commit }, data) {
+      commit("setEventTrackStartTime", data);
+    },
     async setRepaymentNum({ commit }, repaymentNum) {
       commit("setRepaymentNum", repaymentNum);
     },
   },
-  modules: {},
 });

@@ -70,6 +70,7 @@ export default {
     });
   },
   mounted() {
+    this.setEventTrackStartTime();
     this.eventTracker("confirm_access");
     this.getOrderInfo();
   },
@@ -119,6 +120,7 @@ export default {
         if (syncRes.success) {
           // 2. 真正的提交动作
           await this.$http.post(`/api/order/apply`, { orderId: this.orderId });
+          this.sendEventTrackData({ leaveBy: 1 });
 
           // 成功或者失败的跳转
           this.innerJump(

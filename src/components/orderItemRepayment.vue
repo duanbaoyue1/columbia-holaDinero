@@ -76,13 +76,11 @@ export default {
 
   methods: {
     goDetail() {
-      if (
-        this.order.orderStatus == 10 ||
-        this.order.orderStatus == 100 ||
-        this.order.orderStatus == 101
-      ) {
+      if ([10, 100, 101].includes(this.order.orderStatus)) {
+        this.sendEventTrackData({});
         this.goHome();
       } else {
+        this.sendEventTrackData({ leaveBy: 1 });
         this.innerJump("orderDetail", { orderId: this.order.orderNo });
       }
     },

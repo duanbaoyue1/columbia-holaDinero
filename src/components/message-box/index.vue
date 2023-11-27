@@ -41,6 +41,13 @@ export default {
   },
   methods: {
     cancelCallback() {
+      if (
+        ["information", "contacts", "identity", "addBank"].includes(
+          this.$route.name
+        )
+      ) {
+        this.sendEventTrackData({});
+      }
       this.prop.cancelCallback();
     },
   },

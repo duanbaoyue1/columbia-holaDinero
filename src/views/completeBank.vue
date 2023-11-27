@@ -95,6 +95,8 @@ export default {
     });
   },
   mounted() {
+    this.setEventTrackStartTime();
+
     this.getBanks();
     if (this.from != "mine") {
       this.eventTracker("bank_access");
@@ -121,6 +123,7 @@ export default {
         await this.$http.post(`/api/remittance/modifyLoanCard`, {
           remittanceAccountId: this.chooseBankId,
         });
+        this.sendEventTrackData({ leaveBy: 1 });
         this.hideLoading();
         this.eventTracker("bank_submit_success");
         this.$toast("Vinculación de la tarjeta bancaria con éxito");

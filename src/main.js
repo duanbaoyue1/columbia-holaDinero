@@ -8,8 +8,11 @@ import "amfe-flexible";
 // 注册全局mixins
 import publicMixins from "@/utils/publicMixins";
 import syncData from "@/utils/syncData";
+import eventTrack from "@/utils/eventTrack";
+
 Vue.mixin(publicMixins);
 Vue.mixin(syncData);
+Vue.mixin(eventTrack);
 
 import request from "@/services";
 Vue.prototype.$http = request;

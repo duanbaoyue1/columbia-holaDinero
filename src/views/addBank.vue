@@ -172,6 +172,8 @@ export default {
     });
   },
   async mounted() {
+    this.setEventTrackStartTime();
+
     this.eventTracker("bank_add_access");
     if (this.from == "order") {
       this.initInfoBackControl();
@@ -227,6 +229,7 @@ export default {
       });
       // 判断是否需要确认订单
       let appMode = await this.getAppMode();
+      this.sendEventTrackData({ leaveBy: 1 });
       if (appMode.confirmType == 1) {
         // 需要进确认申请页
         this.innerJump("loanConfirm", { orderId: this.orderId }, true);
@@ -285,6 +288,7 @@ export default {
           if (this.from == "order") {
             this.bindCardAndJump(data.data.id);
           } else {
+            this.sendEventTrackData({ leaveBy: 1, page: "completeBank" });
             this.goAppBack();
           }
         }

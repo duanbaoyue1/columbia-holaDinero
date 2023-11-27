@@ -130,6 +130,7 @@ export default {
     });
   },
   mounted() {
+    this.setEventTrackStartTime();
     this.eventTracker("id_access");
     this.initInfoBackControl();
   },
@@ -173,6 +174,7 @@ export default {
         console.log("订单创建结果:", res);
         this.eventTracker("id_submit_create_order_success");
         this.submitSuccess = false;
+        this.sendEventTrackData({ leaveBy: 1 });
         this.innerJump(
           "addBank",
           { orderId: res.data.orderId, from: "order" },

@@ -204,6 +204,8 @@ export default {
     }
   },
   activated() {
+    this.setEventTrackStartTime();
+
     if (this.checkInApp() && !this.created) {
       return;
     }
@@ -301,6 +303,8 @@ export default {
                     });
                     this.$toast("Solicitud enviada con éxito");
                     setTimeout((res) => {
+                      this.sendEventTrackData({ leaveBy: 1, page: "home" });
+
                       this.innerJump("loanSuccessMulti", {
                         systemTime: this.getLocalSystemTimeStamp(),
                       });
@@ -399,6 +403,7 @@ export default {
           } else {
             this.btnTips = "Casi:99%";
             this.actionCallback = () => {
+              this.sendEventTrackData({ leaveBy: 1, page: "home" });
               this.innerJump("loanConfirm", { orderId: this.appMode.orderId });
             };
           }

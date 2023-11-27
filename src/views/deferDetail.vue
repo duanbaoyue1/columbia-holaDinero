@@ -92,6 +92,8 @@ export default {
     };
   },
   async mounted() {
+    this.setEventTrackStartTime();
+
     this.setTabBar({
       show: true,
       transparent: false,
@@ -111,7 +113,8 @@ export default {
     },
     async selectBank(bank) {
       this.showPaymentTips = false;
-
+      this.setEventTrackStartTime();
+      this.sendEventTrackData({ leaveBy: 1, page: "payment" });
       this.openWebview(
         `${this.appGlobal.apiHost}/api/extension/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
       );
@@ -131,6 +134,11 @@ export default {
         this.detail = data.data;
         let res = await this.$http.post(`/api/order/detail`, {
           orderId: this.orderId,
+        });
+        this.updateTrackerData({ key: "productId", value: res.data.productId });
+        this.updateTrackerData({
+          key: "status",
+          value: this.ORDER_STATUS_LIST[res.data.orderStatus],
         });
       } catch (error) {
       } finally {

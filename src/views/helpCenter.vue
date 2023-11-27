@@ -60,6 +60,8 @@ export default {
     };
   },
   created() {
+    this.setEventTrackStartTime();
+
     this.setTabBar({
       show: true,
       transparent: false,

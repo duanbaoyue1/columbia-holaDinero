@@ -207,7 +207,8 @@ export default {
       orderUrl: "",
     };
   },
-  created() {
+  mounted() {
+    this.setEventTrackStartTime();
     this.setTabBar({
       show: true,
       transparent: true,
@@ -215,11 +216,10 @@ export default {
       black: false,
       title: "Detalles del pedido",
       backCallback: () => {
+        this.sendEventTrackData({});
         this.goAppBack();
       },
     });
-  },
-  mounted() {
     this.getDetail();
     this.getDeferTimes();
   },
@@ -260,20 +260,22 @@ export default {
     },
     async selectBank(bank) {
       this.showPaymentTips = false;
+      // 离开
+      this.sendEventTrackData({ leaveBy: 1 });
+
+      // 支付
+      this.setEventTrackStartTime();
+      this.sendEventTrackData({ leaveBy: 1, page: "payment" });
       this.openWebview(
         `${this.appGlobal.apiHost}/api/repayment/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
       );
     },
-
     applyDefer() {
+      this.sendEventTrackData({ leaveBy: 1 });
       this.innerJump("defer-detail", { orderId: this.orderId });
     },
-    checkAgreement() {
-      this.openWebview(
-        `${this.appGlobal.apiHost}/api/h5/contract?orderNo=${this.orderId}`
-      );
-    },
     goDeferHis() {
+      this.sendEventTrackData({ leaveBy: 1 });
       this.innerJump("defer-history", { orderId: this.orderId });
     },
     async getDeferTimes() {
@@ -289,7 +291,18 @@ export default {
         let res = await this.$http.post(`/api/order/detail`, {
           orderId: this.orderId,
         });
+
         this.detail = res.data;
+
+        this.updateTrackerData({
+          key: "productId",
+          value: this.detail.productId,
+        });
+        this.updateTrackerData({
+          key: "status",
+          value: this.ORDER_STATUS_LIST[this.detail.orderStatus],
+        });
+
         if (
           [
             "Rejected",

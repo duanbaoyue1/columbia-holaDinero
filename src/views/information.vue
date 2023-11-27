@@ -112,7 +112,6 @@ export default {
     },
   },
   created() {
-    console.log(ALL_ATTRS.default.EDUCATION, "***** ALL_ATTRS");
     this.setTabBar({
       show: true,
       transparent: false,
@@ -133,6 +132,8 @@ export default {
     };
   },
   mounted() {
+    this.setEventTrackStartTime();
+
     setTimeout(() => {
       this.curOpenFields = ALL_FIELD[0];
     }, 500);
@@ -165,7 +166,7 @@ export default {
           this.submitSuccess = true;
           setTimeout(() => {
             this.submitSuccess = false;
-
+            this.sendEventTrackData({ leaveBy: 1 });
             this.innerJump("contacts", { orderId: this.orderId }, true);
           }, 1000);
         }

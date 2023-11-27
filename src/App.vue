@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @touchend="touchend">
     <div v-if="!isAppChecked" class="app-error">error!</div>
     <div
       v-else

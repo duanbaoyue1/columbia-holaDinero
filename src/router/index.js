@@ -109,16 +109,6 @@ const routes = [
           navReturnFFF: true,
         },
       },
-
-      {
-        path: "about",
-        name: "about",
-        component: () =>
-          import(/* webpackChunkName: "about" */ "../views/about.vue"),
-        meta: {
-          title: "About us",
-        },
-      },
       {
         path: "helpCenter",
         name: "helpCenter",

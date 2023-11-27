@@ -6,7 +6,15 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["appGlobal", "userInfo", "tabBar", "appMode", "appName"]),
+    ...mapState([
+      "appGlobal",
+      "userInfo",
+      "tabBar",
+      "appMode",
+      "appName",
+      "eventTrackerActionCnt",
+      "eventTrackStartTime",
+    ]),
   },
   filters: {
     phoneHideFilter(item) {
@@ -39,6 +47,8 @@ export default {
       "setAppMode",
       "setRepaymentNum",
       "updateToken",
+      "setEventTrackerActionCnt",
+      "setEventTrackStartTime",
     ]),
     async getUserInfo() {
       let data = await this.$http.post(`/api/user/info`);
