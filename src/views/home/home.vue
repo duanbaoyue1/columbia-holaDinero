@@ -99,9 +99,9 @@
           @click="showRecommend = false"
         />
         <multi-recommend
-          @update="updateMultiSelect"
           :list="multiRecommendList"
-        ></multi-recommend>
+          @update="updateMultiSelect"
+        />
       </div>
     </van-action-sheet>
   </van-pull-refresh>
@@ -190,9 +190,9 @@ export default {
     this.setTabBar({
       show: false,
     });
-    if (this.from == "bridge" && !this.query.reload) {
-      location.replace(location.href + "&reload=true");
-    }
+    // if (this.from == "bridge" && !this.query.reload) {
+    //   location.replace(location.href + "&reload=true");
+    // }
     // this.setGlobalData();
     this.getMapDataListKey();
   },
@@ -233,6 +233,7 @@ export default {
         if (data.appVersionName) {
           data.appVersionV = data.appVersionName;
         }
+        this.setAppChecked(true);
         this.setAppGlobal(data);
         this.updateData();
         this.created = true;
@@ -339,7 +340,7 @@ export default {
             this.$toast("Por favor, inténtelo de nuevo después de 0:00");
           };
         }
-      } else if (this.appMode.maskModel == 3 || this.appMode.maskModel == 0) {
+      } else if ([0, 3].includes(this.appMode.maskModel)) {
         this.actionText = "Aplicar ahora";
         //未认证跳转
         if (this.appMode.basicInfoAuth == 0) {
@@ -374,16 +375,10 @@ export default {
             this.innerJump("orderDetail", { orderId: this.appMode.orderId });
           };
 
-          if (
-            this.appMode.orderStatus == 20 ||
-            this.appMode.orderStatus == 21
-          ) {
+          if ([20, 21].includes(this.appMode.orderStatus)) {
             // 订单审核中
             this.actionText = "Evaluando";
-          } else if (
-            this.appMode.orderStatus == 80 ||
-            this.appMode.orderStatus == 90
-          ) {
+          } else if ([80, 90].includes(this.appMode.orderStatus)) {
             // 待还款 | 逾期
             this.actionText = "Ir a reembolsar";
             this.btnTips =
@@ -394,10 +389,7 @@ export default {
             this.actionCallback = () => {
               this.$toast("Por favor, inténtelo de nuevo después de 0:00!");
             };
-          } else if (
-            this.appMode.orderStatus == 30 ||
-            this.appMode.orderStatus == 70
-          ) {
+          } else if ([30, 70].includes(this.appMode.orderStatus)) {
             // 放款中
             this.actionText = "Desembolsando";
           } else {
@@ -420,7 +412,6 @@ export default {
       if (this.from == "bridge") {
         this.setAppGlobal(this.query);
       }
-      this.setAppChecked(true);
     },
 
     async getMultiRecommendItems() {
@@ -467,11 +458,6 @@ export default {
 
     async clickApply() {
       this.eventTracker("home_apply");
-      // this.toAppMethod("h5ToAndroidPage", {
-      //   fromPage: "home",
-      //   toPage: "information",
-      // });
-      return;
       if (this.actionCallback) {
         this.actionCallback();
       }

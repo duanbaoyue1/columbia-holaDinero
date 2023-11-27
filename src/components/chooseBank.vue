@@ -16,6 +16,7 @@
           <ul>
             <li @click="chooseBankA('Nequi', '')">Nequi</li>
             <li @click="chooseBankB">PSE(Pagos Seguros en Línea)</li>
+            <li @click="chooseBankA('Efecty', '')">Efecty</li>
           </ul>
           <div class="tips">
             <div>Consejos:</div>

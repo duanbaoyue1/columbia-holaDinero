@@ -47,24 +47,14 @@ export default {
     },
 
     amountText() {
-      if (
-        this.order.orderStatus == 80 ||
-        this.order.orderStatus == 90 ||
-        this.order.orderStatus == 100 ||
-        this.order.orderStatus == 101
-      ) {
+      if ([80, 90, 100, 101].includes(this.order.orderStatus)) {
         return `Monto de reembolso`;
       } else {
         return `Importe de préstamo`;
       }
     },
     dateText() {
-      if (
-        this.order.orderStatus == 80 ||
-        this.order.orderStatus == 90 ||
-        this.order.orderStatus == 100 ||
-        this.order.orderStatus == 101
-      ) {
+      if ([80, 90, 100, 101].includes(this.order.orderStatus)) {
         return `Fecha de vencimiento`;
       } else {
         return `Fecha de aplicación`;
