@@ -15,17 +15,6 @@ const routes = [
     },
     children: [
       {
-        path: "permissions",
-        name: "Permissions",
-        component: () =>
-          import(
-            /* webpackChunkName: "permissions" */ "../views/permissions.vue"
-          ),
-        meta: {
-          title: "Permissions",
-        },
-      },
-      {
         path: "information",
         name: "information",
         component: () =>
