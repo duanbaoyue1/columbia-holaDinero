@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { apiHost } from "@/services/apiHost";
+
 export default {
   data() {
     return {
@@ -84,9 +86,7 @@ export default {
   },
   methods: {
     checkAgreement() {
-      this.openWebview(
-        `${this.appGlobal.apiHost}/api/h5/contract?orderNo=${this.orderId}`
-      );
+      this.openWebview(`${apiHost}/api/h5/contract?orderNo=${this.orderId}`);
     },
     togglePolicy() {
       this.choosed = !this.choosed;

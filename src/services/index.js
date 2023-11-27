@@ -1,11 +1,6 @@
 import axios from "axios";
 import store from "@/store";
-
-const MODE = process.env.MODE;
-const BASE_URL = {
-  development: "https://colombia-loan-test.6688-epoch.com",
-  production: "https://vfekmp.online",
-};
+import { apiHost } from "./apiHost";
 
 // create an axios instance
 const service = axios.create({
@@ -48,7 +43,7 @@ function zip(str) {
 // request拦截器 request interceptor
 service.interceptors.request.use(
   (config) => {
-    config.baseURL = BASE_URL[MODE];
+    config.baseURL = apiHost;
     config.headers["Content-Type"] =
       config.headers["Content-Type"] || "text/plain";
     if (

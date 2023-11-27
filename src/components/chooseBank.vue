@@ -222,7 +222,7 @@ export default {
         color: #333333;
         line-height: 24px;
 
-        &:nth-child(1) {
+        &:not(:last-child) {
           border-bottom: 2px solid #e3eceb;
         }
       }

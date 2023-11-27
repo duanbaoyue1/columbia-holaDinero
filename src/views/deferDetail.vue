@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { apiHost } from "@/services/apiHost";
 import chooseBank from "@/components/chooseBank.vue";
 
 export default {
@@ -116,7 +117,7 @@ export default {
       this.setEventTrackStartTime();
       this.sendEventTrackData({ leaveBy: 1, page: "payment" });
       this.openWebview(
-        `${this.appGlobal.apiHost}/api/extension/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
+        `${apiHost}/api/extension/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
       );
     },
     goTutorial() {

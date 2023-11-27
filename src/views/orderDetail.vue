@@ -137,7 +137,9 @@
 </template>
 
 <script>
+import { apiHost } from "@/services/apiHost";
 import chooseBank from "@/components/chooseBank.vue";
+
 export default {
   components: {
     chooseBank,
@@ -268,7 +270,7 @@ export default {
       this.setEventTrackStartTime();
       this.sendEventTrackData({ leaveBy: 1, page: "payment" });
       this.openWebview(
-        `${this.appGlobal.apiHost}/api/repayment/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
+        `${apiHost}/api/repayment/prepay?id=${this.detail.orderBillId}&payType=${bank.payType}&bankCode=${bank.bankCode}`
       );
     },
     applyDefer() {

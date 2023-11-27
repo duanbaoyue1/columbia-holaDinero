@@ -8,9 +8,9 @@ export default new Vuex.Store({
       show: false,
       messageInfo: {},
     },
-    appName: "CreditPark",
+    appName: "HolaDinero",
     appGlobal: {
-      appName: "creditPark",
+      appName: "HolaDinero",
       token: "63fdfd55e4b0f6a603fac657",
       debug: true, // 是否调试模式
       mobileType: "2", // 手机类型
