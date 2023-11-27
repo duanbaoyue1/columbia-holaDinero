@@ -29,7 +29,7 @@ export default defineConfig({
     minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: true, // 删除console语句
+        // drop_console: true, // 删除console语句
         drop_debugger: true, // 删除debugger
       },
       format: {

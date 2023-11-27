@@ -213,39 +213,6 @@ const routes = [
         },
       },
       {
-        path: "complainHome",
-        name: "complainHome",
-        component: () =>
-          import(
-            /* webpackChunkName: "complainHome" */ "../views/complainHome.vue"
-          ),
-        meta: {
-          title: "Complaints",
-        },
-      },
-      {
-        path: "complainList",
-        name: "complainList",
-        component: () =>
-          import(
-            /* webpackChunkName: "complainList" */ "../views/complainList.vue"
-          ),
-        meta: {
-          title: "Complaint record",
-        },
-      },
-      {
-        path: "complainEdit",
-        name: "complainEdit",
-        component: () =>
-          import(
-            /* webpackChunkName: "complainEdit" */ "../views/complainEdit.vue"
-          ),
-        meta: {
-          title: "Complaints",
-        },
-      },
-      {
         path: "home",
         name: "home",
         component: () =>
