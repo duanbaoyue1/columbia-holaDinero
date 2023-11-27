@@ -9,7 +9,6 @@
       <m-icon type="right" :width="8" :height="16" />
     </div>
     <div
-      v-else
       class="btn row-space-between"
       @click="$router.push({ name: 'retrievePassword' })"
     >
@@ -34,11 +33,11 @@
             @click="showLegal = false"
           />
         </div>
-        <div class="title margin-top-30" @click="goTerms">
+        <div class="title margin-top-30" @click="innerJump('terms')">
           Condiciones del servicio
         </div>
         <div class="line"></div>
-        <div class="title margin-top-30" @click="goPrivacy">
+        <div class="title margin-top-30" @click="innerJump('privacy')">
           Política de privacidad
         </div>
       </div>

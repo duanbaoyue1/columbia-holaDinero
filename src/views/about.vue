@@ -1,7 +1,7 @@
 <template>
   <div class="about content-area">
     <div class="app-info">
-      <img src="../assets/img/creditomax/logo/512_512.png" />
+      <!-- <img src="../assets/img/creditomax/logo/512_512.png" /> -->
       <div class="name">CreditoMax</div>
       <div id="version">Version: {{ appGlobal.appVersionV }}</div>
       <div class="desc">

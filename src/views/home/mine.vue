@@ -32,7 +32,7 @@
 
       <div
         class="menu row-space-between-center"
-        v-if="!userInfo.remittanceAccountAuth"
+        v-if="userInfo.remittanceAccountAuth"
         @click="innerJump('completeBank', { from: 'mine' })"
       >
         <div class="title row-direction">
@@ -64,7 +64,7 @@
 
       <van-overlay :show="showLogOut" @click="showLogOut = false">
         <div class="logout" @click.stop>
-          <img :src="require('@/assets/img/creditomax/个人中心推出弹窗.png')" />
+          <!-- <img :src="require('@/assets/img/creditomax/个人中心推出弹窗.png')" /> -->
           <div class="content">
             <div>¿Está seguro de cerrar sesión?</div>
             <button @click="logout">Cancelar</button>
@@ -121,12 +121,6 @@ export default {
       } finally {
         this.hideLoading();
       }
-    },
-    goTestb() {
-      this.innerJump("testb");
-    },
-    goDetail() {
-      this.innerJump("orderDetail");
     },
   },
 };

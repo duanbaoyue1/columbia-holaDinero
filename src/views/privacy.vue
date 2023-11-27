@@ -1,7 +1,7 @@
 <template>
   <div class="h5-content content-area">
     <div class="header-frame">
-      <img class="logo" src="@/assets/img/creditomax/privacy.png" />
+      <!-- <img class="logo" src="@/assets/img/creditomax/privacy.png" /> -->
     </div>
     <div class="content-frame">
       <div class="title">

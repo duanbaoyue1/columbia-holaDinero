@@ -3,25 +3,14 @@
     <div class="edit-area">
       <div class="line-item">
         <div class="label">
-          <m-icon
-            class="icon"
-            type="creditomax/Phone number"
-            :width="18"
-            :height="20"
-          />
+          <m-icon class="icon" type="phone-number" :width="18" :height="20" />
           Número de teléfono
         </div>
         <input v-model="userInfo.mobile" disabled />
       </div>
       <div class="line-item">
         <div class="label">
-          <m-icon
-            class="icon"
-            type="creditomax/密码"
-            :width="18"
-            :height="20"
-          />
-
+          <m-icon class="icon" type="contrasena" :width="18" :height="20" />
           Nueva contraseña
         </div>
         <input
@@ -32,9 +21,7 @@
         />
         <m-icon
           class="eye"
-          :type="
-            passwordType != 'text' ? 'password/eye-hide' : 'password/eye-show'
-          "
+          :type="passwordType != 'text' ? 'not-password' : 'show-password'"
           :width="32"
           :height="20"
           @click="togglePassword('passwordType')"
@@ -43,12 +30,7 @@
 
       <div class="line-item">
         <div class="label">
-          <m-icon
-            class="icon"
-            type="creditomax/密码"
-            :width="18"
-            :height="20"
-          />
+          <m-icon class="icon" type="contrasena" :width="18" :height="20" />
           Confirmar contraseña
         </div>
         <input
@@ -59,11 +41,7 @@
         />
         <m-icon
           class="eye"
-          :type="
-            passwordAgainType != 'text'
-              ? 'password/eye-hide'
-              : 'password/eye-show'
-          "
+          :type="passwordAgainType != 'text' ? 'not-password' : 'show-password'"
           :width="32"
           :height="20"
           @click="togglePassword('passwordAgainType')"

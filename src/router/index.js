@@ -185,8 +185,8 @@ const routes = [
         },
       },
       {
-        path: "retrieve-password",
-        name: "retrieve-password",
+        path: "retrievePassword",
+        name: "retrievePassword",
         component: () =>
           import(
             /* webpackChunkName: "retrieve-password" */ "../views/retrievePassword.vue"
@@ -335,6 +335,12 @@ const router = new VueRouter({
   base: import.meta.env.BASE_URL, // 这个配置也很重要，否则会出现页面空白情况
   scrollBehavior: () => ({ x: 0, y: 0 }),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  console.log(to, "**** to");
+  console.log(from, "***** from");
+  next();
 });
 
 export default router;

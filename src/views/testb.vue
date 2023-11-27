@@ -60,7 +60,7 @@ export default {
           this.hideMessageBox();
           this.goAppBack();
         },
-        iconPath: "creditomax/个人中心推出弹窗",
+        // iconPath: "creditomax/个人中心推出弹窗",
       });
     };
 

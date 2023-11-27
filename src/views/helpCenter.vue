@@ -1,5 +1,5 @@
 <template>
-  <div class="help-center content-area">
+  <div class="content-area">
     <div class="header-frame"></div>
     <div class="content-frame">
       <div class="frame row-flex">
@@ -59,12 +59,12 @@ export default {
       ],
     };
   },
-  mounted() {
+  created() {
     this.setTabBar({
       show: true,
+      transparent: false,
       fixed: true,
-      transparent: true,
-      title: "",
+      title: "help Center",
     });
   },
   methods: {
@@ -74,85 +74,76 @@ export default {
         isChecked: !this.questions[index].isChecked,
       });
     },
-    goComplain() {
-      this.innerJump("complainHome");
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.help-center {
-  padding-bottom: 24px;
+.header-frame {
+  width: 100%;
+  height: 300px;
   position: relative;
-  top: -80px;
+  z-index: 1;
+}
+.logo {
+  width: 100%;
+  height: 300px;
+}
 
-  .header-frame {
-    width: 100%;
-    height: 300px;
-    position: relative;
-    z-index: 1;
-  }
-  .logo {
-    width: 100%;
-    height: 300px;
-  }
+.frame {
+  width: 335px;
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 20px auto 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 99;
+}
 
-  .frame {
-    width: 335px;
-    background: #ffffff;
-    border-radius: 16px;
-    margin: 20px auto 0;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 99;
-  }
+.content-frame {
+  margin-top: -190px;
+  word-break: break-word;
+}
 
-  .content-frame {
-    margin-top: -190px;
-    word-break: break-word;
-  }
+.title {
+  font-size: 16px;
+  font-family: Roboto-Regular, Roboto;
+  font-weight: 400;
+  color: #0d0d0d;
+  line-height: 19px;
+  margin-left: 20px;
+}
 
-  .title {
-    font-size: 16px;
-    font-family: Roboto-Regular, Roboto;
-    font-weight: 400;
-    color: #0d0d0d;
-    line-height: 19px;
-    margin-left: 20px;
-  }
+.desc-title {
+  width: 257px;
+  font-size: 16px;
+  font-family: Roboto-Medium, Roboto;
+  font-weight: 500;
+  color: #333333;
+  line-height: 20px;
+  word-break: break-word;
+}
 
-  .desc-title {
-    width: 257px;
-    font-size: 16px;
-    font-family: Roboto-Medium, Roboto;
-    font-weight: 500;
-    color: #333333;
-    line-height: 20px;
-    word-break: break-word;
-  }
+.content {
+  font-size: 13px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #a7a7a7;
+  line-height: 18px;
+  margin-top: 10px;
+}
 
-  .content {
-    font-size: 13px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #a7a7a7;
-    line-height: 18px;
-    margin-top: 10px;
-  }
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+}
 
-  .row-flex {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    box-sizing: border-box;
-  }
-
-  .row-space-between-center {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.row-space-between-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

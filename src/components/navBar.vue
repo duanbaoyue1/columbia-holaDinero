@@ -23,12 +23,11 @@
 
 <script>
 export default {
-  mounted() {},
   methods: {
     onBack() {
+      console.log("***** object");
       if (this.tabBar.backCallback) {
         this.tabBar.backCallback();
-        return;
       } else {
         this.goAppBack();
       }
