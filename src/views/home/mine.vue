@@ -31,8 +31,8 @@
       </div>
 
       <div
-        class="menu row-space-between-center"
         v-if="userInfo.remittanceAccountAuth"
+        class="menu row-space-between-center"
         @click="innerJump('completeBank', { from: 'mine' })"
       >
         <div class="title row-direction">
@@ -51,9 +51,9 @@
       </div>
 
       <div
+        v-if="isTestAccount"
         class="menu row-space-between-center"
         @click="showDeleteConfirm"
-        v-if="!isTestAccount"
       >
         <div class="title row-direction">
           <m-icon class="icon" type="delete" :width="30" :height="30" />
@@ -61,16 +61,6 @@
         </div>
         <m-icon type="right" :width="10" :height="18" />
       </div>
-
-      <van-overlay :show="showLogOut" @click="showLogOut = false">
-        <div class="logout" @click.stop>
-          <!-- <img :src="require('@/assets/img/creditomax/个人中心推出弹窗.png')" /> -->
-          <div class="content">
-            <div>¿Está seguro de cerrar sesión?</div>
-            <button @click="logout">Cancelar</button>
-          </div>
-        </div>
-      </van-overlay>
     </div>
   </div>
 </template>
@@ -78,9 +68,12 @@
 export default {
   data() {
     return {
-      showLogOut: false,
       isTestAccount: false, // 是否google测试账号
     };
+  },
+  activated() {
+    this.setEventTrackStartTime();
+    this.updateData();
   },
   async mounted() {
     this.setTabBar({
@@ -92,10 +85,6 @@ export default {
     } catch (error) {
       console.log(error);
     }
-  },
-  activated() {
-    this.setEventTrackStartTime();
-    this.updateData();
   },
   methods: {
     showDeleteConfirm() {

@@ -290,15 +290,6 @@ const routes = [
         },
       },
       {
-        path: "testa",
-        name: "testa",
-        component: () =>
-          import(/* webpackChunkName: "testa" */ "../views/testa.vue"),
-        meta: {
-          title: "testa",
-        },
-      },
-      {
         path: "testb",
         name: "testb",
         component: () =>
