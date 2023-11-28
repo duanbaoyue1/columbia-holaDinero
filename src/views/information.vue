@@ -87,7 +87,7 @@
 
 <script>
 import selectItem from "@/components/selectItem";
-import CompleteStep from "@/components/completeStep.vue";
+import CompleteStep from "@/components/completeStep";
 import * as ALL_ATTRS from "@/utils/constants";
 const ALL_FIELD = [
   "marital",

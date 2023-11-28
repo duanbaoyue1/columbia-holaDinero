@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import OrderItemRepayment from "@/components/orderItemRepayment.vue";
+import OrderItemRepayment from "@/components/orderItemRepayment";
 
 export default {
   components: {

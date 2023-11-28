@@ -8,19 +8,30 @@
         <li :class="{ active: curNav == 4 }" @click="toggleNav(4)">Branch</li>
       </ul>
       <ul class="items">
-        <li v-for="item in banks" :class="{ active: classActive(item) }" :key="item.id" @click="chooseItem(item)">
+        <li
+          v-for="item in banks"
+          :class="{ active: classActive(item) }"
+          :key="item.id"
+          @click="chooseItem(item)"
+        >
           <span>{{ item.name }}</span>
         </li>
       </ul>
       <div class="submit">
-        <button class="bottom-submit-btn" :disabled="!choosedBranch" @click="complete">Next</button>
+        <button
+          class="bottom-submit-btn"
+          :disabled="!choosedBranch"
+          @click="complete"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import mIcon from './m-icon.vue';
+import mIcon from "./m-icon";
 export default {
   components: { mIcon },
   created() {
@@ -30,8 +41,13 @@ export default {
 
   computed: {
     classActive() {
-      return item => {
-        return (this.curNav == 1 && this.choosedBank == item.id) || (this.curNav == 2 && this.choosedState == item.id) || (this.curNav == 3 && this.choosedCity == item.id) || (this.curNav == 4 && this.choosedBranch == item.id);
+      return (item) => {
+        return (
+          (this.curNav == 1 && this.choosedBank == item.id) ||
+          (this.curNav == 2 && this.choosedState == item.id) ||
+          (this.curNav == 3 && this.choosedCity == item.id) ||
+          (this.curNav == 4 && this.choosedBranch == item.id)
+        );
       };
     },
   },
@@ -39,12 +55,12 @@ export default {
   data() {
     return {
       curNav: 1,
-      choosedBank: '',
-      choosedState: '',
-      choosedCity: '',
-      choosedBranch: '',
-      choosedBranchName: '',
-      choosedIfsc: '',
+      choosedBank: "",
+      choosedState: "",
+      choosedCity: "",
+      choosedBranch: "",
+      choosedBranchName: "",
+      choosedIfsc: "",
       banks: [],
       states: [],
       cities: [],
@@ -74,9 +90,11 @@ export default {
       }
     },
     async queryBanks(parentId) {
-      parentId = parentId || '';
+      parentId = parentId || "";
       // 查询所有的银行
-      let data = await this.$http.post(`/api/remittance/remittanceBankList`, { parentId: parentId });
+      let data = await this.$http.post(`/api/remittance/remittanceBankList`, {
+        parentId: parentId,
+      });
       this.banks = data.data.list;
     },
     toggleNav(index) {
@@ -95,7 +113,14 @@ export default {
       this.curNav = index;
     },
     complete() {
-      this.$emit('complete', { choosedIfsc: this.choosedIfsc, choosedBank: this.choosedBank, choosedState: this.choosedState, choosedCity: this.choosedCity, choosedBank: this.choosedBank, choosedBranchName: this.choosedBranchName });
+      this.$emit("complete", {
+        choosedIfsc: this.choosedIfsc,
+        choosedBank: this.choosedBank,
+        choosedState: this.choosedState,
+        choosedCity: this.choosedCity,
+        choosedBank: this.choosedBank,
+        choosedBranchName: this.choosedBranchName,
+      });
     },
   },
 };
@@ -169,7 +194,7 @@ export default {
             position: relative;
             &::after {
               position: absolute;
-              content: ' ';
+              content: " ";
               height: 4px;
               left: 0;
               right: 0;

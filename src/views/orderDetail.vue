@@ -138,7 +138,7 @@
 
 <script>
 import { apiHost } from "@/services/apiHost";
-import chooseBank from "@/components/chooseBank.vue";
+import chooseBank from "@/components/chooseBank";
 
 export default {
   components: {

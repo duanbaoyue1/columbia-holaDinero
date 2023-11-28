@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import OrderItem from "@/components/orderItem.vue";
+import OrderItem from "@/components/orderItem";
 
 export default {
   components: {

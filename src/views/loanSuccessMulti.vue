@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import ResLoans from "@/components/resLoans.vue";
-import GoogleFeedback from "@/components/googleFeedback.vue";
+import ResLoans from "@/components/resLoans";
+import GoogleFeedback from "@/components/googleFeedback";
 
 export default {
   components: {

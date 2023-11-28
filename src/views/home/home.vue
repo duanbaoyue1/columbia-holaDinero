@@ -109,8 +109,8 @@
 
 <script>
 import { mapActions } from "vuex";
-import MultiRecommend from "@/components/multiRecommend.vue";
-import easyApplication from "@/components/easyApplication.vue";
+import MultiRecommend from "@/components/multiRecommend";
+import easyApplication from "@/components/easyApplication";
 
 export default {
   components: {

@@ -58,7 +58,7 @@
 <script>
 import selectItem from "@/components/selectItem";
 import * as ALL_ATTRS from "@/utils/constants";
-import CompleteStep from "@/components/completeStep.vue";
+import CompleteStep from "@/components/completeStep";
 const FIRST_GET_PHONE_KEY = "is-getted-phone";
 
 export default {

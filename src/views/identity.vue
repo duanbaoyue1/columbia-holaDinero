@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import CompleteStep from "@/components/completeStep.vue";
+import CompleteStep from "@/components/completeStep";
 
 export default {
   components: {

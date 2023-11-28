@@ -115,8 +115,8 @@
 </template>
 
 <script>
-import ifscSelect from "@/components/ifscSelect.vue";
-import CompleteStep from "@/components/completeStep.vue";
+import ifscSelect from "@/components/ifscSelect";
+import CompleteStep from "@/components/completeStep";
 import * as ALL_ATTRS from "@/utils/constants";
 
 export default {

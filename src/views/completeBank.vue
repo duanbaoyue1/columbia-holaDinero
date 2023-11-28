@@ -52,7 +52,7 @@
 
 <script>
 import * as ALL_ATTRS from "@/utils/constants";
-import CompleteStep from "@/components/completeStep.vue";
+import CompleteStep from "@/components/completeStep";
 
 export default {
   components: {

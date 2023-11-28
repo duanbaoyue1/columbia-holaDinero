@@ -1,5 +1,5 @@
-import toast from './index.vue';
-export default Vue => {
+import toast from "./index.vue";
+export default (Vue) => {
   let toastComp = Vue.extend(toast);
   function showToast(msg, duration = 3e3) {
     try {
