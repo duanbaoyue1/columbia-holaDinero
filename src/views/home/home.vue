@@ -139,6 +139,92 @@ export default {
         button: "",
         locked: null,
       },
+      list: [
+        {
+          path: "home", // 首页 tab
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "mine", // 个人中心 tab
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "repayment", // 待还款 tab
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "information", // 个人信息（认证页）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "contacts", // 联系人（认证页）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "identity", // 身份证（认证页）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "addBank", // 绑定银行卡 （认证页）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "loanConfirm", // 贷款确认页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "loanSuccessMulti", // 申请结果页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "loanFail", // 申请失败页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "orderDetail", // 订单详情页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "deferHistory", // 还款历史页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "deferDetail", // 展期详情页
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "orderList", // 全部订单（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "helpCenter", // 帮助中心（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "completeBank", // 银行卡（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "settings", // 设置（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "createPassword", // 创建密码（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "retrievePassword", // 修改密码（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "terms", // 服务条款（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+        {
+          path: "privacy", // 隐私政策（个人中心）
+          type: 1, // 1：H5 2：安卓
+        },
+      ],
     };
   },
   computed: {
@@ -190,10 +276,6 @@ export default {
     this.setTabBar({
       show: false,
     });
-    // if (this.from == "bridge" && !this.query.reload) {
-    //   location.replace(location.href + "&reload=true");
-    // }
-    // this.setGlobalData();
     this.getMapDataListKey();
   },
 
@@ -202,6 +284,8 @@ export default {
     if (!this.checkInApp()) {
       window.getMapDataListCallback();
     }
+
+    this.setJumpPageTypes(this.list);
   },
   activated() {
     this.setEventTrackStartTime();
@@ -216,7 +300,12 @@ export default {
     this.updateData();
   },
   methods: {
-    ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
+    ...mapActions([
+      "setAppGlobal",
+      "setAppChecked",
+      "updateToken",
+      "setJumpPageTypes",
+    ]),
 
     // 调用app方法获取所有参数
     getMapDataListKey() {
@@ -226,13 +315,6 @@ export default {
           data = JSON.parse(data);
         }
         data = data || {};
-        delete data.apiHost;
-        if (data.appVersionCode) {
-          data.appVersion = data.appVersionCode;
-        }
-        if (data.appVersionName) {
-          data.appVersionV = data.appVersionName;
-        }
         this.setAppChecked(true);
         this.setAppGlobal(data);
         this.updateData();
@@ -405,12 +487,6 @@ export default {
         this.actionCallback = () => {
           this.$toast("Por favor, inténtelo de nuevo después de 0:00!");
         };
-      }
-    },
-
-    setGlobalData() {
-      if (this.from == "bridge") {
-        this.setAppGlobal(this.query);
       }
     },
 

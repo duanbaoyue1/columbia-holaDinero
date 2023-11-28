@@ -8,22 +8,18 @@ export default new Vuex.Store({
       show: false,
       messageInfo: {},
     },
-    appName: "HolaDinero",
     appGlobal: {
-      appName: "HolaDinero",
+      appName: "holaDinero",
       token: "63fdfd55e4b0f6a603fac657",
-      debug: true, // 是否调试模式
+      appVersionCode: 1000, // app版本号
       mobileType: "2", // 手机类型
-      appVersion: 1000, // app版本号
       userId: "", // 用户id
       afId: "", // afid
       gaId: "", // gaid
+      gps: "", // gps坐标
       gpsAddress: "", // gps地址
       channelCode: "google", // 渠道号
       androidId: "",
-      gps: "", // gps坐标
-      appVersionV: "1.0.0", // 带1.1.1 这种格式的版本号
-      StatusBarHeight: 60, //app Height高度
     },
     tabBar: {
       show: true,
@@ -38,17 +34,14 @@ export default new Vuex.Store({
     isAppChecked: true, // 是否已经较验在app中
     eventTrackStartTime: 0,
     eventTrackerActionCnt: 0,
+    jumpPageTypes: localStorage.getItem("jump-page-types") // 页面类型
+      ? JSON.parse(localStorage.getItem("jump-page-types"))
+      : [],
   },
   mutations: {
     setAppGlobal(state, data) {
-      if (data && data.apiHost) {
-        data.apiHost = data.apiHost.replace("/api", "");
-      }
-      state.appGlobal = {
-        ...state.appGlobal,
-        ...data,
-      };
-      localStorage.setItem("app-local", JSON.stringify(state.appGlobal));
+      state.appGlobal = data;
+      localStorage.setItem("app-local", JSON.stringify(data));
     },
     showMessageBox(state, data) {
       state.messageBox = {
@@ -73,7 +66,6 @@ export default new Vuex.Store({
       state.isAppChecked = data;
     },
     setTabBar(state, data) {
-      console.log(data, "**** data");
       if (!data.backCallback) {
         data.backCallback = null;
       }
@@ -98,6 +90,10 @@ export default new Vuex.Store({
     setRepaymentNum(state, data) {
       state.repaymentNum = data;
     },
+    setJumpPageTypes(state, data) {
+      state.jumpPageTypes = data;
+      localStorage.setItem("jump-page-types", JSON.stringify(data));
+    },
   },
   getters: {
     appGlobal: (state) => state.appGlobal,
@@ -106,6 +102,7 @@ export default new Vuex.Store({
     tabBar: (state) => state.tabBar,
     appMode: (state) => state.appMode,
     repaymentNum: (state) => state.repaymentNum,
+    jumpPageTypes: (state) => state.jumpPageTypes,
   },
   actions: {
     async setAppGlobal({ commit }, data) {
@@ -141,6 +138,9 @@ export default new Vuex.Store({
     },
     async setRepaymentNum({ commit }, repaymentNum) {
       commit("setRepaymentNum", repaymentNum);
+    },
+    async setJumpPageTypes({ commit }, data) {
+      commit("setJumpPageTypes", data);
     },
   },
 });

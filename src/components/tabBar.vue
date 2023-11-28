@@ -146,7 +146,6 @@ export default {
       });
     },
     changeTab(i) {
-      console.log(i, "****** i");
       if (this.showRepayment) {
         if (i === 2) {
           this.h5ToAndroidPage();

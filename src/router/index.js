@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import layout from "../views/layout.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -17,10 +18,7 @@ const routes = [
       {
         path: "information",
         name: "information",
-        component: () =>
-          import(
-            /* webpackChunkName: "information" */ "../views/information.vue"
-          ),
+        component: () => import("../views/information.vue"),
         meta: {
           title: "Información básica",
         },
@@ -28,19 +26,23 @@ const routes = [
       {
         path: "contacts",
         name: "contacts",
-        component: () =>
-          import(/* webpackChunkName: "contacts" */ "../views/contacts.vue"),
+        component: () => import("../views/contacts.vue"),
         meta: {
           title: "Complete information",
         },
       },
       {
+        path: "jumpLoading",
+        name: "jumpLoading",
+        component: () => import("../views/jumpLoading.vue"),
+        meta: {
+          title: "",
+        },
+      },
+      {
         path: "completeBank",
         name: "completeBank",
-        component: () =>
-          import(
-            /* webpackChunkName: "completeBank" */ "../views/completeBank.vue"
-          ),
+        component: () => import("../views/completeBank.vue"),
         meta: {
           title: "Complete information",
         },
@@ -48,8 +50,7 @@ const routes = [
       {
         path: "addBank",
         name: "addBank",
-        component: () =>
-          import(/* webpackChunkName: "add-bank" */ "../views/addBank.vue"),
+        component: () => import("../views/addBank.vue"),
         meta: {
           title: "Select Bank Account",
         },
@@ -57,10 +58,7 @@ const routes = [
       {
         path: "loanSuccessMulti",
         name: "loanSuccessMulti",
-        component: () =>
-          import(
-            /* webpackChunkName: "loanSuccessMulti" */ "../views/loanSuccessMulti.vue"
-          ),
+        component: () => import("../views/loanSuccessMulti.vue"),
         meta: {
           title: "Loan Application",
         },
@@ -68,31 +66,15 @@ const routes = [
       {
         path: "loanFail",
         name: "loanFail",
-        component: () =>
-          import(/* webpackChunkName: "loanFail" */ "../views/loanFail.vue"),
+        component: () => import("../views/loanFail.vue"),
         meta: {
           title: "Loan Application",
         },
       },
       {
-        path: "paymentFail",
-        name: "paymentFail",
-        component: () =>
-          import(
-            /* webpackChunkName: "paymentFail" */ "../views/paymentFail.vue"
-          ),
-        meta: {
-          title: "Solicitud de préstam",
-          backgroundFFF: true, // 页面白色
-        },
-      },
-      {
         path: "loanConfirm",
         name: "loanConfirm",
-        component: () =>
-          import(
-            /* webpackChunkName: "loanConfirm" */ "../views/loanConfirm.vue"
-          ),
+        component: () => import("../views/loanConfirm.vue"),
         meta: {
           title: "Loan Application",
           navReturnFFF: true,
@@ -101,10 +83,7 @@ const routes = [
       {
         path: "helpCenter",
         name: "helpCenter",
-        component: () =>
-          import(
-            /* webpackChunkName: "helpCenter" */ "../views/helpCenter.vue"
-          ),
+        component: () => import("../views/helpCenter.vue"),
         meta: {
           title: "Help Center",
         },
@@ -112,10 +91,7 @@ const routes = [
       {
         path: "orderDetail",
         name: "orderDetail",
-        component: () =>
-          import(
-            /* webpackChunkName: "orderDetail" */ "../views/orderDetail.vue"
-          ),
+        component: () => import("../views/orderDetail.vue"),
         meta: {
           title: "Order Detail",
         },
@@ -123,22 +99,15 @@ const routes = [
       {
         path: "deferDetail",
         name: "deferDetail",
-        component: () =>
-          import(
-            /* webpackChunkName: "deferDetail" */ "../views/deferDetail.vue"
-          ),
+        component: () => import("../views/deferDetail.vue"),
         meta: {
           title: "Deferment",
         },
       },
-
       {
         path: "deferHistory",
         name: "deferHistory",
-        component: () =>
-          import(
-            /* webpackChunkName: "deferHistory" */ "../views/deferHistory.vue"
-          ),
+        component: () => import("../views/deferHistory.vue"),
         meta: {
           title: "Deferment",
         },
@@ -146,8 +115,7 @@ const routes = [
       {
         path: "settings",
         name: "settings",
-        component: () =>
-          import(/* webpackChunkName: "settings" */ "../views/settings.vue"),
+        component: () => import("../views/settings.vue"),
         meta: {
           title: "Set up",
         },
@@ -155,10 +123,7 @@ const routes = [
       {
         path: "createPassword",
         name: "createPassword",
-        component: () =>
-          import(
-            /* webpackChunkName: "createPassword" */ "../views/createPassword.vue"
-          ),
+        component: () => import("../views/createPassword.vue"),
         meta: {
           title: "Create Password",
         },
@@ -166,10 +131,7 @@ const routes = [
       {
         path: "retrievePassword",
         name: "retrievePassword",
-        component: () =>
-          import(
-            /* webpackChunkName: "retrieve-password" */ "../views/retrievePassword.vue"
-          ),
+        component: () => import("../views/retrievePassword.vue"),
         meta: {
           title: "Retrieve Password",
         },
@@ -177,8 +139,7 @@ const routes = [
       {
         path: "privacy",
         name: "privacy",
-        component: () =>
-          import(/* webpackChunkName: "privacy" */ "../views/privacy.vue"),
+        component: () => import("../views/privacy.vue"),
         meta: {
           title: "Privacy Policy",
         },
@@ -186,8 +147,7 @@ const routes = [
       {
         path: "terms",
         name: "terms",
-        component: () =>
-          import(/* webpackChunkName: "terms" */ "../views/terms.vue"),
+        component: () => import("../views/terms.vue"),
         meta: {
           title: "Terms of Services",
         },
@@ -195,8 +155,7 @@ const routes = [
       {
         path: "identity",
         name: "identity",
-        component: () =>
-          import(/* webpackChunkName: "identity" */ "../views/identity.vue"),
+        component: () => import("../views/identity.vue"),
         meta: {
           title: "Complete information",
         },
@@ -204,8 +163,7 @@ const routes = [
       {
         path: "home",
         name: "home",
-        component: () =>
-          import(/* webpackChunkName: "home" */ "../views/home/home.vue"),
+        component: () => import("../views/home/home.vue"),
         meta: {
           title: "",
           keepAlive: true,
@@ -215,10 +173,7 @@ const routes = [
       {
         path: "repayment",
         name: "repayment",
-        component: () =>
-          import(
-            /* webpackChunkName: "repayment" */ "../views/home/repayment.vue"
-          ),
+        component: () => import("../views/home/repayment.vue"),
         meta: {
           title: "",
           keepAlive: true,
@@ -228,8 +183,7 @@ const routes = [
       {
         path: "mine",
         name: "mine",
-        component: () =>
-          import(/* webpackChunkName: "mine" */ "../views/home/mine.vue"),
+        component: () => import("../views/home/mine.vue"),
         meta: {
           title: "",
           keepAlive: true,
@@ -239,19 +193,17 @@ const routes = [
       {
         path: "orderList",
         name: "orderList",
-        component: () =>
-          import(/* webpackChunkName: "orderList" */ "../views/orderList.vue"),
+        component: () => import("../views/orderList.vue"),
         meta: {
           title: "All orders",
         },
       },
       {
-        path: "testb",
-        name: "testb",
-        component: () =>
-          import(/* webpackChunkName: "testb" */ "../views/testb.vue"),
+        path: "test",
+        name: "test",
+        component: () => import("../views/test.vue"),
         meta: {
-          title: "testb",
+          title: "test",
         },
       },
     ],
@@ -259,7 +211,7 @@ const routes = [
   {
     path: "/404",
     name: "404",
-    component: () => import("@/views/notFound.vue"),
+    component: () => import("../views/notFound.vue"),
   },
   {
     path: "*", // 此处需特别注意至于最底部
@@ -275,8 +227,22 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to, "**** to");
-  console.log(from, "***** from");
+  console.log(to, to.name, "**** to");
+  console.log(from, from.name, "***** from");
+
+  const pateTypes = store.getters.jumpPageTypes;
+  const f = pateTypes.find((f) => f.path === to.name);
+  // type：1：H5 2：安卓
+  // type === 2 跳转安卓page
+  if (f?.path && f?.type === 2) {
+    this.toAppMethod("h5ToAndroidPage", {
+      toPage: to.name,
+      fromPage: from.name,
+    });
+    return;
+  }
+
+  // H5跳转
   next();
 });
 

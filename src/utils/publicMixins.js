@@ -11,7 +11,6 @@ export default {
       "userInfo",
       "tabBar",
       "appMode",
-      "appName",
       "eventTrackerActionCnt",
       "eventTrackStartTime",
     ]),

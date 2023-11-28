@@ -68,7 +68,7 @@ service.interceptors.request.use(
     config.headers["afId"] = store.getters.appGlobal.afId;
     config.headers["gaId"] = store.getters.appGlobal.gaId;
     config.headers["appName"] = store.getters.appGlobal.appName;
-    config.headers["appVersion"] = store.getters.appGlobal.appVersion;
+    config.headers["appVersion"] = store.getters.appGlobal.appVersionCode;
     config.headers["timestamp"] = new Date().getTime();
     // config.headers['Accept'] = '*/*';
     return config;

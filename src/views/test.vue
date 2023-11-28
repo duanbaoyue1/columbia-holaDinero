@@ -170,9 +170,6 @@ export default {
         if (typeof data == "string") {
           data = JSON.parse(data);
         }
-        delete api.apiHost;
-        data.appVersion = data.appVersionCode;
-        data.appVersionV = data.appVersionName;
         this.setAppGlobal(data);
         alert("更新App信息:");
         alert(JSON.stringify(this.appGlobal));

@@ -26,8 +26,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "install": "^0.13.0",
-    "npm": "^10.2.4",
     "postcss-pxtorem": "^6.0.0",
     "prettier": "^3.0.3",
     "sass": "^1.26.5",

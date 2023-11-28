@@ -112,7 +112,7 @@ export default {
         userId: this.appGlobal.userId,
         phone: this.appGlobal.mobile,
         appName: this.appGlobal.appName,
-        appVersion: this.appGlobal.appVersion + "",
+        appVersion: this.appGlobal.appVersionCode + "",
         modular: pageModule?.modular,
         page: pageModule?.page,
         startTime: this.eventTrackStartTime,
