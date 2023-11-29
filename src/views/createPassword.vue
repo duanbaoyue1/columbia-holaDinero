@@ -137,7 +137,7 @@ export default {
           this.toAppMethod("updateRecords", res.data);
           this.$toast("Éxito");
           setTimeout(() => {
-            this.goHome();
+            this.goAppBack();
           }, 1000);
         }
       } catch (error) {

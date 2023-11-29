@@ -28,7 +28,12 @@
 
 <script>
 export default {
-  props: ["order"],
+  props: {
+    order: {
+      type: Object,
+      default: () => {},
+    },
+  },
 
   computed: {
     dateValue() {
@@ -94,7 +99,7 @@ export default {
     goDetail() {
       if ([10, 100, 101].includes(this.order.orderStatus)) {
         this.sendEventTrackData({});
-        this.goHome();
+        this.cleanAllPageToHome();
       } else {
         this.sendEventTrackData({ leaveBy: 1 });
         this.innerJump("orderDetail", { orderId: this.order.orderNo });

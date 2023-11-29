@@ -61,12 +61,13 @@ export default {
 
   data() {
     return {
-      ALL_ATTRS: ALL_ATTRS,
+      ALL_ATTRS,
       canSubmit: false, // 是否可以提交
       submitSuccess: false,
       cards: [],
       from: this.$route.query.from,
       orderId: this.$route.query.orderId,
+      fromPage: this.$route.query.fromPage,
       chooseBankId: null,
       saving: false,
       editData: {
@@ -85,17 +86,23 @@ export default {
       deep: true,
     },
   },
-  created() {
+  mounted() {
+    this.setEventTrackStartTime();
+
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
       title: "Tarjeta bancaria",
-      backCallback: null,
+      backCallback: () => {
+        if (this.fromPage) {
+          this.toAppMethod("finishThisPage");
+        } else {
+          this.goAppBack();
+        }
+        this.sendEventTrackData({});
+      },
     });
-  },
-  mounted() {
-    this.setEventTrackStartTime();
 
     this.getBanks();
     if (this.from != "mine") {
@@ -133,7 +140,6 @@ export default {
         this.hideLoading();
       }
     },
-    async submit() {},
   },
 };
 </script>

@@ -27,7 +27,6 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-
 import navBar from "@/components/navBar";
 import tabBar from "@/components/tabBar";
 
@@ -56,7 +55,7 @@ export default {
     }, 500);
   },
   computed: {
-    ...mapState(["isAppChecked", "appMode"]),
+    ...mapState(["isAppChecked", "appMode", "repaymentNum"]),
   },
   watch: {
     "appMode.maskModel": {

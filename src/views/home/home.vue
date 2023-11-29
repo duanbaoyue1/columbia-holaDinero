@@ -146,7 +146,7 @@ export default {
         },
         {
           path: "mine", // 个人中心 tab
-          type: 1, // 1：H5 2：安卓
+          type: 2, // 1：H5 2：安卓
         },
         {
           path: "repayment", // 待还款 tab
@@ -154,11 +154,11 @@ export default {
         },
         {
           path: "information", // 个人信息（认证页）
-          type: 1, // 1：H5 2：安卓
+          type: 2, // 1：H5 2：安卓
         },
         {
           path: "contacts", // 联系人（认证页）
-          type: 1, // 1：H5 2：安卓
+          type: 2, // 1：H5 2：安卓
         },
         {
           path: "identity", // 身份证（认证页）
@@ -238,7 +238,6 @@ export default {
       }
     },
   },
-
   watch: {
     "appMode.maskModel": {
       async handler(newVal, oldVal) {
@@ -255,6 +254,10 @@ export default {
           } else {
             // 现金贷
             this.isMultiple = false;
+            this.toAppMethod("getRepaymentInfo", {
+              isRepayment: false,
+              repaymentNumber: 0,
+            });
             localStorage.removeItem("app-is-multi");
           }
           this.updateTextAndAction();
@@ -285,7 +288,8 @@ export default {
       window.getMapDataListCallback();
     }
 
-    this.setJumpPageTypes(this.list);
+    // 页面配置
+    this.getAppJumpConfig();
   },
   activated() {
     this.setEventTrackStartTime();
@@ -293,9 +297,6 @@ export default {
     if (this.checkInApp() && !this.created) {
       return;
     }
-    console.log("home activated and refresh data!");
-    // 多推
-    this.getMultiRecommendItems();
 
     this.updateData();
   },
@@ -306,7 +307,6 @@ export default {
       "updateToken",
       "setJumpPageTypes",
     ]),
-
     // 调用app方法获取所有参数
     getMapDataListKey() {
       window.getMapDataListCallback = async (data) => {
@@ -320,16 +320,27 @@ export default {
         this.updateData();
         this.created = true;
       };
-      this.toAppMethod("getMapDataList", { fuName: "getMapDataListCallback" });
+      // 安卓返回首页刷新数据
+      window.updateHome = () => {
+        this.updateData();
+      };
+      this.toAppMethod("getMapDataList", {
+        fuName: "getMapDataListCallback",
+        updateData: "updateHome",
+      });
     },
-
+    async getAppJumpConfig() {
+      const res = await this.$http.post(`/api/app/getAppJumpConfig`);
+      this.toAppMethod("getToPageList", { list: res.data });
+      this.setJumpPageTypes(res.data);
+      console.log(res.data, "***** resresres");
+    },
     clickShowRecommend() {
       if (!this.selectItems || this.selectItems.length == 0) {
         return;
       }
       this.showRecommend = true;
     },
-
     async updateData() {
       try {
         this.showLoading();
@@ -345,7 +356,6 @@ export default {
         this.hideLoading();
       }
     },
-
     updateTextAndAction() {
       // 清除数据
       this.btnTips = "";
@@ -489,7 +499,6 @@ export default {
         };
       }
     },
-
     async getMultiRecommendItems() {
       try {
         this.showLoading();
@@ -504,6 +513,10 @@ export default {
         };
         this.updateMultiSelect(res.data.mergPushProductList || []);
         this.multiRecommendList = res.data.mergPushProductList || [];
+        this.toAppMethod("getRepaymentInfo", {
+          isRepayment: true,
+          repaymentNumber: res.data.repaymentNum,
+        });
         this.setRepaymentNum(res.data.repaymentNum);
         return res;
       } catch (error) {
@@ -512,7 +525,6 @@ export default {
         this.hideLoading();
       }
     },
-
     async onRefresh() {
       try {
         await this.getAppMode();
@@ -523,7 +535,6 @@ export default {
         this.loading = false;
       }
     },
-
     updateMultiSelect(selectItems) {
       this.selectItems = selectItems;
       let totalValue = selectItems.reduce((prev, cur, index, arr) => {

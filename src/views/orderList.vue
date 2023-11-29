@@ -12,16 +12,16 @@
       <div>
         <div class="has-order" v-if="orders.length">
           <order-item
-            class="order-item"
             v-for="item in orders"
+            class="order-item"
             :key="item.id"
             :order="item"
-          ></order-item>
+          />
         </div>
         <div class="no-order" v-else-if="!loading">
           <m-icon class="icon" type="no-order" :width="168" :height="97" />
           <div>Ningún pedido de préstamo</div>
-          <button @click="goHome">Aplicar ahora</button>
+          <button @click="cleanAllPageToHome">Aplicar ahora</button>
         </div>
       </div>
     </van-pull-refresh>
@@ -37,19 +37,27 @@ export default {
   },
   data() {
     return {
+      fromPage: this.$route.query.fromPage,
       loading: false,
       orders: [],
     };
   },
-  created() {
+  mounted() {
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
       title: "Pedido de préstamo",
+      backCallback: () => {
+        if (this.fromPage) {
+          this.toAppMethod("finishThisPage");
+        } else {
+          this.goAppBack();
+        }
+        this.sendEventTrackData({});
+      },
     });
-  },
-  mounted() {
+
     this.setEventTrackStartTime();
     this.getAllOrders();
   },

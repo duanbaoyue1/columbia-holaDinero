@@ -9,6 +9,7 @@
       <m-icon type="right" :width="8" :height="16" />
     </div>
     <div
+      v-else
       class="btn row-space-between"
       @click="$router.push({ name: 'retrievePassword' })"
     >
@@ -55,17 +56,25 @@ export default {
     return {
       hasPassword: 0,
       showLegal: false,
+      fromPage: this.$route.query.fromPage,
     };
   },
-  created() {
+  async mounted() {
     this.setTabBar({
       show: true,
       fixed: true,
       transparent: false,
       title: "Configuración",
+      backCallback: () => {
+        if (this.fromPage) {
+          this.toAppMethod("finishThisPage");
+        } else {
+          this.goAppBack();
+        }
+        this.sendEventTrackData({ page: "mine" });
+      },
     });
-  },
-  async mounted() {
+
     this.setEventTrackStartTime();
     try {
       let data = await this.$http.post(`/api/user/mine`);

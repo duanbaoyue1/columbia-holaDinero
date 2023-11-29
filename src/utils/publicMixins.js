@@ -1,5 +1,4 @@
 import { mapState, mapActions } from "vuex";
-import { ImagePreview } from "vant";
 
 export default {
   data() {
@@ -84,12 +83,8 @@ export default {
         fuName: "infoBtnCallBack",
       });
     },
-    previewImg(imgs, startIndex) {
-      if (!imgs || !imgs.length || startIndex < 0) return;
-      ImagePreview({
-        images: imgs,
-        startPosition: startIndex,
-      });
+    getLocalSystemTimeStamp() {
+      return new Date().getTime();
     },
     logout() {
       this.toAppMethod("returnLogin");
@@ -147,6 +142,9 @@ export default {
     },
     goHome() {
       this.innerJump("home", {}, true);
+    },
+    cleanAllPageToHome() {
+      this.toAppMethod("cleanAllPageToHome");
     },
     goAppBack() {
       let prevPage = window.location.href;

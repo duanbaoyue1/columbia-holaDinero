@@ -40,7 +40,10 @@ export default new Vuex.Store({
   },
   mutations: {
     setAppGlobal(state, data) {
-      state.appGlobal = data;
+      state.appGlobal = {
+        ...state.appGlobal,
+        ...data,
+      };
       localStorage.setItem("app-local", JSON.stringify(data));
     },
     showMessageBox(state, data) {
@@ -121,7 +124,6 @@ export default new Vuex.Store({
       commit("setAppChecked", data);
     },
     async updateToken({ commit }, data) {
-      console.log("update token", data);
       commit("setAppGlobal", data);
     },
     async setTabBar({ commit }, tabBar) {

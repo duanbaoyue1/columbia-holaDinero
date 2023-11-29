@@ -234,16 +234,21 @@ router.beforeEach((to, from, next) => {
   const f = pateTypes.find((f) => f.path === to.name);
   // type：1：H5 2：安卓
   // type === 2 跳转安卓page
-  if (f?.path && f?.type === 2) {
-    this.toAppMethod("h5ToAndroidPage", {
-      toPage: to.name,
-      fromPage: from.name,
-    });
-    return;
+  if (f && f.path && f.type === 2) {
+    // 是否在APP中
+    if (typeof wjs === "undefined") {
+      return next();
+    }
+    if (to.name !== "mine") {
+      wjs["h5ToAndroidPage"](
+        JSON.stringify({ toPage: to.name, fromPage: from.name })
+      );
+    } else {
+      next();
+    }
+  } else {
+    next();
   }
-
-  // H5跳转
-  next();
 });
 
 export default router;

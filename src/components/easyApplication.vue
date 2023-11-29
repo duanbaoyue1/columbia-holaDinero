@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">Quiénes somos</div>
-    <div class="row-space-between-center">
+    <div class="row-space-between-center margin-top-8">
       <div class="frame" style="padding: 19px 16px 16px">
         <m-icon type="easy-application" :width="74" :height="50" />
         <div>EI proceso fácil</div>
@@ -40,7 +40,6 @@
   background: #ffffff;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  margin-top: 8px;
   box-sizing: border-box;
   font-size: 10px;
   font-family: Roboto, Roboto;
