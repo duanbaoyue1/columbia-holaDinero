@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import { apiHost } from "@/services/apiHost";
+import apiHost from "@/services/apiHost";
 import chooseBank from "@/components/chooseBank";
 
 export default {

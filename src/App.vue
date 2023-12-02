@@ -77,7 +77,7 @@ export default {
       console.log("route change", from, to, this.$route.meta.showTab);
       document.body.style.overflow = "";
       document.title = to.meta.title || "";
-      this.toAppMethod("holdUp", { isInterception: false });
+      this.toAppMethod("backReturn", { isInterception: false });
       try {
         this.hideLoading();
       } catch (error) {

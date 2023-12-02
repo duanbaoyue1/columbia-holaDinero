@@ -123,7 +123,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["setAppGlobal", "setAppChecked", "updateToken"]),
+    ...mapActions(["setAppGlobal", "setAppChecked"]),
     testWebViewMethod() {
       this.openWebview("https://www.baidu.com");
     },

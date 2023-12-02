@@ -301,12 +301,7 @@ export default {
     this.updateData();
   },
   methods: {
-    ...mapActions([
-      "setAppGlobal",
-      "setAppChecked",
-      "updateToken",
-      "setJumpPageTypes",
-    ]),
+    ...mapActions(["setAppGlobal", "setAppChecked", "setJumpPageTypes"]),
     // 调用app方法获取所有参数
     getMapDataListKey() {
       window.getMapDataListCallback = async (data) => {
@@ -331,9 +326,10 @@ export default {
     },
     async getAppJumpConfig() {
       const res = await this.$http.post(`/api/app/getAppJumpConfig`);
-      this.toAppMethod("getToPageList", { list: res.data });
-      this.setJumpPageTypes(res.data);
-      console.log(res.data, "***** resresres");
+      // this.toAppMethod("getToPageList", { list: res.data });
+      // this.setJumpPageTypes(res.data);
+      this.toAppMethod("getToPageList", { list: this.list });
+      this.setJumpPageTypes(this.list);
     },
     clickShowRecommend() {
       if (!this.selectItems || this.selectItems.length == 0) {
@@ -434,7 +430,7 @@ export default {
         }
       } else if ([0, 3].includes(this.appMode.maskModel)) {
         this.actionText = "Aplicar ahora";
-        //未认证跳转
+        // 未认证跳转
         if (this.appMode.basicInfoAuth == 0) {
           this.btnTips = "Casi:95%";
           this.actionCallback = () => {

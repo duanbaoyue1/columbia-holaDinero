@@ -4,4 +4,4 @@ const BASE_URL = {
   production: "https://vfekmp.online",
 };
 
-export const apiHost = BASE_URL[MODE];
+export default BASE_URL[MODE];

@@ -74,20 +74,26 @@ export default {
   },
   methods: {
     changeTab(i) {
+      if (i === 0) {
+        this.h5ToAndroidPage("home", "home");
+      }
       if (this.showRepayment) {
+        if (i === 1) {
+          this.h5ToAndroidPage("home", "repayment");
+        }
         if (i === 2) {
-          this.h5ToAndroidPage();
+          this.h5ToAndroidPage("home", "mine");
         }
         return;
       }
       if (i === 1) {
-        this.h5ToAndroidPage();
+        this.h5ToAndroidPage("home", "mine");
       }
     },
-    h5ToAndroidPage() {
+    h5ToAndroidPage(from, to) {
       this.toAppMethod("h5ToAndroidPage", {
-        fromPage: "home",
-        toPage: "mine",
+        fromPage: from,
+        toPage: to,
         callback: "tabChange",
       });
     },

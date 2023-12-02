@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { apiHost } from "@/services/apiHost";
+import apiHost from "@/services/apiHost";
 
 export default {
   data() {
