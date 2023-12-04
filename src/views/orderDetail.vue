@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import apiHost from "@/services/apiHost";
+import { apiHost } from "@/services/apiConfig";
 import chooseBank from "@/components/chooseBank";
 
 export default {
@@ -202,7 +202,6 @@ export default {
 
     return {
       orderId: this.$route.query.orderId,
-      choosed: false, // 是否勾选复贷
       showPaymentTips: false,
       detail: {},
       deferTimes: 0,
@@ -282,10 +281,13 @@ export default {
       this.innerJump("defer-history", { orderId: this.orderId });
     },
     async getDeferTimes() {
-      let data = await this.$http.post(`/api/extension/historyNum`, {
-        id: this.orderId,
-      });
-      this.deferTimes = data.data.num;
+      try {
+        let data = await this.$http.post(`/api/extension/historyNum`, {
+          id: this.orderId,
+        });
+
+        this.deferTimes = data.data.num;
+      } catch (e) {}
     },
 
     async getDetail() {

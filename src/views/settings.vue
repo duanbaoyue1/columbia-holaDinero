@@ -1,5 +1,5 @@
 <template>
-  <div class="settings content-area">
+  <div class="content-area">
     <div
       v-if="!hasPassword"
       class="btn row-space-between"
@@ -56,7 +56,7 @@ export default {
     return {
       hasPassword: 0,
       showLegal: false,
-      fromPage: this.$route.query.fromPage,
+      fromType: this.$route.query.fromType,
     };
   },
   async mounted() {
@@ -66,7 +66,7 @@ export default {
       transparent: false,
       title: "Configuración",
       backCallback: () => {
-        if (this.fromPage) {
+        if (this.fromType) {
           this.toAppMethod("finishThisPage");
         } else {
           this.goAppBack();
@@ -85,64 +85,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.settings {
-  .legal-modal {
-    background: rgba(0, 0, 0, 0.7);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 999;
-    .content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px 0;
-      background: #fff;
-      width: 295px;
-      border-radius: 16px;
-    }
-
-    .legal {
-      font-size: 18px;
-      font-family: Roboto-Black, Roboto;
-      font-weight: 900;
-      color: #a05bf8;
-      line-height: 24px;
-    }
-
-    .line {
-      width: 100%;
-      height: 2px;
-      background: #e3eceb;
-      margin-top: 20px;
-    }
-
-    .title {
-      font-size: 14px;
-      font-family: Roboto, Roboto;
-      font-weight: 400;
-      color: #000000;
-      line-height: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.legal-modal {
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 0;
+    background: #fff;
+    width: 295px;
+    border-radius: 16px;
   }
-  .btn {
-    height: 80px;
-    margin: 0 20px;
-    font-size: 16px;
+
+  .legal {
+    font-size: 18px;
+    font-family: Roboto-Black, Roboto;
+    font-weight: 900;
+    color: #a05bf8;
+    line-height: 24px;
+  }
+
+  .line {
+    width: 100%;
+    height: 2px;
+    background: #e3eceb;
+    margin-top: 20px;
+  }
+
+  .title {
+    font-size: 14px;
     font-family: Roboto, Roboto;
-    font-weight: 500;
-    color: #333333;
+    font-weight: 400;
+    color: #000000;
     line-height: 20px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    border-bottom: 2px solid #e9e9e9;
   }
+}
+.btn {
+  height: 80px;
+  margin: 0 20px;
+  font-size: 16px;
+  font-family: Roboto, Roboto;
+  font-weight: 500;
+  color: #333333;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #e9e9e9;
 }
 
 .actions {

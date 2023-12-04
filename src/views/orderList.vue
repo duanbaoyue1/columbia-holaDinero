@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      fromPage: this.$route.query.fromPage,
+      fromType: this.$route.query.fromType,
       loading: false,
       orders: [],
     };
@@ -49,7 +49,7 @@ export default {
       fixed: true,
       title: "Pedido de préstamo",
       backCallback: () => {
-        if (this.fromPage) {
+        if (this.fromType) {
           this.toAppMethod("finishThisPage");
         } else {
           this.goAppBack();

@@ -7,7 +7,7 @@
       <label>Estado civil</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.MARITAL_STATUS"
+        :items="ALL_ATTRS.MARITAL_STATUS"
         :defaultOpen="curOpenFields == 'marital'"
         title="Estado civil"
         itemAttrs="marital"
@@ -18,7 +18,7 @@
       <label>Formación académica</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.EDUCATION"
+        :items="ALL_ATTRS.EDUCATION"
         :defaultOpen="curOpenFields == 'education'"
         title="Formación académica"
         itemAttrs="education"
@@ -29,7 +29,7 @@
       <label>Ocupación</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.OCCUPATION"
+        :items="ALL_ATTRS.OCCUPATION"
         :defaultOpen="curOpenFields == 'occupation'"
         title="Ocupación"
         itemAttrs="occupation"
@@ -40,7 +40,7 @@
       <label>Ingresos mensuales</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.SALARY"
+        :items="ALL_ATTRS.SALARY"
         :defaultOpen="curOpenFields == 'monthlyIncome'"
         title="Ingresos mensuales"
         itemAttrs="monthlyIncome"
@@ -51,7 +51,7 @@
       <label>Finalidad del préstamo</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.LOAN_PURPOSE"
+        :items="ALL_ATTRS.LOAN_PURPOSE"
         :defaultOpen="curOpenFields == 'loanPurpose'"
         title="Finalidad del préstamo"
         itemAttrs="loanPurpose"
@@ -62,7 +62,7 @@
       <label>Tipo de alojamiento</label>
       <select-item
         class="margin-top-20"
-        :items="ALL_ATTRS.default.ACCOMMODATION"
+        :items="ALL_ATTRS.ACCOMMODATION"
         :defaultOpen="curOpenFields == 'houseType'"
         title="Tipo de alojamiento"
         itemAttrs="houseType"

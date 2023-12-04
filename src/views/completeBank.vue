@@ -67,7 +67,7 @@ export default {
       cards: [],
       from: this.$route.query.from,
       orderId: this.$route.query.orderId,
-      fromPage: this.$route.query.fromPage,
+      fromType: this.$route.query.fromType,
       chooseBankId: null,
       saving: false,
       editData: {
@@ -95,7 +95,7 @@ export default {
       fixed: true,
       title: "Tarjeta bancaria",
       backCallback: () => {
-        if (this.fromPage) {
+        if (this.fromType) {
           this.toAppMethod("finishThisPage");
         } else {
           this.goAppBack();

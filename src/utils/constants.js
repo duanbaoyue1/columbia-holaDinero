@@ -1,4 +1,4 @@
-const EDUCATION = [
+export const EDUCATION = [
   {
     label: "Escuela primaria",
     value: "Escuela primaria",
@@ -29,7 +29,7 @@ const EDUCATION = [
   },
 ];
 
-const OCCUPATION = [
+export const OCCUPATION = [
   {
     label: "Salario",
     value: "Salario",
@@ -56,7 +56,7 @@ const OCCUPATION = [
   },
 ];
 
-const SALARY = [
+export const SALARY = [
   {
     label: "Menos de 1,000,000",
     value: "Menos de 1,000,000",
@@ -83,7 +83,7 @@ const SALARY = [
   },
 ];
 
-const MARITAL_STATUS = [
+export const MARITAL_STATUS = [
   {
     label: "Soltero",
     value: "Soltero",
@@ -102,7 +102,7 @@ const MARITAL_STATUS = [
   },
 ];
 
-const LOAN_PURPOSE = [
+export const LOAN_PURPOSE = [
   {
     label: "Función familiar",
     value: "Función familiar",
@@ -125,7 +125,7 @@ const LOAN_PURPOSE = [
   },
 ];
 
-const ACCOMMODATION = [
+export const ACCOMMODATION = [
   {
     label: "Su propia casa",
     value: "Su propia casa",
@@ -140,45 +140,7 @@ const ACCOMMODATION = [
   },
 ];
 
-const CHILDREN = [
-  {
-    label: "0",
-    value: "0",
-  },
-  {
-    label: "1",
-    value: "1",
-  },
-  {
-    label: "2",
-    value: "2",
-  },
-  {
-    label: "3",
-    value: "3",
-  },
-  {
-    label: ">3",
-    value: ">3",
-  },
-];
-
-const PAY_METHOD = [
-  {
-    label: "Bank Transfer",
-    value: "Bank Transfer",
-  },
-  {
-    label: "Cash",
-    value: "Cash",
-  },
-  {
-    label: "Cheque",
-    value: "Cheque",
-  },
-];
-
-const RELATION_SHIPS = [
+export const RELATION_SHIPS = [
   {
     label: "Padre/Madre",
     value: "Padre/Madre",
@@ -201,18 +163,7 @@ const RELATION_SHIPS = [
   },
 ];
 
-const GENDER = [
-  {
-    label: "Masculino",
-    value: "Masculino",
-  },
-  {
-    label: "Femenino",
-    value: "Femenino",
-  },
-];
-
-const BANKS = [
+export const BANKS = [
   {
     text: "Nequi",
     value: "18",
@@ -277,7 +228,7 @@ const BANKS = [
   { text: "RAPPIPAY", value: "1811", value2: "56" },
 ];
 
-const BANKS2 = [
+export const BANKS2 = [
   { text: "NEQUI", value: "1507", recommend: true },
   { text: "DAVIPLATA", value: "1551", recommend: true },
   { text: "BANCOLOMBIA", value: "1007", recommend: true },
@@ -315,18 +266,3 @@ const BANKS2 = [
   { text: "RAPPIPAY DAVIPLATA ", value: "1151" },
   { text: "SCOTIABANK COLPATRIA ", value: "1019" },
 ];
-
-module.exports = {
-  EDUCATION,
-  OCCUPATION,
-  SALARY,
-  MARITAL_STATUS,
-  LOAN_PURPOSE,
-  ACCOMMODATION,
-  CHILDREN,
-  PAY_METHOD,
-  GENDER,
-  RELATION_SHIPS,
-  BANKS,
-  BANKS2,
-};

@@ -6,7 +6,7 @@ export default {
     this.showLoading();
     const { path } = this.$route.query;
     if (path) {
-      this.innerJump(path, { ...this.$route.query, fromPage: "android" }, true);
+      this.innerJump(path, { ...this.$route.query, fromType: "android" }, true);
     }
   },
 };

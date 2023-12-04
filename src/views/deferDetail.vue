@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import apiHost from "@/services/apiHost";
+import { apiHost } from "@/services/apiConfig";
 import chooseBank from "@/components/chooseBank";
 
 export default {

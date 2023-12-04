@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "@/store";
-import apiHost from "./apiHost";
+import { apiHost } from "./apiConfig";
 
 // create an axios instance
 const service = axios.create({

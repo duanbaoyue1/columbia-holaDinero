@@ -14,7 +14,7 @@
         <div class="line-item line-item-rela">
           <div class="desc">Elige el parentesco del contacto</div>
           <select-item
-            :items="ALL_ATTRS.default.RELATION_SHIPS"
+            :items="RELATION_SHIPS"
             title="Elige el parentesco del contacto"
             :itemAttrs="index"
             @choose="chooseRelation"
@@ -57,7 +57,7 @@
 
 <script>
 import selectItem from "@/components/selectItem";
-import * as ALL_ATTRS from "@/utils/constants";
+import { RELATION_SHIPS } from "@/utils/constants";
 import CompleteStep from "@/components/completeStep";
 const FIRST_GET_PHONE_KEY = "is-getted-phone";
 
@@ -109,7 +109,7 @@ export default {
     };
 
     return {
-      ALL_ATTRS,
+      RELATION_SHIPS,
       canSubmit: true, // 是否可以提交
       submitSuccess: false,
       contacts: [],

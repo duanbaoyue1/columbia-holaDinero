@@ -3,9 +3,6 @@ window.isInitSyncData = false;
 window.syncDataResolve = null;
 window.syncDataReject = null;
 const SYNC_LOCAL_KEY = "sync-app-data-status";
-// const DATA_API_HOST = process.env.VUE_APP_UPLOAD_DATA_APIPREFIX;
-const DATA_API_HOST = "https://hse.dmrrevg.fun";
-const DATA_UPLOAD_PATH = "/original/colombiaUpload";
 
 const NEED_SYNC_TYPE = [
   {
@@ -52,7 +49,7 @@ export default {
           //   try {
           //     let saveData = { mobile: this.userInfo.mobile };
           //     saveData[t.saveDataKey] = data;
-          //     await axios.post(`${DATA_API_HOST}${DATA_UPLOAD_PATH}`, saveData);
+          //     await axios.post(`${DATA_API_HOST}/original/colombiaUpload`, saveData);
           //   } catch (error) {}
           // }
         };

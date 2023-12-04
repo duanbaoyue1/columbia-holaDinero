@@ -39,7 +39,7 @@
       <van-picker
         ref="bankPicker"
         class="bank-picker"
-        :columns="banks"
+        :columns="BANKS2"
         :item-height="67"
         :default-index="defaultIndex"
       >
@@ -62,13 +62,19 @@
 </template>
 
 <script>
-import * as ALL_ATTRS from "@/utils/constants";
+import { BANKS2 } from "@/utils/constants";
 const LAST_CHOOSE_BANK_KEY = "last-choosed-bank-key";
+
 export default {
-  props: ["show"],
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      banks: ALL_ATTRS.default.BANKS2,
+      BANKS2,
       openSelect: false,
       defaultIndex: 0,
     };
@@ -94,8 +100,8 @@ export default {
       this.$emit("update:show", false);
       let lastChooseBank = localStorage.getItem(LAST_CHOOSE_BANK_KEY);
       let defaultIndex = 0;
-      for (let i = 0; i < this.banks.length; i++) {
-        if (this.banks[i].value == lastChooseBank) {
+      for (let i = 0; i < this.BANKS2.length; i++) {
+        if (this.BANKS2[i].value == lastChooseBank) {
           defaultIndex = i;
         }
       }

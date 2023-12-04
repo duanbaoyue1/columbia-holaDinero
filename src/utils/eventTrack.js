@@ -1,4 +1,5 @@
 import axios from "axios";
+import { uploadHost } from "@/services/apiConfig";
 
 const PAGE_MAP = {
   home: {
@@ -73,8 +74,6 @@ const ORDER_STATUS_LIST = {
   110: "9", // 废弃订单
 };
 
-const DATA_API_HOST = process.env.VUE_APP_UPLOAD_DATA_APIPREFIX;
-
 export default {
   data() {
     return {
@@ -142,7 +141,7 @@ export default {
       }
       try {
         console.log("send data:", sendData);
-        axios.post(`https://hse.dmrrevg.fun/operate/risk`, sendData);
+        axios.post(`${uploadHost}/operate/risk`, sendData);
         this.setEventTrackerActionCnt(0);
       } catch (error) {
         console.error("event data send error!", error);

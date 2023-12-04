@@ -68,7 +68,7 @@
       <van-picker
         ref="bankPicker"
         class="bank-picker"
-        :columns="banks"
+        :columns="BANKS"
         :item-height="75"
       >
         <template #option="PickerOption">
@@ -117,7 +117,7 @@
 <script>
 import ifscSelect from "@/components/ifscSelect";
 import CompleteStep from "@/components/completeStep";
-import * as ALL_ATTRS from "@/utils/constants";
+import { BANKS } from "@/utils/constants";
 
 export default {
   components: {
@@ -127,6 +127,7 @@ export default {
 
   data() {
     return {
+      BANKS,
       openSelect: false,
       canSubmit: false, // 是否可以提交
       submitSuccess: false,
@@ -141,7 +142,6 @@ export default {
       from: this.$route.query.from,
       orderId: this.$route.query.orderId,
       showConfirmModal: false,
-      banks: ALL_ATTRS.default.BANKS,
       saving: false,
     };
   },
