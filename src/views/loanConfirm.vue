@@ -58,7 +58,7 @@ export default {
     return {
       choosed: true,
       canSubmit: true,
-      orderInfo: "",
+      orderInfo: {},
       orderId: this.$route.query.orderId,
       saving: false,
     };
@@ -98,10 +98,26 @@ export default {
           orderId: this.orderId,
         });
         this.orderInfo = data.data;
+
+        this.setExpectedRepaymentTime();
       } catch (error) {
       } finally {
         this.hideLoading();
       }
+    },
+
+    setExpectedRepaymentTime() {
+      const currentDate = new Date(
+        this.orderInfo.applyTime.replace(/\//g, "-")
+      );
+      currentDate.setMonth(currentDate.getMonth() + 3);
+      this.orderInfo.expectedRepaymentTime = `${currentDate.getUTCFullYear()}/${this.resetDate(
+        currentDate.getMonth() + 1
+      )}/${this.resetDate(currentDate.getDate())}`;
+    },
+
+    resetDate(num) {
+      return num > 9 ? num : `0${num}`;
     },
 
     async submit() {

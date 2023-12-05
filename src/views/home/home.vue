@@ -287,9 +287,6 @@ export default {
     if (!this.checkInApp()) {
       window.getMapDataListCallback();
     }
-
-    // 页面配置
-    this.getAppJumpConfig();
   },
   activated() {
     this.setEventTrackStartTime();
@@ -299,6 +296,9 @@ export default {
     }
 
     this.updateData();
+
+    // 页面配置
+    this.getAppJumpConfig();
   },
   methods: {
     ...mapActions(["setAppGlobal", "setAppChecked", "setJumpPageTypes"]),
