@@ -35,11 +35,6 @@ function unzip(b64Data) {
   }
 }
 
-// 压缩
-function zip(str) {
-  return pako.gzip(str, { to: "string" });
-}
-
 // request拦截器 request interceptor
 service.interceptors.request.use(
   (config) => {
@@ -52,9 +47,6 @@ service.interceptors.request.use(
     ) {
       if (typeof config.data !== "string") {
         config.data = JSON.stringify(config.data);
-      }
-      if (process.env.API_NEED_REQUEST_ZIP == "true") {
-        config.data = zip(config.data);
       }
     }
     config.headers["token"] = store.getters.appGlobal.token;

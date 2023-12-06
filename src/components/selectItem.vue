@@ -74,7 +74,6 @@ export default {
 
   methods: {
     chooseValue(item) {
-      console.log(item);
       this.value = item.value;
       this.toggleChoose();
       this.$emit("choose", { attr: this.itemAttrs, value: item.value });

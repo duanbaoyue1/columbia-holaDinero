@@ -15,9 +15,9 @@ export default {
     ]),
   },
   filters: {
-    phoneHideFilter(item) {
-      if (!item) return "";
-      return `${item.slice(0, 3)}****${item.slice(-3)}`;
+    phoneHideFilter(v) {
+      if (!v) return "";
+      return `${v.slice(0, 3)}****${v.slice(-3)}`;
     },
     // 千位转化
     formatMonet(num) {

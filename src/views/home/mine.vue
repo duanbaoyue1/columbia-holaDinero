@@ -3,9 +3,7 @@
     <div class="frame">
       <div class="user">
         <img :src="require('@/assets/images/head-sculpture.png')" />
-        <span class="name">{{
-          userInfo.mobile || "123123123" | phoneHideFilter
-        }}</span>
+        <span class="name">{{ userInfo.mobile | phoneHideFilter }}</span>
       </div>
 
       <div
@@ -64,6 +62,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -82,9 +81,7 @@ export default {
     try {
       let data = await this.$http.post(`/api/user/mine`);
       this.isTestAccount = data.data.isTestAccount;
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   },
   methods: {
     showDeleteConfirm() {
@@ -107,7 +104,6 @@ export default {
       try {
         await this.getUserInfo();
       } catch (error) {
-        console.log(error);
       } finally {
         this.hideLoading();
       }
@@ -121,6 +117,7 @@ export default {
   height: 100vh;
   background: #f6effe;
 }
+
 .frame {
   background-image: url(@/assets/images/mine.png);
   background-position: top;
