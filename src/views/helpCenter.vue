@@ -1,13 +1,10 @@
 <template>
-  <iframe class="frame" src="https://www.cre-dicheck.com/helpCenter.html" />
+  <iframe class="frame" src="https://www.hola-dinero.com/helpCenter.html" />
 </template>
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  created() {
+  mounted() {
     this.setEventTrackStartTime();
 
     this.setTabBar({
@@ -16,14 +13,6 @@ export default {
       fixed: true,
       title: "",
     });
-  },
-  methods: {
-    showAnswer(index) {
-      this.$set(this.questions, index, {
-        ...this.questions[index],
-        isChecked: !this.questions[index].isChecked,
-      });
-    },
   },
 };
 </script>
