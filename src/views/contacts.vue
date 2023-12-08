@@ -41,8 +41,9 @@
     </div>
 
     <div class="submit">
-      <!-- :disabled="!canSubmit" -->
-      <button class="bottom-submit-btn" @click="submit">Enviar</button>
+      <button class="bottom-submit-btn" :disabled="!canSubmit" @click="submit">
+        Enviar
+      </button>
     </div>
 
     <div class="submit-success" v-show="submitSuccess">
@@ -135,7 +136,6 @@ export default {
   watch: {
     contacts: {
       handler() {
-        console.log(this.contacts.filter((t) => t.mobile).length);
         this.canSubmit =
           this.contacts.filter((t) => t.mobile).length == this.contacts.length;
       },

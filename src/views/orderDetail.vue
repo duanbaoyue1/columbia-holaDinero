@@ -258,7 +258,7 @@ export default {
   methods: {
     goCompleteBank() {
       this.sendEventTrackData({ leaveBy: 1 });
-      this.innerJump("complete-bank", { orderId: this.orderId, from: "mine" });
+      this.innerJump("completeBank", { orderId: this.orderId, from: "mine" });
     },
     async selectBank(bank) {
       this.showPaymentTips = false;

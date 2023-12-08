@@ -184,7 +184,7 @@ export default {
         let defaultCards = (data.data.list || []).filter(
           (t) => t.markLoanCard == 1
         );
-        // 從冷卻期过来的订单，这个时候选择默认卡绑定
+        // 首页过来的订单，这个时候选择默认卡绑定
         if (defaultCards && defaultCards.length == 1) {
           this.markLoanCard = defaultCards[0];
           this.selectBank.text = this.markLoanCard.bank;

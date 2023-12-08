@@ -18,7 +18,7 @@
       v-if="showRepayment"
       replace
       to="/repayment"
-      :badge="repaymentNum > 0 ? repaymentNum : '10'"
+      :badge="repaymentNum > 0 ? repaymentNum : ''"
     >
       <span>Reembolsando</span>
       <template #icon="props">
