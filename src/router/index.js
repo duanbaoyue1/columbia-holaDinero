@@ -227,11 +227,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to, to.name, "**** to");
-  console.log(from, from.name, "***** from");
-
-  const pateTypes = store.getters.jumpPageTypes;
-  const f = pateTypes.find((f) => f.path === to.name);
+  const pageTypes = store.getters.jumpPageTypes;
+  const f = pageTypes.find((f) => f.path === to.name);
   // type：1：H5 2：安卓
   // type === 2 跳转安卓page
   if (f && f.path && f.type === 2) {

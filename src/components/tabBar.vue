@@ -70,10 +70,11 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["repaymentNum"]),
+    ...mapState(["repaymentNum", "jumpPageTypes"]),
   },
   methods: {
     changeTab(i) {
+      const pageType = this.jumpPageTypes.find((f) => f.path === "mine");
       if (i === 0) {
         this.h5ToAndroidPage("home", "home");
       }
@@ -81,12 +82,12 @@ export default {
         if (i === 1) {
           this.h5ToAndroidPage("home", "repayment");
         }
-        if (i === 2) {
+        if (i === 2 && pageType && pageType.path && pageType.type === 2) {
           this.h5ToAndroidPage("home", "mine");
         }
         return;
       }
-      if (i === 1) {
+      if (i === 1 && pageType && pageType.path && pageType.type === 2) {
         this.h5ToAndroidPage("home", "mine");
       }
     },
