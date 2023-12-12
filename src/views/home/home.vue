@@ -296,9 +296,6 @@ export default {
     }
 
     this.updateData();
-
-    // 页面配置
-    this.getAppJumpConfig();
   },
   methods: {
     ...mapActions(["setAppGlobal", "setAppChecked", "setJumpPageTypes"]),
@@ -326,10 +323,10 @@ export default {
     },
     async getAppJumpConfig() {
       const res = await this.$http.post(`/api/app/getAppJumpConfig`);
-      // this.toAppMethod("getToPageList", { list: res.data });
-      // this.setJumpPageTypes(res.data);
-      this.toAppMethod("getToPageList", { list: this.list });
-      this.setJumpPageTypes(this.list);
+      this.toAppMethod("getToPageList", { list: res.data });
+      this.setJumpPageTypes(res.data);
+      // this.toAppMethod("getToPageList", { list: this.list });
+      // this.setJumpPageTypes(this.list);
     },
     clickShowRecommend() {
       if (!this.selectItems || this.selectItems.length == 0) {
@@ -346,6 +343,8 @@ export default {
         }
         await this.getUserInfo();
         this.updateTextAndAction();
+        // 页面配置信息
+        this.getAppJumpConfig();
         this.hideLoading();
       } catch (error) {
         console.log(error);
