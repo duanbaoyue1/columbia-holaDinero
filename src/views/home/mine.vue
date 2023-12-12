@@ -122,7 +122,7 @@ export default {
   background-image: url(@/assets/images/mine.png);
   background-position: top;
   background-repeat: no-repeat;
-  background-size: 375px 230px;
+  background-size: 375px 176px;
 }
 
 .menu {
@@ -157,7 +157,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 130px;
+  padding-top: 100px;
 
   img {
     width: 60px;

@@ -17,20 +17,20 @@
       </div>
       <div class="line-item">
         <div class="label">Número de cuenta receptora</div>
+        <!-- :disabled="markLoanCard != ''" -->
         <input
           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
           type="number"
           maxlength="20"
-          :disabled="markLoanCard != ''"
           v-model="editData.accountNumber"
           placeholder="Por favor escribe"
         />
       </div>
       <div class="line-item">
         <div class="label">Nombre del beneficiario</div>
+        <!-- :disabled="markLoanCard != ''" -->
         <input
           v-model="editData.userName"
-          :disabled="markLoanCard != ''"
           placeholder="Please enter your name"
         />
       </div>
@@ -106,8 +106,11 @@
           <button @click="submit">Ok</button>
         </div>
         <div class="confirm-tips">
-          Asegúrese de que la información es correcta, No se puede cambiar
-          después de la confirmación.
+          {{
+            markLoanCard
+              ? "Si la transaccion de su pedido falla, le recomendamos que cambie a una nueva cuenta bancaria"
+              : "Asegúrese de que la información es correcta, No se puede cambiar después de la confirmación."
+          }}
         </div>
       </div>
     </van-popup>
@@ -208,42 +211,45 @@ export default {
     },
     showConfirmBank() {
       // 从订单进来，如果已经有卡，直接完成绑定，进入确认页
-      if (this.from == "order" && this.markLoanCard) {
-        this.bindCardAndJump(this.markLoanCard.id);
-        return;
-      }
+      // if (this.from == "order" && this.markLoanCard) {
+      //   this.bindCardAndJump(this.markLoanCard.id);
+      //   return;
+      // }
       this.showConfirmModal = true;
     },
     openSelectModel() {
-      console.log("object");
-      if (this.from == "order" && this.markLoanCard) {
-        return;
-      }
+      // if (this.from == "order" && this.markLoanCard) {
+      //   return;
+      // }
       this.openSelect = true;
     },
     async bindCardAndJump(cardId) {
       // 绑卡
-      await this.$http.post(`/api/order/bindRemittanceAccount`, {
-        remittanceAccountId: cardId,
-        orderId: this.orderId,
-      });
-      // 判断是否需要确认订单
-      let appMode = await this.getAppMode();
-      this.sendEventTrackData({ leaveBy: 1 });
-      if (appMode.confirmType == 1) {
-        // 需要进确认申请页
-        this.innerJump("loanConfirm", { orderId: this.orderId }, true);
-      } else {
-        // 不需要进确认申请页
-        this.innerJump(
-          "loanSuccessMulti",
-          {
-            orderId: this.orderId,
-            single: true,
-            systemTime: this.getLocalSystemTimeStamp(),
-          },
-          true
-        );
+      try {
+        await this.$http.post(`/api/order/bindRemittanceAccount`, {
+          remittanceAccountId: cardId,
+          orderId: this.orderId,
+        });
+        // 判断是否需要确认订单
+        let appMode = await this.getAppMode();
+        this.sendEventTrackData({ leaveBy: 1 });
+        if (appMode.confirmType == 1) {
+          // 需要进确认申请页
+          this.innerJump("loanConfirm", { orderId: this.orderId }, true);
+        } else {
+          // 不需要进确认申请页
+          this.innerJump(
+            "loanSuccessMulti",
+            {
+              orderId: this.orderId,
+              single: true,
+              systemTime: this.getLocalSystemTimeStamp(),
+            },
+            true
+          );
+        }
+      } catch (error) {
+        this.$toast(error.message);
       }
     },
     async submit() {
@@ -332,7 +338,6 @@ export default {
 
   .confirm-data {
     width: 300px;
-    height: 476px;
     background: #ffffff;
     border-radius: 8px;
     header {
@@ -346,6 +351,7 @@ export default {
       justify-items: center;
       border-bottom: 4px solid #f6f6f6;
       padding: 0 50px;
+      text-align: center;
     }
     .content {
       padding: 24px;
@@ -399,7 +405,7 @@ export default {
       font-weight: 400;
       color: #ff4b3f;
       line-height: 18px;
-      margin: 20px 16px 0;
+      margin: 20px 16px;
       word-break: break-word;
     }
   }
