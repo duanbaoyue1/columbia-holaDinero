@@ -66,27 +66,11 @@
 
 <script>
 import md5 from "js-md5";
+
 export default {
-  watch: {
-    editData: {
-      handler() {
-        this.canSubmit =
-          Object.values(this.editData).filter((t) => !!t).length === 2 &&
-          this.editData.passwd.length >= 6;
-      },
-      deep: true,
-    },
-  },
-  created() {
-    this.setTabBar({
-      show: true,
-      fixed: true,
-      transparent: false,
-      title: "Crear una contraseña",
-    });
-  },
   data() {
     return {
+      fromType: this.$route.query.fromType,
       canSubmit: false, // 是否可以提交
       submitSuccess: false,
       passwordType: "text",
@@ -97,8 +81,21 @@ export default {
       },
     };
   },
-
   mounted() {
+    this.setTabBar({
+      show: true,
+      fixed: true,
+      transparent: false,
+      title: "Crear una contraseña",
+      backCallback: () => {
+        if (this.fromType) {
+          this.toAppMethod("finishThisPage");
+        } else {
+          this.goAppBack();
+        }
+      },
+    });
+
     setTimeout(() => {
       this.getUserInfo();
     }, 200);
@@ -115,7 +112,16 @@ export default {
       });
     });
   },
-
+  watch: {
+    editData: {
+      handler() {
+        this.canSubmit =
+          Object.values(this.editData).filter((t) => !!t).length === 2 &&
+          this.editData.passwd.length >= 6;
+      },
+      deep: true,
+    },
+  },
   methods: {
     togglePassword(field) {
       this.$set(this, field, this[field] == "password" ? "text" : "password");
