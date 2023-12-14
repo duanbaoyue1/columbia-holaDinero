@@ -11,7 +11,7 @@
         @click="innerJump('orderList')"
       >
         <div class="title row-direction">
-          <m-icon class="icon" type="all-order" :width="30" :height="30" />
+          <m-icon class="icon" type="all-order" :width="24" :height="24" />
           Pedido de préstamo
         </div>
         <m-icon type="right" :width="10" :height="18" />
@@ -22,7 +22,7 @@
         @click="innerJump('helpCenter')"
       >
         <div class="title row-direction">
-          <m-icon class="icon" type="help-center" :width="30" :height="30" />
+          <m-icon class="icon" type="help-center" :width="24" :height="24" />
           Centro de ayuda
         </div>
         <m-icon type="right" :width="10" :height="18" />
@@ -34,7 +34,7 @@
         @click="innerJump('completeBank', { from: 'mine' })"
       >
         <div class="title row-direction">
-          <m-icon class="icon" type="bank-card" :width="30" :height="30" />
+          <m-icon class="icon" type="bank-card" :width="24" :height="24" />
           Tarjeta bancaria
         </div>
         <m-icon type="right" :width="10" :height="18" />
@@ -42,7 +42,7 @@
 
       <div class="menu row-space-between-center" @click="innerJump('settings')">
         <div class="title row-direction">
-          <m-icon class="icon" type="set-up" :width="30" :height="30" />
+          <m-icon class="icon" type="set-up" :width="24" :height="24" />
           Configuración
         </div>
         <m-icon type="right" :width="10" :height="18" />
@@ -54,7 +54,7 @@
         @click="showDeleteConfirm"
       >
         <div class="title row-direction">
-          <m-icon class="icon" type="delete" :width="30" :height="30" />
+          <m-icon class="icon" type="delete" :width="24" :height="24" />
           Eliminar cuenta
         </div>
         <m-icon type="right" :width="10" :height="18" />
