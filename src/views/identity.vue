@@ -391,7 +391,7 @@ export default {
         display: flex;
 
         .percent-frame {
-          width: 212px;
+          width: 206px;
           height: 12px;
           background: #e6ebf5;
           border-radius: 11px;

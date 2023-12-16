@@ -109,7 +109,7 @@ export default {
       // 调用app方法
       let sendData = {
         userId: this.appGlobal.userId,
-        phone: this.appGlobal.mobile,
+        phone: this.appGlobal.phone,
         appName: this.appGlobal.appName,
         appVersion: this.appGlobal.appVersionCode + "",
         modular: pageModule?.modular,
