@@ -14,13 +14,15 @@
       <div class="step">
         <div class="step-item status column-direction">
           <div class="round"></div>
-          <div class="date">{{ detail.startTime }}12312</div>
+          <div class="date">
+            {{ detail.startTime }}
+          </div>
           <div class="text">Fecha de aplicación</div>
         </div>
         <div class="step-item column-direction">
           <div class="round" style="margin-top: 3px"></div>
           <div class="date" style="margin-top: 11px">
-            {{ detail.updatedDueDate }}12123
+            {{ detail.updatedDueDate }}
           </div>
           <div class="text">Fecha de vencimiento</div>
         </div>
@@ -61,7 +63,7 @@
       <div class="btns">
         <button class="btn-default" @click="defer">Reembolso diferido</button>
       </div>
-      <div class="help-center" @click="innerJump('help-center')">
+      <div class="help-center" @click="innerJump('helpCenter')">
         Centro de ayuda
       </div>
     </div>
@@ -303,7 +305,7 @@ export default {
     &::after {
       position: absolute;
       content: " ";
-      top: 227px;
+      top: 243px;
       left: 50%;
       transform: translateX(-50%);
       width: 152px;
@@ -324,7 +326,7 @@ export default {
         height: 10px;
         border-radius: 100%;
         background: #eae6f6;
-        z-index: 99;
+        z-index: 1;
       }
 
       &.status {

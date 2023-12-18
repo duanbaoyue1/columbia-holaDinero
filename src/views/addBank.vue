@@ -141,11 +141,15 @@ export default {
       editData: {
         userName: "",
       },
-      markLoanCard: "",
+      markLoanCard: null,
       from: this.$route.query.from,
       orderId: this.$route.query.orderId,
       showConfirmModal: false,
       saving: false,
+      historyBank: {
+        text: "",
+        accountNumber: "",
+      },
     };
   },
   watch: {
@@ -158,9 +162,7 @@ export default {
     editData: {
       handler() {
         this.canSubmit =
-          (this.selectBank.value &&
-            this.editData.accountNumber &&
-            this.editData.userName) ||
+          (this.editData.accountNumber && this.editData.userName) ||
           this.markLoanCard;
       },
       deep: true,
@@ -191,8 +193,11 @@ export default {
         if (defaultCards && defaultCards.length == 1) {
           this.markLoanCard = defaultCards[0];
           this.selectBank.text = this.markLoanCard.bank;
-          this.selectBank.value = this.markLoanCard.accountNumber;
+          // this.selectBank.value = this.markLoanCard.accountNumber;
           this.editData.accountNumber = this.markLoanCard.accountNumber;
+
+          this.historyBank.text = this.markLoanCard.bank;
+          this.historyBank.accountNumber = this.markLoanCard.accountNumber;
         }
       } catch (error) {
         console.log(error);
@@ -253,6 +258,16 @@ export default {
       }
     },
     async submit() {
+      if (
+        this.from == "order" &&
+        this.markLoanCard &&
+        this.historyBank.text === this.selectBank.text &&
+        this.historyBank.accountNumber === this.editData.accountNumber
+      ) {
+        this.bindCardAndJump(this.markLoanCard.id);
+        return;
+      }
+
       if (this.saving) return;
       this.saving = true;
       this.showLoading();
@@ -261,7 +276,7 @@ export default {
         let saveData = {
           accountNumber: this.editData.accountNumber,
           bank: this.selectBank.text,
-          bankCode: this.selectBank.value,
+          // bankCode: this.selectBank.value,
           name: this.editData.userName,
         };
 

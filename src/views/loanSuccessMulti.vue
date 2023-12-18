@@ -52,12 +52,7 @@
     </div>
 
     <!-- 没有推荐结果时显示 -->
-    <res-loans
-      v-else-if="resLoans.length"
-      class="res-loans"
-      :loans="resLoans"
-      :systemTime="systemTime"
-    />
+    <res-loans v-else :loans="resLoans" />
     <!-- 谷歌好评 -->
     <google-feedback v-show="showGoogleFeed" :show.sync="showGoogleFeed" />
 
@@ -255,6 +250,12 @@ export default {
       );
     },
 
+    sumArr(arr) {
+      return arr.reduce(function (prev, cur) {
+        return parseInt(prev) + parseInt(cur);
+      }, 0);
+    },
+
     async applyMulti() {
       let loanIds = this.loans.filter((t) => !t.unChecked).map((t) => t.id);
       this.showLoading();
@@ -341,7 +342,7 @@ export default {
       }
       .content {
         font-size: 12px;
-        font-family: Roboto, Roboto;
+        // font-family: Roboto, Roboto;
         font-weight: 400;
         color: #333333;
         line-height: 18px;

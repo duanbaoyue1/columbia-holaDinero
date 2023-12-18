@@ -1,5 +1,5 @@
 <template>
-  <div class="res-loans-model column-direction">
+  <div v-if="loans.length" class="res-loans-model column-direction">
     <div class="res-total">
       <div class="head">Enhorabuena</div>
       <div class="head-frame">
@@ -31,7 +31,12 @@
 
 <script>
 export default {
-  props: ["systemTime", "loans"],
+  props: {
+    loans: {
+      type: Array,
+      default: () => [],
+    },
+  },
 
   methods: {
     goDetail(orderNo) {

@@ -4,7 +4,7 @@
       <div class="tips">
         <img :src="require('@/assets/images/feedback-guidance.png')" />
       </div>
-      <div class="title">¿Qué opina de RápidoCash？</div>
+      <div class="title">¿Qué opina de HolaDinero？</div>
       <div class="stars">
         <div class="star" v-for="(item, index) in stars" :key="index">
           <img
@@ -182,7 +182,7 @@ export default {
       text-align: center;
       .tips1 {
         font-size: 11px;
-        font-family: Roboto, Roboto;
+        // font-family: Roboto, Roboto;
         font-weight: 900;
         color: #333333;
         line-height: 18px;

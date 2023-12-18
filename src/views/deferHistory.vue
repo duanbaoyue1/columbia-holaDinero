@@ -34,7 +34,7 @@ export default {
     return {
       productId: this.$route.query.productId,
       orderStatus: this.$route.query.orderStatus,
-      lists: [{}, {}],
+      lists: [],
     };
   },
 

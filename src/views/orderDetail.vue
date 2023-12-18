@@ -123,7 +123,7 @@
           </button>
         </template>
       </div>
-      <div class="help-center" @click="innerJump('help-center')">
+      <div class="help-center" @click="innerJump('helpCenter')">
         Centro de ayuda
       </div>
     </div>
@@ -274,11 +274,11 @@ export default {
     },
     applyDefer() {
       this.sendEventTrackData({ leaveBy: 1 });
-      this.innerJump("defer-detail", { orderId: this.orderId });
+      this.innerJump("deferDetail", { orderId: this.orderId });
     },
     goDeferHis() {
       this.sendEventTrackData({ leaveBy: 1 });
-      this.innerJump("defer-history", { orderId: this.orderId });
+      this.innerJump("deferHistory", { orderId: this.orderId });
     },
     async getDeferTimes() {
       try {

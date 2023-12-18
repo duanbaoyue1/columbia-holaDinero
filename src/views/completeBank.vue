@@ -199,7 +199,7 @@ export default {
         }
       }
       .default-tips {
-        width: 170px;
+        width: 175px;
         font-size: 12px;
         font-family: Roboto, Roboto;
         font-weight: 900;
@@ -209,7 +209,7 @@ export default {
         padding: 7px 8px;
         margin-top: 15px;
         position: relative;
-        right: -127px;
+        right: -122px;
       }
       &:last-child {
         margin-bottom: 0;
