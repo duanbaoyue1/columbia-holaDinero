@@ -69,6 +69,27 @@ export default {
   },
 
   data() {
+    window.contactsCallBack = () => {
+      this.showMessageBox({
+        content: "¡Espere, todavía queda un paso para obtener el dinero!",
+        confirmBtnText: "OK",
+        cancelBtnText: "Renunciar",
+        class: "back-control",
+        confirmCallback: () => {
+          this.hideMessageBox();
+        },
+        cancelCallback: () => {
+          this.hideMessageBox();
+          if (this.fromType) {
+            this.toAppMethod("finishThisPage");
+          } else {
+            this.goAppBack();
+          }
+        },
+        iconPath: "Information-return",
+      });
+    };
+
     window.choosePhoneCallback = (data) => {
       console.log(data, "****** slingBooks");
       if (typeof data == "string") {
@@ -116,22 +137,21 @@ export default {
       contacts: [],
       lastPhoneIndex: 0,
       saving: false,
+      fromType: this.$route.query.fromType,
     };
   },
-  created() {
+  mounted() {
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
       title: "Información del contacto",
-      backCallback: null,
+      backCallback: window.contactsCallBack,
     });
-  },
-  mounted() {
+
     this.setEventTrackStartTime();
     this.getAppContactsNum();
     this.eventTracker("contact_access");
-    this.initInfoBackControl();
   },
   watch: {
     contacts: {

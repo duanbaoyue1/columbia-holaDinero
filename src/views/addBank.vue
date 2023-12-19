@@ -129,6 +129,27 @@ export default {
   },
 
   data() {
+    window.addBankCallBack = () => {
+      this.showMessageBox({
+        content: "¡Espere, todavía queda un paso para obtener el dinero!",
+        confirmBtnText: "OK",
+        cancelBtnText: "Renunciar",
+        class: "back-control",
+        confirmCallback: () => {
+          this.hideMessageBox();
+        },
+        cancelCallback: () => {
+          this.hideMessageBox();
+          if (this.fromType) {
+            this.toAppMethod("finishThisPage");
+          } else {
+            this.goAppBack();
+          }
+        },
+        iconPath: "Information-return",
+      });
+    };
+
     return {
       BANKS,
       openSelect: false,
@@ -150,6 +171,7 @@ export default {
         text: "",
         accountNumber: "",
       },
+      fromType: this.$route.query.fromType,
     };
   },
   watch: {
@@ -173,7 +195,7 @@ export default {
       show: true,
       transparent: false,
       fixed: true,
-      title: "Añadir método de pag",
+      title: "Añadir método de pago",
     });
   },
   async mounted() {
@@ -181,7 +203,10 @@ export default {
 
     this.eventTracker("bank_add_access");
     if (this.from == "order") {
-      this.initInfoBackControl();
+      this.setTabBar({
+        backCallback: window.addBankCallBack,
+      });
+
       try {
         let data = await this.$http.post(
           "/api/remittance/remittanceAccountList"

@@ -70,6 +70,27 @@ export default {
     CompleteStep,
   },
   data() {
+    window.identityCallBack = () => {
+      this.showMessageBox({
+        content: "¡Espere, todavía queda un paso para obtener el dinero!",
+        confirmBtnText: "OK",
+        cancelBtnText: "Renunciar",
+        class: "back-control",
+        confirmCallback: () => {
+          this.hideMessageBox();
+        },
+        cancelCallback: () => {
+          this.hideMessageBox();
+          if (this.fromType) {
+            this.toAppMethod("finishThisPage");
+          } else {
+            this.goAppBack();
+          }
+        },
+        iconPath: "Information-return",
+      });
+    };
+
     window.onPhotoSelectCallback_1 = (data) => {
       if (typeof data == "string") {
         data = JSON.parse(data);
@@ -118,21 +139,19 @@ export default {
       cardFrontOcrStatus: 0,
       cardBackOcrStatus: 0,
       orderId: this.$route.query.orderId,
+      fromType: this.$route.query.fromType,
     };
   },
-  created() {
+  mounted() {
     this.setTabBar({
       show: true,
       transparent: false,
       fixed: true,
       title: "Verificación de identidad",
-      backCallback: null,
+      backCallback: window.identityCallBack,
     });
-  },
-  mounted() {
     this.setEventTrackStartTime();
     this.eventTracker("id_access");
-    this.initInfoBackControl();
   },
   methods: {
     toGoCamera(type) {

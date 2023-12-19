@@ -30,7 +30,7 @@
           </div>
           <div class="info-frame">
             <span class="label">Tasa de interés</span>
-            <span class="amount">{{ order.interest }}% / Day</span>
+            <span class="amount">{{ order.interest }}% / Día</span>
           </div>
         </div>
       </div>
