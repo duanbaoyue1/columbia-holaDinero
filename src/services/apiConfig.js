@@ -2,7 +2,7 @@ const MODE = process.env.MODE;
 
 // api host
 const BASE_URL = {
-  development: "https://colombia-loan-test.timespodcast.cloud",
+  development: "http://colombia-loan-test.timespodcast.cloud",
   production: "https://hzknbc.fun",
 };
 export const apiHost = BASE_URL[MODE];
