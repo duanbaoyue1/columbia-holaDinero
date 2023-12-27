@@ -208,6 +208,7 @@ export default {
       });
 
       try {
+        this.showLoading();
         let data = await this.$http.post(
           "/api/remittance/remittanceAccountList"
         );
@@ -226,6 +227,8 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        this.hideLoading();
       }
     }
     setTimeout(() => {
@@ -254,6 +257,7 @@ export default {
       this.openSelect = true;
     },
     async bindCardAndJump(cardId) {
+      this.showLoading();
       // 绑卡
       try {
         await this.$http.post(`/api/order/bindRemittanceAccount`, {
@@ -280,6 +284,8 @@ export default {
         }
       } catch (error) {
         this.$toast(error.message);
+      } finally {
+        this.hideLoading();
       }
     },
     async submit() {
