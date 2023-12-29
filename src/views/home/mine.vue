@@ -48,11 +48,7 @@
         <m-icon type="right" :width="10" :height="18" />
       </div>
 
-      <div
-        v-if="isTestAccount"
-        class="menu row-space-between-center"
-        @click="showDeleteConfirm"
-      >
+      <div class="menu row-space-between-center" @click="showDeleteConfirm">
         <div class="title row-direction">
           <m-icon class="icon" type="delete" :width="24" :height="24" />
           Eliminar cuenta
@@ -66,9 +62,7 @@
 <script>
 export default {
   data() {
-    return {
-      isTestAccount: false, // 是否google测试账号
-    };
+    return {};
   },
   activated() {
     this.setEventTrackStartTime();
@@ -78,26 +72,34 @@ export default {
     this.setTabBar({
       show: false,
     });
-    try {
-      let data = await this.$http.post(`/api/user/mine`);
-      this.isTestAccount = data.data.isTestAccount;
-    } catch (error) {}
   },
   methods: {
     showDeleteConfirm() {
       this.showMessageBox({
         content:
-          "Después de eliminar la cuenta, se borrará toda la información de la cuenta, ¿confirmar para eliminar?",
+          "Después de eliminar la cuenta, se eliminará toda la información de la cuenta. ¿Está seguro de eliminar?",
         confirmBtnText: "Déjame pensar de nuevo",
         cancelBtnText: "Confirmar eliminación",
         confirmCallback: () => {
           this.hideMessageBox();
         },
         cancelCallback: () => {
-          this.toAppMethod("toGoSign");
+          this.logoutClick();
         },
         iconPath: "delete-account",
       });
+    },
+    async logoutClick() {
+      this.showLoading();
+      try {
+        await this.$http.post(`/api/user/logout`);
+        this.$toast("Eliminado con éxito");
+        this.toAppMethod("toGoSign");
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.hideLoading();
+      }
     },
     async updateData() {
       this.showLoading();
