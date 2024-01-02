@@ -92,9 +92,13 @@ export default {
     async logoutClick() {
       this.showLoading();
       try {
-        await this.$http.post(`/api/user/logout`);
+        await this.$http.post(`/api/user/logout`, {
+          userId: this.userInfo.userInfoId,
+        });
         this.$toast("Eliminado con éxito");
-        this.toAppMethod("toGoSign");
+        setTimeout(() => {
+          this.toAppMethod("toGoSign");
+        }, 1000);
       } catch (e) {
         console.log(e);
       } finally {
