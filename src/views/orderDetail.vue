@@ -278,7 +278,11 @@ export default {
     },
     goDeferHis() {
       this.sendEventTrackData({ leaveBy: 1 });
-      this.innerJump("deferHistory", { orderId: this.orderId });
+      this.innerJump("deferHistory", {
+        orderId: this.orderId,
+        productId: this.detail.productId,
+        orderStatus: this.detail.orderStatus,
+      });
     },
     async getDeferTimes() {
       try {
