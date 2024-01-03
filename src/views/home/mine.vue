@@ -100,7 +100,7 @@ export default {
           this.toAppMethod("toGoSign");
         }, 1000);
       } catch (e) {
-        console.log(e);
+        this.$toast(e.message);
       } finally {
         this.hideLoading();
       }
